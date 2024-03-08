@@ -1,0 +1,49 @@
+
+services:
+  server:
+    build: ./server
+    ports:
+      - 3000:3000
+    volumes:
+      - ./server:/app/server
+    depends_on:
+      db:
+        condition: service_healthy
+    command: npm run test
+    secrets:
+      - db-password
+    environment:
+      NODE_ENV: development
+      POSTGRES_HOST: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+      POSTGRES_DB: dss
+      DB_PORT: 5432
+  db:
+    image: postgres
+    restart: always
+    user: postgres
+    secrets:
+      - db-password
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=dss
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    expose:
+      - 5432
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+    db-data:
+secrets:
+    db-password:
+        file: db/password.txt
+
+
+
