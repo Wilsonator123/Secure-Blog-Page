@@ -1,16 +1,27 @@
 
 services:
-  server:
-    build: ../server
+  client:
+    build:
+      context: ../client
+      dockerfile: test.Dockerfile
+
     ports:
       - 3000:3000
+    volumes:
+      - ../client:/app/client
+    restart: always
+
+  server:
+    build:
+      context: ../server
+      dockerfile: test.Dockerfile
+    ports:
+      - 8000:8000
     volumes:
       - ../server:/app/server
     depends_on:
       db:
         condition: service_healthy
-    command: ../server/ npm run start
-
     environment:
       NODE_ENV: development
       POSTGRES_HOST: db
@@ -18,6 +29,7 @@ services:
       POSTGRES_PASSWORD_FILE: test
       POSTGRES_DB: dss
       DB_PORT: 5432
+
   db:
     image: postgres
     restart: always
@@ -34,7 +46,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
 volumes:
     db-data:
 
