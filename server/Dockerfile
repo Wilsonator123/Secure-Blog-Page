@@ -10,7 +10,7 @@
 FROM node:14-alpine
 
 # Set working directory
-WORKDIR /app
+WORKDIR /app/server
 
 # Copy package.json and package-lock.json files
 COPY package*.json ./
@@ -21,8 +21,8 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Expose port 3000
-EXPOSE 3000
+# Expose port 8000
+EXPOSE 8000
 
 # Start the application using nodemon
 CMD ["npm", "run", "dev"]
