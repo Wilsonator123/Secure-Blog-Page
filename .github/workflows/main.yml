@@ -33,3 +33,12 @@ jobs:
       - name: Build docker images
         run: docker-compose build
 
+      - name: Run frontend tests
+        run: docker-compose run client
+
+      - name: Run backend tests
+        run: docker-compose run server
+
+
+
+

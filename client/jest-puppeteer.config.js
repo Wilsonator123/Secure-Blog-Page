@@ -1,6 +1,12 @@
-module.exports = {
+const ci = {
     launch: {
         headless: true,
-        slowMo: 30,
+        executablePath: '/usr/bin/google-chrome',
+        args: [
+            '--disable-gpu',
+            '--disable-dev-shm-usage',
+            '--disable-setuid-sandbox',
+            '--no-sandbox'
+        ]
     }
 }

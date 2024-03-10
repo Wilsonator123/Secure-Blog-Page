@@ -1,16 +1,4 @@
-
 services:
-  client:
-    build:
-      context: ../client
-      dockerfile: test.Dockerfile
-
-    ports:
-      - 3000:3000
-    volumes:
-      - ../client:/app/client
-    restart: always
-
   server:
     build:
       context: ../server
