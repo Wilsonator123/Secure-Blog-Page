@@ -16,7 +16,8 @@ WORKDIR /app/server
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
+RUN npm install -g nodemon
 
 # Copy the rest of the application
 COPY . .
