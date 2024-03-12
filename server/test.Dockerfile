@@ -16,8 +16,7 @@ WORKDIR /app/server
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci
-RUN npm install -g nodemon
+RUN npm install
 
 # Copy the rest of the application
 COPY . .
@@ -26,4 +25,4 @@ COPY . .
 EXPOSE 8000
 
 # Start the application using nodemon
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "test"]
