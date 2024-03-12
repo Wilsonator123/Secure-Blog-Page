@@ -1,14 +1,11 @@
-const dotenv = require('dotenv')
-
-dotenv.config()
-
 const express = require('express')
 const app = express()
-const port = 3000
-const db = require('./database/postgres')
-app.get('/', (req, res) => {
-    db.connect()
-    res.send("Hello World!")
+const port = 8000
+const db = require('./database/index.js')
+
+app.get('/', async (req, res) => {
+    const result = await db.query('SELECT NOW()').catch(e => console.error(e.stack))
+    res.json(result?.rows)
 })
 
 

@@ -1,8 +1,6 @@
 # idea
 .idea
 
-# Docker Compose
-compose.yaml
 db/
 
 # Logs

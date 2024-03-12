@@ -32,3 +32,13 @@ jobs:
 
       - name: Build docker images
         run: docker-compose build
+
+      - name: NPM Install
+        run: npm --prefix ./server/ install
+        
+      - name: Run backend tests
+        run: docker-compose run server
+
+
+
+
