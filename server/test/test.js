@@ -13,3 +13,12 @@ describe('makeSalt', function(){
        expect(CreateSalt).to.have.length(128);
     });
 });
+
+describe('Hash a Password', function(){
+    it('should create a password and hash it. Then re hash to make sure theyre the same.', function() {
+        const CreateSalt = hash.makeSalt();
+        const FirstHash = hash.saltNhash("Password",CreateSalt);
+        const SecondHash = hash.saltNhash("Password",CreateSalt);
+       expect(FirstHash).to.be(SecondHash);
+    });
+});
