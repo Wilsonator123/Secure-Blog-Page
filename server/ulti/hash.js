@@ -14,15 +14,4 @@ function saltNhash(password, salt) {
   return crypto.pbkdf2Sync(meat, salt, 600000, 64, "SHA256").toString("hex");
 }
 
-//Temp testing. With a salt generated.
-const TestSalt = makeSalt()
-const FirstHash = saltNhash("password",TestSalt);
-const SecondHash = saltNhash("password",TestSalt);
-
-if (FirstHash === SecondHash){
-console.log("Great it works");
-}else{
-    console.log("Not great, its broken");}
-
-
 module.exports = { makeSalt, saltNhash };
