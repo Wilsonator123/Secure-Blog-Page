@@ -1,21 +1,24 @@
 const db = require('./index.js');
 
-class loginFunctions {
+class testFunctions {
     cat(){
         console.log("This is a cat.");
+        return("Cat")
     }
     dog(){
         console.log("This is a dog");
+        return("Dog")
     }
-    time(){
+    async time(res){
+        const result = await db.query('SELECT NOW()')
         res.json({
 			success: true,
 			data: {
-				Test:"Data",
+				Test: result.rows,
 			},
 		});
     }
 }
 
-module.exports = new loginFunctions();
+module.exports = new testFunctions();
 
