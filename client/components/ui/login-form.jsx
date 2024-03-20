@@ -11,27 +11,62 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+
 
 
 export default function LoginForm() {
 
   //form data states
   const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   async function handleSubmit(event){
     event.preventDefault()
-  
-    if (email == 'bing@gmail.com'){
-      alert("LOGIN GREAT SUCCESS");
-      router.push('/feed')
-      //will contain post request when route set
+    
+    try {
+        //successful login
+        const response = await axios.post('/login', 
+        { 
+            Email: email, 
+            Password: password 
+        },
+        {
+            headers: {
+            'Content-Type': 'application/json'
+        }
+        });
+        console.log(response)
+        router.push('/feed');
+
+    } catch(error){
+
+        if (error.status){
+            
+            //invalid username or password
+            if (error.status === 401 || 404) {
+                console.log("The email or password provided is invalid.");
+                setError("The email or password provided is invalid.");
+            }
+            else if (error.status === 500) {
+                console.log("There was an error with the server.");
+                setError("There was an error with the server.");
+            }
+            else {
+                console.log("An unexpected error occurred.");
+                setError("An unexpected error occurred.");
+            }
+        }
+        else {
+            console.log("No response from the server.");
+            setError("No response from the server.")
+        }
     }
-    else{
-      alert("LOGIN NO SUCCESS :(");
-    }
+    
   }
 
   return (
@@ -45,9 +80,12 @@ export default function LoginForm() {
             <Input type="email" className="w-3/5 m-auto my-4 h-14" 
             placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)} ></Input>
-            <Input type="password" className="w-3/5 m-auto my-4 h-14" placeholder="Password" value={pass} autoComplete="current-password"
-            onChange={(e) => setPass(e.target.value)} ></Input>
-            <Button className="h-12 bg-orange-600 " type="submit" onSubmit={handleSubmit}>Login</Button>
+            <Input type="password" className="w-3/5 m-auto my-4 h-14" placeholder="Password" value={password} autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)} ></Input>
+            <div class="flex justify-center items-center">
+                <Button className="h-12 bg-orange-600 " type="submit" onSubmit={handleSubmit}>Login</Button>
+            </div>
+            {error && <Alert className="mt-4"><AlertDescription>{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
       </Card>
