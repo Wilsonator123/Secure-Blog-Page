@@ -15,7 +15,6 @@ jobs:
       COMPOSE_FILE: .ci/compose.yml
       DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
-      JWT_SECRET: 1D20ACC612A20748E89C758929C8D297D1BFC9E2FB0220B5D87E6FE2F0659AF7
 
     steps:
       - name: Test ENV
