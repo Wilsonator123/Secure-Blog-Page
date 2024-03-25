@@ -3,7 +3,7 @@ const { createAndSignJWT, verifyJWT } = require('./auth');
 
 async function setCookie(res, userID) {
     const jwt = await createAndSignJWT(userID)
-    res.cookie('id', jwt, {httpOnly: true, secure: true, sameSite: 'none', })
+    res.cookie('id', jwt, {httpOnly: true, secure: true, sameSite: 'none', maxAge: 604800000})
 }
 
 async function validateCookie(req, res) {
