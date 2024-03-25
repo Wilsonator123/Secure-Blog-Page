@@ -7,4 +7,6 @@ services:
       - 8000:8000
     volumes:
       - ../server:/app/server
+    environment:
+        JWT_SECRET: 1D20ACC612A20748E89C758929C8D297D1BFC9E2FB0220B5D87E6FE2F0659AF7
 

@@ -1,4 +1,5 @@
 const hash = require('../ulti/hash.js');
+const auth = require('../ulti/auth.js');
 var expect = require('expect.js');
 
 describe('Test', function() {
@@ -21,4 +22,23 @@ describe('Hash a Password', function(){
         const SecondHash = hash.saltNhash("Password",CreateSalt);
        expect(FirstHash).to.be(SecondHash);
     });
+});
+
+describe("Testing JWT", function() {
+    it("should return a JWT", async function() {
+        const jwt = await auth.createAndSignJWT(1)
+        expect(jwt).to.be.a('string')
+    })
+    it("Should return decoded JWT", async function() {
+        const jwt = await auth.createAndSignJWT(1)
+        const payload = await auth.verifyJWT(jwt)
+        expect(payload.sub).to.be(1)
+    })
+    it("Should reject invalid signature", async function() {
+        const jwt = await auth.createAndSignJWT(1)
+        const invalidJWT = jwt.slice(0, -1)
+        const payload = await auth.verifyJWT(invalidJWT)
+        expect(payload).to.be("Invalid JWT")
+    });
+
 });
