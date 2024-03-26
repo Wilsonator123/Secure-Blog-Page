@@ -82,7 +82,7 @@ export default function LoginForm({toggle}) {
             onChange={(e) => setEmail(e.target.value)} ></Input>
             <Input id="login-password" type="password" className="w-3/5 m-auto my-4 h-14" placeholder="Password" value={password} autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)} ></Input>
-            <div class="flex justify-center items-center">
+            <div className="flex justify-center items-center">
                 <Button className="h-12 bg-orange-600 " type="submit" onSubmit={handleSubmit}>Login</Button>
             </div>
             {error && <Alert className="mt-4"><AlertDescription id="error-result">{error}</AlertDescription></Alert>}
