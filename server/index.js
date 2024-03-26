@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use("/apiTest", require('./routes/apiTest.js')); //
-
+app.use("/auth", require('./routes/auth.js'));
 app.get('/', async (req, res) => {
     const result = await db.query('SELECT NOW()').catch(e => console.error(e.stack))
     res.json(result?.rows)

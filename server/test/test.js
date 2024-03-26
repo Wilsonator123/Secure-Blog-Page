@@ -1,5 +1,5 @@
-const hash = require('../ulti/hash.js');
-const auth = require('../ulti/auth.js');
+const hash = require('../utils/hash.js');
+const auth = require('../utils/auth.js');
 var expect = require('expect.js');
 
 describe('Test', function() {

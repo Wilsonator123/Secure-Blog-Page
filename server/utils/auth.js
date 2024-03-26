@@ -3,13 +3,13 @@ require("dotenv").config();
 
 const secret = new Uint8Array(Buffer.from(process.env.JWT_SECRET, 'base64'))
 
-async function createAndSignJWT(userID) {
+async function createAndSignJWT(userID, permissions) {
     const alg = 'HS256'
     const jwt = await new jose.SignJWT({
         iss: 'http://localhost:8000',
         sub: userID,
         aud: 'http://localhost:8000',
-        scopes: ['read', 'write', 'delete']
+        scopes: permissions
     })
         .setProtectedHeader({alg})
         .setIssuedAt()
@@ -21,13 +21,30 @@ async function createAndSignJWT(userID) {
 async function verifyJWT(jwt) {
     try {
         const {payload, protectedHeader} = await jose.jwtVerify(jwt, secret)
-        return payload
+        return true
     } catch (e) {
-        return "Invalid JWT"
+        return false
     }
 }
 
+async function readJWT(req, res) {
+    const jwt = req.cookies.id
+    if(!jwt) {
+        return false
+    }
+    try {
+        const {payload, protectedHeader} = await jose.jwtVerify(jwt, secret)
+        return payload
+    } catch (e) {
+        return false
+    }
+
+
+}
+
+
 module.exports = {
     createAndSignJWT,
-    verifyJWT
+    verifyJWT,
+    readJWT
 }
