@@ -20,5 +20,6 @@ class testFunctions {
     }
 }
 
+
 module.exports = new testFunctions();
 
