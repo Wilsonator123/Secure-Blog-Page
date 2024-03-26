@@ -17,7 +17,7 @@ import axios from 'axios';
 
 
 
-export default function LoginForm() {
+export default function LoginForm({toggle}) {
 
   //form data states
   const [email, setEmail] = useState("");
@@ -30,10 +30,10 @@ export default function LoginForm() {
     
     try {
         //successful login
-        const response = await axios.post('/login', 
+        const response = await axios.post('/loginCheck', 
         { 
-            Email: email, 
-            Password: password 
+            email: email, 
+            password: password 
         },
         {
             headers: {
@@ -77,17 +77,20 @@ export default function LoginForm() {
         </CardHeader>
         <CardContent className="justify-center">
           <form onSubmit={handleSubmit}>
-            <Input type="email" className="w-3/5 m-auto my-4 h-14" 
+            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14" 
             placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)} ></Input>
-            <Input type="password" className="w-3/5 m-auto my-4 h-14" placeholder="Password" value={password} autoComplete="current-password"
+            <Input id="login-password" type="password" className="w-3/5 m-auto my-4 h-14" placeholder="Password" value={password} autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)} ></Input>
             <div class="flex justify-center items-center">
                 <Button className="h-12 bg-orange-600 " type="submit" onSubmit={handleSubmit}>Login</Button>
             </div>
-            {error && <Alert className="mt-4"><AlertDescription>{error}</AlertDescription></Alert>}
+            {error && <Alert className="mt-4"><AlertDescription id="error-result">{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
+        <CardFooter>
+            <a onClick={toggle}>Don't have an account? Click here to signup.</a>
+        </CardFooter>
       </Card>
   );
 }
