@@ -4,6 +4,7 @@ const fs = require('fs');
 const secretFilePath = '/run/secrets/db-password';
 
 const secret = fs.readFileSync(secretFilePath, 'utf8');
+
 console.log(secret);
 const pool = new Pool({
         host: process.env.POSTGRES_HOST,
