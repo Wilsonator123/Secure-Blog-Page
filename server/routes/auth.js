@@ -21,8 +21,8 @@ router.post("/hasPermission", async (req, res) => {
     if(!req.body.scope){
         return res.status(400).send("Scope not provided")
     }
-
-    const result = await readJWT(req, res)
+    const jwt = req.cookies.id
+    const result = await readJWT(jwt)
     if(!result){
         return res.status(401).send("Unauthorized")
     } else{

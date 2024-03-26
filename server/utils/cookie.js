@@ -2,7 +2,7 @@ const { createAndSignJWT, verifyJWT } = require('./auth');
 
 
 async function setCookie(res, userID) {
-    const jwt = await createAndSignJWT(userID, permissions = ['read'])
+    const jwt = await createAndSignJWT(userID)
     return res.cookie('id', jwt, {httpOnly: true, secure: true, sameSite: 'none', maxAge: 604800000})
 }
 

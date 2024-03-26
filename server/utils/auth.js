@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const secret = new Uint8Array(Buffer.from(process.env.JWT_SECRET, 'base64'))
 
-async function createAndSignJWT(userID, permissions) {
+async function createAndSignJWT(userID, permissions = ['read']) {
     const alg = 'HS256'
     const jwt = await new jose.SignJWT({
         iss: 'http://localhost:8000',
@@ -27,8 +27,7 @@ async function verifyJWT(jwt) {
     }
 }
 
-async function readJWT(req, res) {
-    const jwt = req.cookies.id
+async function readJWT(jwt) {
     if(!jwt) {
         return false
     }

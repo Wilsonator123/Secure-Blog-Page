@@ -31,14 +31,14 @@ describe("Testing JWT", function() {
     })
     it("Should return decoded JWT", async function() {
         const jwt = await auth.createAndSignJWT(1)
-        const payload = await auth.verifyJWT(jwt)
+        const payload = await auth.readJWT(jwt)
         expect(payload.sub).to.be(1)
     })
     it("Should reject invalid signature", async function() {
         const jwt = await auth.createAndSignJWT(1)
         const invalidJWT = jwt.slice(0, -1)
         const payload = await auth.verifyJWT(invalidJWT)
-        expect(payload).to.be("Invalid JWT")
+        expect(payload).to.be(false)
     });
 
 });
