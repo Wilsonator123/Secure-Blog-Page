@@ -52,13 +52,9 @@ export default function LoginForm({toggle}) {
                 console.log("The email or password provided is invalid.");
                 setError("The email or password provided is invalid.");
             }
-            else if (error.status === 500) {
-                console.log("There was an error with the server.");
-                setError("There was an error with the server.");
-            }
             else {
-                console.log("An unexpected error occurred.");
-                setError("An unexpected error occurred.");
+                console.log("There was a problem with the server.");
+                setError("There was a problem with the server.");
             }
         }
         else {
@@ -70,26 +66,27 @@ export default function LoginForm({toggle}) {
   }
 
   return (
-      <Card className="h-3/5 w-2/5">
+      <Card className="h-3/5 w-2/5 bg-primary border-accent">
         <CardHeader >
-          <CardTitle className="text-2xl m-auto">Login</CardTitle>
-          <CardDescription className="m-auto">Login to your CryptoBros account</CardDescription>
+          <CardTitle className="text-2xl m-auto text-text">Login</CardTitle>
+          <CardDescription className="m-auto text-text">Login to your CryptoBros account</CardDescription>
         </CardHeader>
         <CardContent className="justify-center">
           <form onSubmit={handleSubmit}>
-            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14" 
-            placeholder="E-mail" value={email} autoComplete="email"
+            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14 text-text" 
+            required placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)} ></Input>
-            <Input id="login-password" type="password" className="w-3/5 m-auto my-4 h-14" placeholder="Password" value={password} autoComplete="current-password"
+            <Input id="login-password" type="password" className="w-3/5 m-auto my-4 h-14 text-text"
+            required placeholder="Password" value={password} autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)} ></Input>
             <div className="flex justify-center items-center">
-                <Button className="h-12 bg-orange-600 " type="submit" onSubmit={handleSubmit}>Login</Button>
+                <Button className="h-12 bg-secondary text-text" type="submit" onSubmit={handleSubmit}>Login</Button>
             </div>
             {error && <Alert className="mt-4"><AlertDescription id="error-result">{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
         <CardFooter>
-            <a onClick={toggle}>Don't have an account? Click here to signup.</a>
+            <a onClick={toggle} className='text-text'>Don't have an account? Click here to signup.</a>
         </CardFooter>
       </Card>
   );

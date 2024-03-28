@@ -14,7 +14,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-sky-900">
+    <main className="flex min-h-screen flex-col items-center bg-background">
       <h1 className="p-12 text-4xl text-white">CryptoBros</h1>
       { toggleForm ? <SignupForm toggle={toggle}/> :  <LoginForm toggle={toggle}/> }
       
