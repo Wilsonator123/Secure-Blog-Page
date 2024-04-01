@@ -66,21 +66,21 @@ export default function LoginForm({toggle}) {
   }
 
   return (
-      <Card className="h-3/5 w-2/5 bg-primary border-accent">
+      <Card className="h-3/5 w-2/5 bg-primary border-accent mt-24">
         <CardHeader >
           <CardTitle className="text-2xl m-auto text-text">Login</CardTitle>
-          <CardDescription className="m-auto text-text">Login to your CryptoBros account</CardDescription>
+          <CardDescription className="m-auto text-text">Login to your CryptoBros account.</CardDescription>
         </CardHeader>
         <CardContent className="justify-center">
           <form onSubmit={handleSubmit}>
-            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14 text-text" 
+            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14 border-secondary text-text" 
             required placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)} ></Input>
-            <Input id="login-password" type="password" className="w-3/5 m-auto my-4 h-14 text-text"
+            <Input id="login-password" type="password" className="w-3/5 m-auto my-4 h-14 border-secondary text-text placeholder-gray-300"
             required placeholder="Password" value={password} autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)} ></Input>
             <div className="flex justify-center items-center">
-                <Button className="h-12 bg-secondary text-text" type="submit" onSubmit={handleSubmit}>Login</Button>
+                <Button className="h-12 bg-secondary text-text hover:bg-primary" type="submit" onSubmit={handleSubmit}>Login</Button>
             </div>
             {error && <Alert className="mt-4"><AlertDescription id="error-result">{error}</AlertDescription></Alert>}
           </form>

@@ -19,7 +19,7 @@ export default function SignupForm({toggle}){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [username, setUsername] = useState("");
+    const [dateOfBirth, setDateOfBirth] = useState("");
     const [fName, setFName] = useState("");
     const [lName, setLName] = useState("");
     const [error, setError] = useState("");
@@ -35,10 +35,11 @@ export default function SignupForm({toggle}){
 
 
     return (
-        <Card className="h-3/5 w-2/5 bg-primary border-accent">
+        <Card className="h-3/5 w-2/5 bg-primary border-accent mt-24">
         <CardHeader >
           <CardTitle className="text-2xl m-auto text-text">Signup</CardTitle>
-          <CardDescription className="m-auto text-text">Create your CryptoBros account.</CardDescription>
+          <CardDescription className="m-auto text-text">Create your CryptoBros account. 
+          A Username will be generated for you upon signup.</CardDescription>
         </CardHeader>
         <CardContent className="justify-center">
           <form onSubmit={handleSubmit}>
@@ -49,8 +50,8 @@ export default function SignupForm({toggle}){
             required placeholder="Last Name" value={lName} autoComplete="family-name"
             onChange={(e) => setLName(e.target.value)} ></Input>
             <Input type="text" className="w-3/5 m-auto my-4 h-14 text-text" 
-            required placeholder="Username" value={username} autoComplete="username"
-            onChange={(e) => setUsername(e.target.value)} ></Input>
+            required placeholder="Date of Birth: DD/MM/YY" value={dateOfBirth} autoComplete=""
+            onChange={(e) => setDateOfBirth(e.target.value)} ></Input>
             <Input type="email" className="w-3/5 m-auto my-4 h-14 text-text" 
             required placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)} ></Input>
