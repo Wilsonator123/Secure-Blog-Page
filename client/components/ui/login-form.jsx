@@ -34,6 +34,7 @@ zxcvbnOptions.addMatcher('pwned', matcherPwned);
 export default function LoginForm({toggle}) {
   //form data states
   const [passwordStrength, setPasswordStrength] = useState(null);
+  const [showPassword, setShowPassword] = useState("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -87,7 +88,6 @@ export default function LoginForm({toggle}) {
                 <div className="w-4/4 h-5 bg-green-800"/>
             </div>
         }
-
     }
 
   async function handleSubmit(event){
@@ -141,11 +141,12 @@ export default function LoginForm({toggle}) {
             <Input id="login-email" type="email" className="w-3/5 my-4 h-14 border-secondary text-text"
             required placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)} />
-            <Input id="login-password" type="password" className="w-3/5 my-4 h-14 border-secondary text-text placeholder-gray-300"
+            <Input id="login-password" type={`${showPassword}`} className="w-3/5 my-4 h-14 border-secondary text-text placeholder-gray-300"
             required placeholder="Password" value={password} autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
             onBlur={(e) => checkPasswordStrength(e.target.value)}
             />
+          <Input type="checkbox" onClick={() => setShowPassword(prev => prev === 'text' ? 'password' : 'text')} className="text-text"/>
               {passwordStrength != null ?
                   <>{setPasswordBar()}</>
                 : null
