@@ -2,12 +2,16 @@ const db = require('../database/index.js');
 const newUUID = require("../ulti/uuid.js");
 const hash = require('../ulti/hash.js')
 var validator = require("email-validator");
-
+const username = require("../ulti/username.js");
 
 async function makeUser(email,fname,lname,dob,password){
 
     // Makes users UUID
     const userID = await newUUID.genUUID()
+
+    //Makes username
+    const newUsername = await username.uniqUsername() 
+
 
     //Makes the salt and hased password based of the salt generated.
     let salt = hash.makeSalt();
@@ -26,7 +30,7 @@ async function makeUser(email,fname,lname,dob,password){
 
 
     //Runs the query to insert the user and then the password.
-    (await db.query('addUser',[userID,email,fname,lname,dob]))
+    (await db.query('addUser',[userID, newUsername,email,fname,lname,dob]))
 
     //Checks that the user has been added via their userID, and then inserts in to the Password table
     if ((await(db.query('isUUIDtaken',[userID])))[0].count != 0){
@@ -42,4 +46,4 @@ module.exports= {
     makeUser
 };
 
-//makeUser('test@tet.com','first','notfirst',"2022-12-20","nuts123").then((result) => console.log(result)).catch((err) => console.error(err));
+//makeUser('lest@tet.com','first','notfirst',"2022-12-20","nuts123").then((result) => console.log(result)).catch((err) => console.error(err));
