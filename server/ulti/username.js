@@ -29,13 +29,17 @@ function randomNumber(length){
 function newUsername(){
 const adjectives = textimporter(adjectFilePath)
 const nouns = textimporter(nounFilePath)
+
+//Picks the adjective and noun using a random number between 0 and the length of the array which contain the Nouns and Adjectives
 let pickedAdjectives = adjectives[randomNumber(adjectives.length)]
 let pickedNoun = nouns[randomNumber(nouns.length)]
 
+
+//Checks both the Noun and Adjective length to ensure niether is longer thant 7
 while (pickedAdjectives.length > 7){
     pickedAdjectives = adjectives[randomNumber(adjectives.length)]
 }
-while(pickedNoun > 7){
+while(pickedNoun.length > 7){
     pickedNoun = nouns[randomNumber(nouns.length)]
 }
 
@@ -48,8 +52,8 @@ async function uniqUsername() {
     
     let username = newUsername()
     
+    //Creates a new username and then tests to see if its in the database. If it is itll create a new one and re test it.
     while ((await db.query("isUsername", [username]))[0].count != 0) {
-        console.log("retry");
       username = newUsername()
     }
     return username;
@@ -57,5 +61,6 @@ async function uniqUsername() {
 
 
 module.exports = {
-    uniqUsername
+    uniqUsername,
+    newUsername
 }
