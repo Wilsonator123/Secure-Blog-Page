@@ -1,4 +1,4 @@
-'use client'
+
 
 import React, { useState } from 'react'
 import {
@@ -29,18 +29,19 @@ export default function LoginForm({toggle}) {
     event.preventDefault()
     
     try {
-        //successful login
-        const response = await axios.post('/loginCheck', 
+        console.log(email, password);
+        const response = await axios.post('http://localhost:8000/login/loginChecker', 
         { 
             email: email, 
             password: password 
         },
         {
             headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
         });
-        console.log(response)
+        //successful login
+        console.log(response.data);
         router.push('/feed');
 
     } catch(error){
@@ -68,25 +69,26 @@ export default function LoginForm({toggle}) {
   return (
       <Card className="h-3/5 w-2/5 bg-primary border-accent mt-24">
         <CardHeader >
-          <CardTitle className="text-2xl m-auto text-text">Login</CardTitle>
-          <CardDescription className="m-auto text-text">Login to your CryptoBros account.</CardDescription>
+          <CardTitle className="text-2xl m-auto text-text">Sign-in</CardTitle>
+          <CardDescription className="m-auto text-text">Sign-in to your CryptoBros account.</CardDescription>
         </CardHeader>
-        <CardContent className="justify-center">
+        <CardContent className="">
           <form onSubmit={handleSubmit}>
             <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14 border-secondary text-text" 
             required placeholder="E-mail" value={email} autoComplete="email"
-            onChange={(e) => setEmail(e.target.value)} ></Input>
+            onChange={(e) => setEmail(e.target.value)}/>
             <Input id="login-password" type="password" className="w-3/5 m-auto my-4 h-14 border-secondary text-text placeholder-gray-300"
             required placeholder="Password" value={password} autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)} ></Input>
+            onChange={(e) => setPassword(e.target.value)}/>
+            <a className='text-text'>Forgotten Password? Click here</a>
             <div className="flex justify-center items-center">
-                <Button className="h-12 bg-secondary text-text hover:bg-primary" type="submit" onSubmit={handleSubmit}>Login</Button>
+                <Button className="h-12 border-opacity-100 bg-secondary text-text hover:border-accent" type="submit" onSubmit={handleSubmit}>Login</Button>
             </div>
-            {error && <Alert className="mt-4"><AlertDescription id="error-result">{error}</AlertDescription></Alert>}
+            {error && <Alert className="mt-4"><AlertDescription id="error-result" className="text-text">{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
         <CardFooter>
-            <a onClick={toggle} className='text-text'>Don't have an account? Click here to signup.</a>
+            <p onClick={toggle} className='text-text'>Don't have an account? Click <a onClick={toggle} className='text-accent'>here</a> to signup.</p>
         </CardFooter>
       </Card>
   );

@@ -45,22 +45,22 @@ export default function SignupForm({toggle}){
           <form onSubmit={handleSubmit}>
             <Input type="name" className="w-3/5 m-auto my-4 h-14 text-text" 
             required placeholder="First Name" value={fName} autoComplete="give-name"
-            onChange={(e) => setFName(e.target.value)} ></Input>
+            onChange={(e) => setFName(e.target.value)}/>
             <Input type="name" className="w-3/5 m-auto my-4 h-14 text-text" 
             required placeholder="Last Name" value={lName} autoComplete="family-name"
-            onChange={(e) => setLName(e.target.value)} ></Input>
+            onChange={(e) => setLName(e.target.value)}/> 
             <Input type="text" className="w-3/5 m-auto my-4 h-14 text-text" 
             required placeholder="Date of Birth: DD/MM/YY" value={dateOfBirth} autoComplete=""
-            onChange={(e) => setDateOfBirth(e.target.value)} ></Input>
+            onChange={(e) => setDateOfBirth(e.target.value)}/>
             <Input type="email" className="w-3/5 m-auto my-4 h-14 text-text" 
             required placeholder="E-mail" value={email} autoComplete="email"
-            onChange={(e) => setEmail(e.target.value)} ></Input>
+            onChange={(e) => setEmail(e.target.value)}/>
             <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text"
             required placeholder="Password" value={password} autoComplete="new-password"
-            onChange={(e) => setPassword(e.target.value)} ></Input>
+            onChange={(e) => setPassword(e.target.value)}/>
             <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text"
             required placeholder="Confirm Password" value={confirmPassword} autoComplete="new-password"
-            onChange={(e) => setConfirmPassword(e.target.value)} ></Input>
+            onChange={(e) => setConfirmPassword(e.target.value)}/>
             <div class="flex justify-center items-center">
                 <Button className="h-12 bg-secondary  text-text" type="submit" onSubmit={handleSubmit}>Signup</Button>
             </div>
@@ -68,7 +68,7 @@ export default function SignupForm({toggle}){
           </form>
         </CardContent>
         <CardFooter>
-            <a onClick={toggle} className='text-text'>Already have an account? Click here to login.</a>
+            <p className='text-text'>Already have an account? Click <a onClick={toggle} className='text-accent'>here </a> to login.</p>
         </CardFooter>
       </Card>
     )

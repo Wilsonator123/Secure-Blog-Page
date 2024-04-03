@@ -32,4 +32,8 @@ async function login(email,password){
 
 }
 
+module.exports = {
+    login
+}
+
 //login("test@tessst.om","nuts123").then((result) => console.log(result)).catch((err) => console.error(err));
