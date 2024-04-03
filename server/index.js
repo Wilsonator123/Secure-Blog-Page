@@ -9,7 +9,7 @@ const db = require('./database/index.js');
 
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
-app.use(cors);
+app.use(cors());
 
 // Server Middleware Loging to Console
 app.use((req, res, next) => {
