@@ -34,13 +34,21 @@ export default function SignupForm({toggle}){
 
     const checkPassword = async (password) => {
         if (password === "") {
+            setPasswordMessage("Password cannot be empty");
+            setPasswordStrength(null);
             return false;
         }
 
         const metRequirements = await checkPasswordStrength(password);
 
-        if metRequirements.success === false){
-
+        if(metRequirements.success === false){
+            setPasswordMessage(metRequirements.warning);
+            setPasswordStrength(metRequirements.score ?? 0);
+            return false;
+        }else{
+            setPasswordMessage(null);
+            setPasswordStrength(metRequirements.score);
+            return true;
         }
 
     }
@@ -82,7 +90,7 @@ export default function SignupForm({toggle}){
             <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text"
             required placeholder="Password" value={password} autoComplete="new-password"
             onChange={(e) => setPassword(e.target.value)}
-            onBlur={(e) => checkPasswordStrength(e.target.value)}
+            onBlur={(e) => checkPassword(e.target.value)}
             />
 
             {passwordStrength != null ?

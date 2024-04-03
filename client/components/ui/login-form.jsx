@@ -82,7 +82,7 @@ export default function LoginForm({toggle}) {
             required placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)} />
             <div className="relative flex w-3/5 justify-center items-center">
-                <Input id="login-password" ref={inputRef} type={`${showPassword}`} className="my-4 h-14 border-secondary text-text placeholder-gray-300 focus:border-accent"
+                <Input id="login-password" type={`${showPassword}`} className="my-4 h-14 border-secondary text-text placeholder-gray-300 focus:border-accent"
                 required placeholder="Password" value={password} autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
                 />

@@ -1,3 +1,4 @@
+'use server'
 import { zxcvbn, zxcvbnOptions, zxcvbnAsync } from "@zxcvbn-ts/core";
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
@@ -15,11 +16,11 @@ const options = {
 zxcvbnOptions.setOptions(options);
 zxcvbnOptions.addMatcher('pwned', matcherPwned);
 
-const hasLength = '.{8,64}'
-const hasUppercase = '(?=.*[A-Z]).*'
-const hasLowercase = '(?=.*[a-z]).*'
-const hasDigit = '(?=.*\d).*'
-const hasSpecial = '(?=.*[@$!%*?&]).*'
+const hasLength = /.{8,64}/g
+const hasUppercase = /(?=.*[A-Z]).*/g
+const hasLowercase = /(?=.*[a-z]).*/g
+const hasDigit = /(?=.*\d).*/g
+const hasSpecial = /(?=.*[@$!%*?&\-_]).*/g
 
 export const checkPasswordStrength = async (password) => {
     'use server'
