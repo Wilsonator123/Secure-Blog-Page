@@ -16,9 +16,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-background">
-      <NavBar />
       { toggleForm ? <SignupForm toggle={toggle}/> :  <LoginForm toggle={toggle}/> }
-      
     </main>
   );
 }
