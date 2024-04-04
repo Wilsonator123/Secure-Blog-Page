@@ -15,8 +15,16 @@ import axios from 'axios';
 
 export default function ForgottenPassword(){
 
+    const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
+    const router = useRouter();
+
     async function handleSubmit(event){
         event.preventDefault();
+    }
+
+    function loginForm(){
+        router.push('/login');
     }
 
     return(
@@ -27,19 +35,20 @@ export default function ForgottenPassword(){
           <CardDescription className="m-auto text-text">Please enter your email below to receive a password recovery link in 
           your inbox.</CardDescription>
         </CardHeader>
-        <CardContent className="justify-center">
+        <CardContent className="">
           <form onSubmit={handleSubmit}>
-            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14 border-secondary text-text" 
+            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)} ></Input>
             <div className="flex justify-center items-center">
-                <Button className="h-12 border-opacity-100 bg-secondary text-text hover:border-accent" type="submit" onSubmit={handleSubmit}>Login</Button>
+                <Button className="h-12  bg-secondary text-text hover:border
+                 hover:border-accent" type="submit" onSubmit={handleSubmit}>Submit</Button>
             </div>
             {error && <Alert className="mt-4"><AlertDescription id="error-result" className="text-text">{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
         <CardFooter className='m-auto'>
-            <p className='text-text'>Click <a onClick={toggle} className='text-secondary'>here</a> to return to login page.</p>
+            <p className='text-text'>Click <a onClick={loginForm} className='text-secondary'>here</a> to return to login page.</p>
         </CardFooter>
       </Card>
     )

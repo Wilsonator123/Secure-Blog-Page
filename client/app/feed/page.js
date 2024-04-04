@@ -4,6 +4,6 @@ export default function Feed(){
 
     return (
 
-        <p>bing chilling</p>
+        <p className="text-text">bing chilling</p>
     )
 }

@@ -43,26 +43,27 @@ export default function SignupForm({toggle}){
         </CardHeader>
         <CardContent className="justify-center">
           <form onSubmit={handleSubmit}>
-            <Input type="name" className="w-3/5 m-auto my-4 h-14 text-text" 
+            <Input type="name" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="First Name" value={fName} autoComplete="give-name"
             onChange={(e) => setFName(e.target.value)}/>
-            <Input type="name" className="w-3/5 m-auto my-4 h-14 text-text" 
+            <Input type="name" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="Last Name" value={lName} autoComplete="family-name"
             onChange={(e) => setLName(e.target.value)}/> 
-            <Input type="text" className="w-3/5 m-auto my-4 h-14 text-text" 
+            <Input type="text" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="Date of Birth: DD/MM/YY" value={dateOfBirth} autoComplete=""
             onChange={(e) => setDateOfBirth(e.target.value)}/>
-            <Input type="email" className="w-3/5 m-auto my-4 h-14 text-text" 
+            <Input type="email" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)}/>
-            <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text"
+            <Input type="password" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent"
             required placeholder="Password" value={password} autoComplete="new-password"
             onChange={(e) => setPassword(e.target.value)}/>
-            <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text"
+            <Input type="password" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent"
             required placeholder="Confirm Password" value={confirmPassword} autoComplete="new-password"
             onChange={(e) => setConfirmPassword(e.target.value)}/>
             <div class="flex justify-center items-center">
-                <Button className="h-12 bg-secondary  text-text" type="submit" onSubmit={handleSubmit}>Signup</Button>
+                <Button className="h-12 bg-secondary  text-text hover:border hover:border-accent"
+                 type="submit" onSubmit={handleSubmit}>Signup</Button>
             </div>
             {error && <Alert className="mt-4"><AlertDescription>{error}</AlertDescription></Alert>}
           </form>

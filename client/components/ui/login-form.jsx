@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react'
 import {
   Card,
@@ -17,6 +15,7 @@ import axios from 'axios';
 
 
 
+
 export default function LoginForm({toggle}) {
 
   //form data states
@@ -27,43 +26,24 @@ export default function LoginForm({toggle}) {
 
   async function handleSubmit(event){
     event.preventDefault()
-    
-    try {
-        console.log(email, password);
-        const response = await axios.post('http://localhost:8000/login/loginChecker', 
-        { 
-            email: email, 
-            password: password 
-        },
-        {
-            headers: {
-            'Content-Type': 'application/json',
-        }
-        });
-        //successful login
-        console.log(response.data);
-        router.push('/feed');
+    //set just to check if response is coming back
 
-    } catch(error){
-
-        if (error.status){
-            
-            //invalid username or password
-            if (error.status === 401 || 404) {
-                console.log("The email or password provided is invalid.");
-                setError("The email or password provided is invalid.");
-            }
-            else {
-                console.log("There was a problem with the server.");
-                setError("There was a problem with the server.");
-            }
-        }
-        else {
-            console.log("No response from the server.");
-            setError("No response from the server.")
-        }
+    const response = await axios.post('localhost:8000/login/loginChecker', {
+      email: email,
+      password: password
+    })
+    if (!response){
+      setError("No response from the server");
+    }
+    if(response){
+      console.log(response.status);
+      router.push('/feed')
     }
     
+  }
+
+  function forgottenPassword (){
+    router.push('/forgottenPassword');
   }
 
   return (
@@ -74,15 +54,16 @@ export default function LoginForm({toggle}) {
         </CardHeader>
         <CardContent className="">
           <form onSubmit={handleSubmit}>
-            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14 border-secondary text-text" 
+            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)}/>
-            <Input id="login-password" type="password" className="w-3/5 m-auto my-4 h-14 border-secondary text-text placeholder-gray-300"
+            <Input id="login-password" type="password" className="w-3/5 m-auto my-4 h-14 border-secondary text-text
+            focus:border-accent placeholder-gray-300"
             required placeholder="Password" value={password} autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}/>
-            <a className='text-text'>Forgotten Password? Click here</a>
+            <a className='text-text' onClick={forgottenPassword}>Forgotten Password? Click here</a>
             <div className="flex justify-center items-center">
-                <Button className="h-12 border-opacity-100 bg-secondary text-text hover:border-accent" type="submit" onSubmit={handleSubmit}>Login</Button>
+                <Button className="h-12  bg-secondary text-text hover:border hover:border-accent" type="submit" onSubmit={handleSubmit}>Login</Button>
             </div>
             {error && <Alert className="mt-4"><AlertDescription id="error-result" className="text-text">{error}</AlertDescription></Alert>}
           </form>
