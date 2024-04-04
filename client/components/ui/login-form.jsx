@@ -28,17 +28,26 @@ export default function LoginForm({toggle}) {
     event.preventDefault()
     //set just to check if response is coming back
 
-    const response = await axios.post('localhost:8000/login/loginChecker', {
-      email: email,
-      password: password
-    })
-    if (!response){
-      setError("No response from the server");
+    try {
+      console.log(email, password);
+      const response = await axios.post('http://localhost:8000/login/loginChecker', {
+        email: email,
+        password: password
+      })
+      if (response.status(400)){
+        setError("Incorrect username or password");
+      }
+      if(response.status(200)){
+        console.log(response.status);
+        router.push('/feed');
+      }
+      
+    } catch (error) {
+      console.log(error);
+      setError("There was a problem with the server.")
     }
-    if(response){
-      console.log(response.status);
-      router.push('/feed')
-    }
+
+    
     
   }
 
