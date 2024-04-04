@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+
 import {
   Card,
   CardContent,
@@ -10,8 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
+
+import PasswordBar from "@/components/ui/passwordBar";
+import { checkPasswordStrength } from "@/helper/password";
 
 export default function SignupForm({toggle}){
 
@@ -23,7 +27,31 @@ export default function SignupForm({toggle}){
     const [fName, setFName] = useState("");
     const [lName, setLName] = useState("");
     const [error, setError] = useState("");
-    
+
+
+    const [passwordStrength, setPasswordStrength] = useState(null);
+    const [passwordMessage, setPasswordMessage] = useState(null);
+
+    const checkPassword = async (password) => {
+        if (password === "") {
+            setPasswordMessage("Password cannot be empty");
+            setPasswordStrength(null);
+            return false;
+        }
+
+        const metRequirements = await checkPasswordStrength(password);
+
+        if(metRequirements.success === false){
+            setPasswordMessage(metRequirements.warning);
+            setPasswordStrength(metRequirements.score ?? 0);
+            return false;
+        }else{
+            setPasswordMessage(null);
+            setPasswordStrength(metRequirements.score);
+            return true;
+        }
+
+    }
 
 
 
@@ -57,13 +85,27 @@ export default function SignupForm({toggle}){
             onChange={(e) => setEmail(e.target.value)}/>
             <Input type="password" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent"
             required placeholder="Password" value={password} autoComplete="new-password"
-            onChange={(e) => setPassword(e.target.value)}/>
-            <Input type="password" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent"
+            onChange={(e) => setPassword(e.target.value)}
+            onBlur={(e) => checkPassword(e.target.value)}
+            />
+
+            {passwordStrength != null ?
+              <PasswordBar passwordStrength={passwordStrength}/>
+              : null
+            }
+
+            {passwordMessage != null ?
+              <Alert className="mt-4 text-white"><AlertDescription id="password-result">{passwordMessage}</AlertDescription></Alert>
+              : null
+            }
+
+
+            <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text"
             required placeholder="Confirm Password" value={confirmPassword} autoComplete="new-password"
-            onChange={(e) => setConfirmPassword(e.target.value)}/>
-            <div class="flex justify-center items-center">
-                <Button className="h-12 bg-secondary  text-text hover:border hover:border-accent"
-                 type="submit" onSubmit={handleSubmit}>Signup</Button>
+            onChange={(e) => setConfirmPassword(e.target.value)} />
+
+            <div className="flex justify-center items-center">
+                <Button variant={'secondary'} className="h-12 bg-secondary  text-text" type="submit" onSubmit={handleSubmit}>Signup</Button>
             </div>
             {error && <Alert className="mt-4"><AlertDescription>{error}</AlertDescription></Alert>}
           </form>
