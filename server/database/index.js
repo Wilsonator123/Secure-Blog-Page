@@ -6,7 +6,8 @@ const fs = require('fs');
 
 const secretFilePath = '/run/secrets/db-password';
 let secret
-if(process.env.NODE_ENV) {
+if(process.env.NODE_ENV === 'test') {
+    console.log('Here')
     secret = 'test'
 }else {
     secret = fs.readFileSync(secretFilePath, 'utf8');
