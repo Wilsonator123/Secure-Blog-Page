@@ -1,8 +1,8 @@
 const db = require('../database/index.js');
-const newUUID = require("../ulti/uuid.js");
-const hash = require('../ulti/hash.js')
+const newUUID = require("../utils/uuid.js");
+const hash = require('../utils/hash.js')
 var validator = require("email-validator");
-const username = require("../ulti/username.js");
+const username = require("../utils/username.js");
 
 async function makeUser(email,fname,lname,dob,password){
 

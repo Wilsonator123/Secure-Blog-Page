@@ -14,7 +14,7 @@ services:
       - db-password
     environment:
       NODE_ENV: test
-      POSTGRES_HOST: test
+      POSTGRES_HOST: db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD_FILE: /run/secrets/db-password
       POSTGRES_DB: test
