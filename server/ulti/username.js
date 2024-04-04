@@ -56,6 +56,7 @@ async function uniqUsername() {
     while ((await db.query("isUsername", [username]))[0].count != 0) {
       username = newUsername()
     }
+    console.log(username)
     return username;
   }
 
