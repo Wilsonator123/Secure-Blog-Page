@@ -34,10 +34,11 @@ export default function LoginForm({toggle}) {
         email: email,
         password: password
       })
-      if (response.status(400)){
+      console.log(response);
+      if (response.status === 400){
         setError("Incorrect username or password");
       }
-      if(response.status(200)){
+      if(response.status === 200){
         console.log(response.status);
         router.push('/feed');
       }

@@ -8,12 +8,20 @@ router.get("/", (req, res) => {
 })
 
 router.post("/loginChecker", async(req, res) => {
-    if (req.email === "bing@gmail.com"){
-        res.status(200).json(message, "Login successful");
+    
+    try {
+        const body = req.body;
+    console.log(body);
+    if (body.email === "bing@gmail.com"){
+        res.status(200).send('success');
     }
     else {
-        res.status(400).json(message, "Incorrect Username or Password");
+        res.status(400).send('wrong email or password');
     }
+    } catch (error) {
+        console.log(error);
+    }
+    
     
 })
 
