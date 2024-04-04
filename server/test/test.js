@@ -1,6 +1,6 @@
-const hash = require('../ulti/hash.js');
-const username = require('../ulti/username.js')
-const newUUID = require("../ulti/uuid.js");
+const hash = require('../utils/hash.js');
+const username = require('../utils/username.js')
+const newUUID = require('../utils/uuid.js')
 var expect = require('expect.js');
 
 describe('Test', function() {

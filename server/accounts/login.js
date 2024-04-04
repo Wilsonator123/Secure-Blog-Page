@@ -1,5 +1,5 @@
 const db = require('../database/index.js');
-const hash = require('../ulti/hash.js')
+const hash = require('../utils/hash.js')
 var validator = require("email-validator");
 
 async function login(email,password){

@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 const fs = require('fs');
 
-//THIS FILE IS JUST FOR ACCESSING THE DATABASE PLEASE DONT PUT SHIT IN HERE. P's 'n' Q's    USE THIS IN YOUR CODE. Then do db.query(SQL SHIT HERE)      const db = require('./database/index.js')
+//THIS FILE IS JUST FOR ACCESSING THE DATABASE PLEASE DON'T PUT SHIT IN HERE. P's 'n' Q's    USE THIS IN YOUR CODE. Then do db.query(SQL SHIT HERE)      const db = require('./database/index.js')
 
 
 const secretFilePath = '/run/secrets/db-password';
