@@ -15,6 +15,9 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import ShowPassword from '@/assets/showPassword.svg'
 import HidePassword from '@/assets/hidePassword.svg'
+import Mail from '@/assets/mail.svg'
+import Google from '@/assets/google.svg'
+import Apple from '@/assets/apple.svg'
 
 
 export default function LoginForm({toggle}) {
@@ -68,27 +71,50 @@ export default function LoginForm({toggle}) {
         </CardHeader>
         <CardContent className="flex justify-center w-full">
           <form onSubmit={handleSubmit} className=" relative flex flex-col justify-center w-full items-center">
-            <Input id="login-email" type="email" className="w-3/5 my-4 h-14 border-secondary text-text focus:border-accent"
-            required placeholder="E-mail" value={email} autoComplete="email"
-            onChange={(e) => setEmail(e.target.value)} />
             <div className="relative flex w-3/5 justify-center items-center">
+              <Input id="login-email" type="email" className="my-4 h-14 border-secondary text-text placeholder-gray-300 focus:border-accent"
+              required placeholder="E-mail" value={email} autoComplete="email"
+              onChange={(e) => setEmail(e.target.value)} />
+              <div className="text-text absolute right-2 z-10">
+                <Mail width={30} height={30} fill={'#fff'}/>
+              </div>
+            </div>
+          <div className="relative flex w-3/5 justify-center items-center">
                 <Input id="login-password" type={`${showPassword}`} className="my-4 h-14 border-secondary text-text placeholder-gray-300 focus:border-accent"
                 required placeholder="Password" value={password} autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
                 />
               <div onClick={() => setShowPassword(prev => prev === 'text' ? 'password' : 'text')} className="text-text absolute right-2 z-10">
-                  {showPassword === 'password' ? <ShowPassword width={30} height={30} fill={'#fff'}/> : <HidePassword width={30} height={30} fill={'#fff'}/>}
+                  {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
               </div>
-            </div>
-            <div className="flex justify-center items-center">
-                <Button variant='secondary' className="h-12 bg-secondary text-text hover:border hover:border-accent" type="submit" onSubmit={handleSubmit}>Login</Button>
-            </div>
+          </div>
+          <div className='flex my-4'>
+            <p className='text-text '>Forgotten password? Click <a className='text-accent'>here</a> to recover.</p>
+          </div>
+          <div className="flex justify-center items-center">
+              <Button variant='secondary' className="h-12 bg-secondary text-text hover:border hover:border-accent" type="submit" onSubmit={handleSubmit}>Login</Button>
+          </div>
             {error && <Alert className="mt-4 text-white"><AlertDescription id="error-result">{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
-        <CardFooter>
-            <p onClick={toggle} className='text-text'>Don't have an account? Click <a onClick={toggle} className='text-accent'>here</a> to signup.</p>
+        <CardFooter className="flex flex-col items-center space-y-4">
+            <div>
+              <p className='text-text'>Or sign-in with Google or Apple</p>
+            </div>
+            <div className="flex justify-center items-center space-x-4">
+              <Button variant="outline" className="w-full h-full">
+                <Google/>
+              </Button>
+              <Button variant="outline" className="w-full h-full">
+                <Apple fill={'#fff'}/>
+              </Button>
+            </div>
+            <br></br>
+            <div>
+              <p onClick={toggle} className='text-text'>Don't have an account? Click <a onClick={toggle} className='text-accent'>here</a> to signup.</p>
+            </div>
         </CardFooter>
+        
       </Card>
   );
 }

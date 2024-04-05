@@ -90,7 +90,9 @@ export default function SignupForm({toggle}){
             />
 
             {passwordStrength != null ?
+            <div className='flex justify-center'>
               <PasswordBar passwordStrength={passwordStrength}/>
+            </div>
               : null
             }
 
@@ -100,7 +102,7 @@ export default function SignupForm({toggle}){
             }
 
 
-            <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text"
+            <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text border-secondary focus:border-accent"
             required placeholder="Confirm Password" value={confirmPassword} autoComplete="new-password"
             onChange={(e) => setConfirmPassword(e.target.value)} />
 
@@ -110,7 +112,7 @@ export default function SignupForm({toggle}){
             {error && <Alert className="mt-4"><AlertDescription>{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-col items-center space-y-4">
             <p className='text-text'>Already have an account? Click <a onClick={toggle} className='text-accent'>here </a> to login.</p>
         </CardFooter>
       </Card>
