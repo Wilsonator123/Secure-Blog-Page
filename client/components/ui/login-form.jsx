@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   Card,
   CardContent,
@@ -22,6 +22,7 @@ import PasswordIcon from '@/assets/password.svg'
 
 
 export default function LoginForm({toggle}) {
+    const passwordBox = useRef();
   //form data states
 
   const [showPassword, setShowPassword] = useState("password");
@@ -85,11 +86,16 @@ export default function LoginForm({toggle}) {
                 pl-12 placeholder-gray-300 focus:border-accent"
                 required placeholder="Password" value={password} autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
+                ref={passwordBox}
                 />
                 <div className="text-text absolute left-2 z-10">
                   <PasswordIcon  fill={'#fff'}/>
                 </div> 
-              <div onClick={() => setShowPassword(prev => prev === 'text' ? 'password' : 'text')} className="text-text absolute right-2 z-10">
+              <div onClick={() => {
+                  setShowPassword(prev => prev === 'text' ? 'password' : 'text')
+                  passwordBox.current.focus();
+
+              }} className="text-text absolute right-2 z-10">
                   {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
               </div>
           </div>
