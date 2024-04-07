@@ -5,7 +5,7 @@ const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/gmail.send'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -86,4 +86,19 @@ async function listLabels(auth) {
     });
 }
 
-authorize().then(listLabels).catch(console.error);
+async function sendEmail(auth, raw) {
+    const gmail = google.gmail({version: 'v1', auth});
+    const res = await gmail.users.messages.send({
+        userId: 'me',
+        requestBody: {
+            raw: Buffer.from(raw).toString('base64'),
+        },
+    });
+    console.log(res.data);
+}
+
+body = 'From: me\n' +
+    'To: puffdragon115@gmail.com\n' +
+    'Subject: Test\n\n' +
+    'Test';
+authorize().then((auth) => sendEmail(auth, body)).catch(console.error);
