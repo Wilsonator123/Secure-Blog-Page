@@ -65,10 +65,9 @@ export default function LoginForm({toggle}) {
   }
 
   return (
-      <Card className="h-3/5 w-1/2 bg-primary border-accent mt-24">
+      <Card className="h-3/5 w-1/2 bg-primary border-accent mt-8">
         <CardHeader >
-          <CardTitle className="text-2xl m-auto text-text">Sign-in</CardTitle>
-          <CardDescription className="m-auto text-text">Sign-in to your CryptoBros account.</CardDescription>
+          <CardTitle className="text-3xl m-auto mt-16 text-text">Sign In</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center w-full">
           <form onSubmit={handleSubmit} className=" relative flex flex-col justify-center w-full items-center">
@@ -81,7 +80,7 @@ export default function LoginForm({toggle}) {
                 <Mail width={30} height={30} fill={'#fff'}/>
               </div>
             </div>
-          <div className="relative flex w-3/5 justify-center items-center">
+          <div className="relative flex w-3/5 justify-center items-center ">
                 <Input id="login-password" type={`${showPassword}`} className="my-4 h-14 border-secondary text-text
                 pl-12 placeholder-gray-300 focus:border-accent"
                 required placeholder="Password" value={password} autoComplete="current-password"
@@ -99,23 +98,23 @@ export default function LoginForm({toggle}) {
                   {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
               </div>
           </div>
-          <div className='flex my-4'>
-            <p className='text-text '>Forgotten password? Click <a onClick={forgottenPassword} className='text-accent'>here</a> to recover.</p>
+          <div className='flex -mt-4 mb-8 justify-end'>
+            <a onClick={forgottenPassword} className='text-text underline'>Forgot your password?</a>
           </div>
           <div className="flex justify-center items-center">
-              <Button variant='secondary' className="h-12 bg-secondary text-text hover:border hover:border-accent" type="submit" onSubmit={handleSubmit}>Login</Button>
+              <Button variant='secondary' className="h-12 bg-secondary text-text text-xl w-96
+               hover:border hover:border-accent" type="submit" onSubmit={handleSubmit}>Sign In</Button>
           </div>
             {error && <Alert className="mt-4 text-white"><AlertDescription id="error-result">{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
-        <CardFooter className="flex flex-col items-center space-y-4">
+        <div className='flex flex-row items-center'>
+          <hr className='border-text w-96 ml-16'/><p className='text-text m-4'>Or</p><hr className='border-text w-96'/>
+        </div>
+        <CardFooter className="flex flex-col items-center space-y-4 mb-32">
+            <Oauth />
             <div>
-              <p className='text-text'>Or sign-in with Google or Apple</p>
-            </div>
-              <Oauth />
-            <br></br>
-            <div>
-              <p onClick={toggle} className='text-text'>Don't have an account? Click <a onClick={toggle} className='text-accent'>here</a> to signup.</p>
+              <p onClick={toggle} className='text-text'>Don't have an account? <a onClick={toggle} className='text-text underline'>Signup.</a> </p>
             </div>
         </CardFooter>
         
