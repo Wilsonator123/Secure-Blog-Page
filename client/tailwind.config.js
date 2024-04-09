@@ -27,6 +27,11 @@ module.exports = {
 
         primary: "#292b30",
         secondary: "#30769f",
+        error: '#ff1f1f',
+        passWeak: '#AA0033',
+        passFair: '#FFCC33',
+        passGood: '#2D98F3',
+        passStrong: '#76C261',
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",

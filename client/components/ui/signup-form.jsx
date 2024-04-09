@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+
 import {
   Card,
   CardContent,
@@ -10,8 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
+
+import PasswordBar from "@/components/ui/passwordBar";
+import { checkPasswordStrength } from "@/helper/password";
 
 export default function SignupForm({toggle}){
 
@@ -23,7 +27,31 @@ export default function SignupForm({toggle}){
     const [fName, setFName] = useState("");
     const [lName, setLName] = useState("");
     const [error, setError] = useState("");
-    
+
+
+    const [passwordStrength, setPasswordStrength] = useState(null);
+    const [passwordMessage, setPasswordMessage] = useState(null);
+
+    const checkPassword = async (password) => {
+        if (password === "") {
+            setPasswordMessage("Password cannot be empty");
+            setPasswordStrength(null);
+            return false;
+        }
+
+        const metRequirements = await checkPasswordStrength(password);
+
+        if(metRequirements.success === false){
+            setPasswordMessage(metRequirements.warning);
+            setPasswordStrength(metRequirements.score ?? 0);
+            return false;
+        }else{
+            setPasswordMessage(null);
+            setPasswordStrength(metRequirements.score);
+            return true;
+        }
+
+    }
 
 
 
@@ -43,32 +71,49 @@ export default function SignupForm({toggle}){
         </CardHeader>
         <CardContent className="justify-center">
           <form onSubmit={handleSubmit}>
-            <Input type="name" className="w-3/5 m-auto my-4 h-14 text-text" 
+            <Input type="name" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="First Name" value={fName} autoComplete="give-name"
-            onChange={(e) => setFName(e.target.value)} ></Input>
-            <Input type="name" className="w-3/5 m-auto my-4 h-14 text-text" 
+            onChange={(e) => setFName(e.target.value)}/>
+            <Input type="name" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="Last Name" value={lName} autoComplete="family-name"
-            onChange={(e) => setLName(e.target.value)} ></Input>
-            <Input type="text" className="w-3/5 m-auto my-4 h-14 text-text" 
+            onChange={(e) => setLName(e.target.value)}/> 
+            <Input type="text" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="Date of Birth: DD/MM/YY" value={dateOfBirth} autoComplete=""
-            onChange={(e) => setDateOfBirth(e.target.value)} ></Input>
-            <Input type="email" className="w-3/5 m-auto my-4 h-14 text-text" 
+            onChange={(e) => setDateOfBirth(e.target.value)}/>
+            <Input type="email" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="E-mail" value={email} autoComplete="email"
-            onChange={(e) => setEmail(e.target.value)} ></Input>
-            <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text"
+            onChange={(e) => setEmail(e.target.value)}/>
+            <Input type="password" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent"
             required placeholder="Password" value={password} autoComplete="new-password"
-            onChange={(e) => setPassword(e.target.value)} ></Input>
-            <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text"
+            onChange={(e) => setPassword(e.target.value)}
+            onBlur={(e) => checkPassword(e.target.value)}
+            />
+
+            {passwordStrength != null ?
+            <div className='flex justify-center'>
+              <PasswordBar passwordStrength={passwordStrength}/>
+            </div>
+              : null
+            }
+
+            {passwordMessage != null ?
+              <Alert className="mt-4 text-white"><AlertDescription id="password-result">{passwordMessage}</AlertDescription></Alert>
+              : null
+            }
+
+
+            <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text border-secondary focus:border-accent"
             required placeholder="Confirm Password" value={confirmPassword} autoComplete="new-password"
-            onChange={(e) => setConfirmPassword(e.target.value)} ></Input>
-            <div class="flex justify-center items-center">
-                <Button className="h-12 bg-secondary  text-text" type="submit" onSubmit={handleSubmit}>Signup</Button>
+            onChange={(e) => setConfirmPassword(e.target.value)} />
+
+            <div className="flex justify-center items-center">
+                <Button variant={'secondary'} className="h-12 bg-secondary  text-text" type="submit" onSubmit={handleSubmit}>Signup</Button>
             </div>
             {error && <Alert className="mt-4"><AlertDescription>{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
-        <CardFooter>
-            <a onClick={toggle} className='text-text'>Already have an account? Click here to login.</a>
+        <CardFooter className="flex flex-col items-center space-y-4">
+            <p className='text-text'>Already have an account? Click <a onClick={toggle} className='text-accent'>here </a> to login.</p>
         </CardFooter>
       </Card>
     )

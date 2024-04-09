@@ -9,6 +9,7 @@ export default function NavBar() {
     };
   
     return (
+<<<<<<< HEAD
       <section className="bg-primary h-16 w-full flex justify-between items-center px-8">
         <h1 className="text-text">CryptoBros Logo</h1>
         <div className="relative flex items-center"> 
@@ -33,3 +34,10 @@ export default function NavBar() {
       </section>
     );
   }
+=======
+        <section className="flex h-16 w-full top-0 bg-primary">
+            <h1 className="text-text ml-8 content-center">CryptoBros Logo</h1>
+        </section>
+    )
+}
+>>>>>>> 16-create-frontend-login-page
