@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 const fs = require('fs');
 
-//THIS FILE IS JUST FOR ACCESSING THE DATABASE PLEASE DONT PUT SHIT IN HERE. P's 'n' Q's    USE THIS IN YOUR CODE. Then do db.query(SQL SHIT HERE)      const db = require('./database/index.js')
+//THIS FILE IS JUST FOR ACCESSING THE DATABASE PLEASE DON'T PUT SHIT IN HERE. P's 'n' Q's    USE THIS IN YOUR CODE. Then do db.query(SQL SHIT HERE)      const db = require('./database/index.js')
 
 
 const secretFilePath = '/run/secrets/db-password';
@@ -21,7 +21,8 @@ queries = {
     uuidChecker:'SELECT * FROM "User" WHERE Email = $1',
     isUUIDtaken: `SELECT COUNT(0) FROM "User" WHERE userid = $1`,
     isEmail: 'SELECT COUNT(0) FROM "User" WHERE email = $1',
-    addUser: 'INSERT INTO "User" (UserID, Email, Fname, Lname, DoB) VALUES ($1, $2, $3, $4, $5)',
+    isUsername: 'SELECT COUNT(0) FROM "User" WHERE username = $1',
+    addUser: 'INSERT INTO "User" (UserID, Username, Email, Fname, Lname, DoB) VALUES ($1, $2, $3, $4, $5, $6)',
     addPassword: 'INSERT INTO "Password" (UserID, Password, Salt) VALUES ($1, $2, $3)',
     getUserID: 'SELECT userid FROM "User" WHERE Email = $1',
     getUserSalt: 'SELECT salt FROM "Password" WHERE userid = $1',

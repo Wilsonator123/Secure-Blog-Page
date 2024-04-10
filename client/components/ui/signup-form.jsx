@@ -34,7 +34,7 @@ export default function SignupForm({toggle}){
 
     const checkPassword = async (password) => {
         if (password === "") {
-            setPasswordMessage("Password cannot be empty");
+            setPasswordMessage(null);
             setPasswordStrength(null);
             return false;
         }
