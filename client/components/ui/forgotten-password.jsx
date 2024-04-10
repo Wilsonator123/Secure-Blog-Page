@@ -31,9 +31,9 @@ export default function ForgottenPassword(){
 
     return(
 
-        <Card className="h-3/5 w-2/5 bg-primary border-accent mt-24">
+        <Card className="h-3/5 w-1/2 bg-primary border-accent mt-8 rounded-3xl">
         <CardHeader >
-          <CardTitle className="text-2xl m-auto text-text">Forgotten Password</CardTitle>
+          <CardTitle className="text-3xl m-auto text-text">Forgotten Password</CardTitle>
           <CardDescription className="m-auto text-text">Please enter your email below to receive a password recovery link in 
           your inbox.</CardDescription>
         </CardHeader>
@@ -43,14 +43,14 @@ export default function ForgottenPassword(){
             required placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)} ></Input>
             <div className="flex justify-center items-center">
-                <Button className="h-12  bg-secondary text-text hover:border
-                 hover:border-accent" type="submit" onSubmit={handleSubmit}>Submit</Button>
+                <Button className="h-12 bg-secondary text-text text-xl w-96 max-w-xs
+               hover:border hover:border-accent" type="submit" onSubmit={handleSubmit}>Submit</Button>
             </div>
             {error && <Alert className="mt-4"><AlertDescription id="error-result" className="text-text">{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
-        <CardFooter className='m-auto'>
-            <p className='text-text'>Click <a onClick={loginForm} className='text-secondary'>here</a> to return to login page.</p>
+        <CardFooter className='m-auto justify-center'>
+            <a onClick={loginForm} className='text-text underline'>Return to login page.</a> 
         </CardFooter>
       </Card>
     )

@@ -63,31 +63,38 @@ export default function SignupForm({toggle}){
 
 
     return (
-        <Card className="h-3/5 w-2/5 bg-primary border-accent mt-24">
+        <Card className="h-3/5 w-1/2 bg-primary border-accent mt-8 rounded-3xl">
         <CardHeader >
-          <CardTitle className="text-2xl m-auto text-text">Signup</CardTitle>
+          <CardTitle className="text-3xl m-auto text-text">Signup</CardTitle>
           <CardDescription className="m-auto text-text">Create your CryptoBros account. 
           A Username will be generated for you upon signup.</CardDescription>
         </CardHeader>
         <CardContent className="justify-center">
-          <form onSubmit={handleSubmit}>
-            <Input type="name" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
+          <form onSubmit={handleSubmit} className='relative flex flex-col justify-center w-full items-center'>
+            <div className='relative flex flex-col w-3/5 justify-center items-center'>
+            <p className='text-text self-start'>First Name</p>
+            <Input type="name" className="mb-4 h-14 border-secondary text-text bg-primary focus:border-accent" 
             required placeholder="First Name" value={fName} autoComplete="give-name"
             onChange={(e) => setFName(e.target.value)}/>
-            <Input type="name" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
+            <p className='text-text self-start'>Last Name</p>
+            <Input type="name" className="mb-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="Last Name" value={lName} autoComplete="family-name"
             onChange={(e) => setLName(e.target.value)}/> 
-            <Input type="text" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
-            required placeholder="Date of Birth: DD/MM/YY" value={dateOfBirth} autoComplete=""
+            <p className='text-text self-start'>Date of Birth</p>
+            <Input type="text" className="m-auto mb-4 h-14 border-secondary text-text focus:border-accent" 
+            required placeholder="DD/MM/YY" value={dateOfBirth} autoComplete=""
             onChange={(e) => setDateOfBirth(e.target.value)}/>
-            <Input type="email" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
+            <p className='text-text self-start'>E-mail</p>
+            <Input type="email" className="m-auto mb-4 h-14 border-secondary text-text focus:border-accent" 
             required placeholder="E-mail" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)}/>
-            <Input type="password" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent"
+            <p className='text-text self-start'>New Password</p>
+            <Input type="password" className="m-auto mb-4 h-14 border-secondary text-text focus:border-accent"
             required placeholder="Password" value={password} autoComplete="new-password"
             onChange={(e) => setPassword(e.target.value)}
             onBlur={(e) => checkPassword(e.target.value)}
             />
+            </div>
 
             {passwordStrength != null ?
             <div className='flex justify-center'>
@@ -101,19 +108,22 @@ export default function SignupForm({toggle}){
               : null
             }
 
-
-            <Input type="password" className="w-3/5 m-auto my-4 h-14 text-text border-secondary focus:border-accent"
+            <div className='relative flex flex-col w-3/5 justify-center items-center'>
+            <p className='text-text self-start'>Confirm Password</p>
+            <Input type="password" className="mb-4 h-14 text-text border-secondary focus:border-accent"
             required placeholder="Confirm Password" value={confirmPassword} autoComplete="new-password"
             onChange={(e) => setConfirmPassword(e.target.value)} />
-
-            <div className="flex justify-center items-center">
-                <Button variant={'secondary'} className="h-12 bg-secondary  text-text" type="submit" onSubmit={handleSubmit}>Signup</Button>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+                <Button variant={'secondary'} className="h-12 bg-secondary text-text text-xl w-96 max-w-xs
+               hover:border hover:border-accent" type="submit" onSubmit={handleSubmit}>Signup</Button>
             </div>
             {error && <Alert className="mt-4"><AlertDescription>{error}</AlertDescription></Alert>}
           </form>
         </CardContent>
         <CardFooter className="flex flex-col items-center space-y-4">
-            <p className='text-text'>Already have an account? Click <a onClick={toggle} className='text-accent'>here </a> to login.</p>
+            <p className='text-text'>Already have an account? <a onClick={toggle}
+             className='text-text underline'>Click here</a> to login.</p>
         </CardFooter>
       </Card>
     )
