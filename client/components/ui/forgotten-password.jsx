@@ -39,8 +39,8 @@ export default function ForgottenPassword(){
         </CardHeader>
         <CardContent className="">
           <form onSubmit={handleSubmit}>
-            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14 border-secondary text-text focus:border-accent" 
-            required placeholder="E-mail" value={email} autoComplete="email"
+            <Input id="login-email" type="email" className="w-3/5 m-auto my-4 h-14 bg-black border-secondary text-text focus:border-accent" 
+            required placeholder="example@gmail.com" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)} ></Input>
             <div className="flex justify-center items-center">
                 <Button className="h-12 bg-secondary text-text text-xl w-96 max-w-xs

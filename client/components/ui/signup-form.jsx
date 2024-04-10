@@ -73,23 +73,23 @@ export default function SignupForm({toggle}){
           <form onSubmit={handleSubmit} className='relative flex flex-col justify-center w-full items-center'>
             <div className='relative flex flex-col w-3/5 justify-center items-center'>
             <p className='text-text self-start'>First Name</p>
-            <Input type="name" className="mb-4 h-14 border-secondary text-text bg-primary focus:border-accent" 
-            required placeholder="First Name" value={fName} autoComplete="give-name"
+            <Input type="name" className="mb-4 h-14 bg-black border-secondary text-text focus:border-accent" 
+            required value={fName} placeholder="Joe" autoComplete="give-name"
             onChange={(e) => setFName(e.target.value)}/>
             <p className='text-text self-start'>Last Name</p>
-            <Input type="name" className="mb-4 h-14 border-secondary text-text focus:border-accent" 
-            required placeholder="Last Name" value={lName} autoComplete="family-name"
+            <Input type="name" className="mb-4 h-14 bg-black border-secondary text-text focus:border-accent" 
+            required value={lName} placeholder="Bloggs" autoComplete="family-name"
             onChange={(e) => setLName(e.target.value)}/> 
             <p className='text-text self-start'>Date of Birth</p>
-            <Input type="text" className="m-auto mb-4 h-14 border-secondary text-text focus:border-accent" 
+            <Input type="text" className="m-auto mb-4 h-14 bg-black border-secondary text-text focus:border-accent" 
             required placeholder="DD/MM/YY" value={dateOfBirth} autoComplete=""
             onChange={(e) => setDateOfBirth(e.target.value)}/>
             <p className='text-text self-start'>E-mail</p>
-            <Input type="email" className="m-auto mb-4 h-14 border-secondary text-text focus:border-accent" 
-            required placeholder="E-mail" value={email} autoComplete="email"
+            <Input type="email" className="m-auto mb-4 h-14 bg-black border-secondary text-text focus:border-accent" 
+            required placeholder="example@gmail.com" value={email} autoComplete="email"
             onChange={(e) => setEmail(e.target.value)}/>
             <p className='text-text self-start'>New Password</p>
-            <Input type="password" className="m-auto mb-4 h-14 border-secondary text-text focus:border-accent"
+            <Input type="password" className="m-auto mb-4 h-14 bg-black border-secondary text-text focus:border-accent"
             required placeholder="Password" value={password} autoComplete="new-password"
             onChange={(e) => setPassword(e.target.value)}
             onBlur={(e) => checkPassword(e.target.value)}
@@ -110,7 +110,7 @@ export default function SignupForm({toggle}){
 
             <div className='relative flex flex-col w-3/5 justify-center items-center'>
             <p className='text-text self-start'>Confirm Password</p>
-            <Input type="password" className="mb-4 h-14 text-text border-secondary focus:border-accent"
+            <Input type="password" className="mb-4 h-14 text-text bg-black border-secondary focus:border-accent"
             required placeholder="Confirm Password" value={confirmPassword} autoComplete="new-password"
             onChange={(e) => setConfirmPassword(e.target.value)} />
             </div>
