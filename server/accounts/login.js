@@ -25,11 +25,15 @@ async function login(email,password){
 
     //Compares the hash password Attempt with the Stored hashed password.
     if (userHashedPassword != passwordAttempt){
-        return "Inccorect Username and Password"
+        return "Incorrect Username and Password"
     }
 
     return "Correct Username and Password"
 
+}
+
+module.exports = {
+    login
 }
 
 //login("test@tessst.om","nuts123").then((result) => console.log(result)).catch((err) => console.error(err));
