@@ -1,43 +1,50 @@
-import { useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+'use client'
+
+import { useState, useEffect, useRef } from 'react';
+import UserPFP from '@/components/ui/user-pfp';
+import SettingsIcon from '@/assets/settings.svg'
+import ProfileIcon from '@/assets/profile.svg'
+import LogoutIcon from '@/assets/logout.svg'
 
 export default function NavBar() {
-    const [showDropdown, setShowDropdown] = useState(false);
-  
-    const toggleDropdown = () => {
-      setShowDropdown(!showDropdown);
-    };
-  
-    return (
-<<<<<<< HEAD
-      <section className="bg-primary h-16 w-full flex justify-between items-center px-8">
-        <h1 className="text-text">CryptoBros Logo</h1>
-        <div className="relative flex items-center"> 
-          <Avatar onClick={toggleDropdown} className = "unselectable">
-            <AvatarImage
-              src="https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg"
-              alt="avatar"
-            />
-            <AvatarFallback>PFP</AvatarFallback>
-          </Avatar>
-  
-          {showDropdown && (
-            <div className="dropdown text-text">
-              <ul>
-                <li>Profile</li>
-                <li>Settings</li>
-                <li>Sign Out</li>
-              </ul>
-            </div>
-          )}
-        </div>
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const toggleDropdown = () => setShowDropdown(!showDropdown);
+
+  useEffect(() => {
+      function handleClickOutside(event) {
+          if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+              setShowDropdown(false);
+          }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+      <section className="bg-primary h-16 w-full flex justify-center items-center px-8">
+
+          {/* Center content wrapper */}
+          <div className="w-4/5 flex justify-between items-center">
+              <h1 className="text-text">CryptoBros Logo</h1>
+              <div className="relative flex items-center">
+                  <div onClick={toggleDropdown}>
+                      <UserPFP />
+                  </div>
+
+                  {showDropdown && (
+                      <div ref={dropdownRef} className="dropdown text-text">
+                          <ul>
+                            <li className="flex items-center"><ProfileIcon fill={'#ffff'}/>Profile</li>
+                            <li className="flex items-center"><SettingsIcon fill={'#ffff'}/>Settings</li>
+                            <li className="flex items-center"><LogoutIcon fill={'#F54D28'}/>Sign Out</li>
+                          </ul>
+                      </div>
+                  )}
+              </div>
+          </div>
+
       </section>
-    );
-  }
-=======
-        <section className="flex h-16 w-full top-0 bg-primary">
-            <h1 className="text-text ml-8 content-center">CryptoBros Logo</h1>
-        </section>
-    )
+  );
 }
->>>>>>> 16-create-frontend-login-page
