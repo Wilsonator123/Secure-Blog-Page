@@ -6,7 +6,7 @@ export default function UserPFP() {
         
     return (
         <div className="flex flex-row items-center w-full justify-center">
-                <Avatar className="responsive-avatar unselectable">
+                <Avatar className="responsive-avatar adjustable-avatar">
                     <AvatarImage src=""/>
                     <AvatarFallback>PFP</AvatarFallback>
                 </Avatar>
