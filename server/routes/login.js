@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const loginFunction = require('../accounts/login');
-const makeUser = require('../accounts/accountCreation');
+const accountCreation = require('../accounts/accountCreation');
 const validator = require("email-validator");
 const { body, validationResult} = require('express-validator');
 
@@ -81,6 +81,23 @@ router.post("/createUser",
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array().map((error) => {return error.msg}) });
+        }
+
+        try {
+            const {email, fname, lname, dob, password} = req.body;
+
+            const result = await accountCreation.makeUser(email, fname, lname, dob, password);
+
+            if (result === true) {
+                res.status(200).json({ data: "User created"});
+            }
+            else {
+                res.status(401).json({ errors: result});
+            }
+        }
+        catch (error) {
+            res.status(500).json({ errors: "Internal server error"});
+            console.log(error);
         }
     })
 
