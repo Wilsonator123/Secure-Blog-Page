@@ -6,12 +6,12 @@ async function login(email,password){
    
      //Checks if the email is valid using regex (library)
      if (validator.validate(email) == false){
-        return "Email is not valid"
+        return false
     }
 
     //Checks to see if the email has been taken.
     if ((await db.query("isEmail", [email]))[0].count == 0){
-        return "Email or Password incorrect"
+        return false
     } 
 
     let userID = (await db.query("getUserID",[email]))[0].userid
@@ -24,11 +24,8 @@ async function login(email,password){
     let passwordAttempt = hash.saltNhash(password,userSalt);
 
     //Compares the hash password Attempt with the Stored hashed password.
-    if (userHashedPassword != passwordAttempt){
-        return "Incorrect Username and Password"
-    }
+    return userHashedPassword === passwordAttempt;
 
-    return "Correct Username and Password"
 
 }
 
