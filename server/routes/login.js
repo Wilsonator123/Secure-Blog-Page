@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const loginFunction = require('../accounts/login');
+const validator = require("email-validator");
+
 
 
 router.get("/", (req, res) => {
@@ -12,7 +14,7 @@ router.post("/loginChecker", async(req, res) => {
     try {
         const body = req.body;
     
-        if (body.email === "bing@gmail.com"){
+        if (validator.validate(body.email) === true){
             res.status(200).send('success');
         }
         else {
