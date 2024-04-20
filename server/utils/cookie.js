@@ -3,22 +3,28 @@ const { createAndSignJWT, verifyJWT } = require('./auth');
 
 async function setCookie(res, userID) {
     const jwt = await createAndSignJWT(userID)
-    res.cookie('id', jwt, {httpOnly: true, secure: true, sameSite: 'none', maxAge: 604800000})
+    return res.cookie('id', jwt, {httpOnly: true, secure: true, sameSite: 'none', maxAge: 604800000})
 }
 
 async function validateCookie(req, res) {
     const jwt = req.cookies.id
+    if(!jwt) {
+        return false
+    }
+
     const result = await verifyJWT(jwt)
-    if(result === "Invalid JWT") {
+
+    if(!result) {
         clearCookie(res)
+        return false
     } else {
-        return result
+        return true
     }
 }
 
 function clearCookie(res) {
     res.cookie('id', '', { expires: new Date(0), httpOnly: true, secure: true, sameSite: 'none' })
-    return "Cookie cleared"
+    console.log('Cookie Cleared')
 }
 
 module.exports = {
