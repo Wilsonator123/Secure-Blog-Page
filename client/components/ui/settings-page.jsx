@@ -35,49 +35,49 @@ export default function SettingsPage({toggle}) {
             {/* UserPFP Icon */}
             <div className="flex flex-col items-center space-y-5">
               <UserPFP className="w-24 h-24" />
-              <Button variant='secondary' className="bg-secondary text-text text-xl hover:border hover:border-accent">
-                Change PFP
+              <Button variant='secondary' className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
+                    Change PFP
               </Button>
             </div>
 
             {/* Mail Icon */}
             <div className="flex flex-col items-center space-y-6">
               <Mail className="w-24 h-24" fill="#ffffff" />
-              <Button variant='secondary' className="bg-secondary text-text text-xl hover:border hover:border-accent">
-                Change Email
+              <Button variant='secondary' className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
+                    Change Email
               </Button>
             </div>
 
             {/* Password Icon */}
             <div className="flex flex-col items-center space-y-6">
               <PasswordPin className="w-24 h-24" fill="#ffffff" />
-              <Button variant='secondary' className="bg-secondary text-text text-xl hover:border hover:border-accent">
-                Change Password
+              <Button variant='secondary' className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
+                    Change Password
               </Button>
             </div>
 
             {/* Placeholder Icon */}
             <div className="flex flex-col items-center space-y-6">
               <Placeholder className="w-24 h-24" fill="#ffffff" />
-              <Button variant='secondary' className="bg-secondary text-text text-xl hover:border hover:border-accent">
-                Placeholder
-              </Button>
+                <Button variant='secondary' className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
+                    Change Account Info
+                </Button>
             </div>
 
             {/* Placeholder Icon */}
             <div className="flex flex-col items-center space-y-6">
               <Placeholder className="w-24 h-24" fill="#ffffff" />
-              <Button variant='secondary' className="bg-secondary text-text text-xl hover:border hover:border-accent">
-                Placeholder
+              <Button variant='secondary' className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
+                Change 2FA Settings
               </Button>
             </div>
 
             {/* Account Deletion Icon */}
             <div className="flex flex-col items-center space-y-6">
               <DeleteAccount className="w-24 h-24" fill="#ffffff" />
-              <Button variant='secondary' className="bg-secondary text-text text-xl hover:border hover:border-accent">
-                Delete Account
-              </Button>
+                <Button variant='secondary' className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
+                    Delete Account
+                </Button>
             </div>
             
           </div>
@@ -88,10 +88,12 @@ export default function SettingsPage({toggle}) {
         {/* Log out Button */}
         <CardFooter className="flex flex-col items-center space-y-4 mb-10">
             <div className="flex justify-center items-center">
-                <Button variant='destructive' className="h-12 text-text text-xl w-96 mt-10
-                hover:border hover:border-accent "><Logout fill = {'#ffff'}/>Sign In</Button>
+                <Button variant='destructive' className="h-12 text-text text-xl w-96 mt-10 border border-transparent hover:border hover:border-accent ">
+                    <Logout fill = {'#ffff'}/>Sign Out
+                </Button>
             </div>
         </CardFooter>
+
       </Card>
     </main>
   );

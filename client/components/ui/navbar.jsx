@@ -6,7 +6,7 @@ import SettingsIcon from '@/assets/settings.svg'
 import ProfileIcon from '@/assets/profile.svg'
 import LogoutIcon from '@/assets/logout.svg'
 
-export default function NavBar() {
+export default function NavBar({toggle}) {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -23,7 +23,7 @@ export default function NavBar() {
   }, []);
 
   return (
-      <section className="bg-primary h-16 w-full flex justify-center items-center px-8">
+      <section className="bg-primary h-20 w-full flex justify-center items-center px-8 rounded-b-3xl">
 
           {/* Center content wrapper */}
           <div className="w-4/5 flex justify-between items-center">

@@ -18,7 +18,7 @@ export default function Account({toggle}) {
             <div className="flex items-center justify-center mt-10">
 
                 {/* avatar on the left */}
-                <UserPFP/>
+                <UserPFP className = "responsive-avatar"/>
                 
                 {/* settings button */}
                 <div className="-mt-[-100px] ml-[-30px] z-10">
