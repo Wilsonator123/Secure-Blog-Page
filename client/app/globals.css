@@ -91,19 +91,35 @@
   user-select: none;
 }
 
+.user-profile {
+  position: relative;
+  display: inline-block;
+}
+
 .dropdown {
   position: absolute;
   right: 0;
   top: 100%;
-  margin-top: .5rem; 
+  margin-top: .5rem;
   padding: 0.5rem 0;
-  background: #292B30; 
+  background: #292B30;
+  color: white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   border-radius: 4px;
   z-index: 1000;
-  width: max-content; 
+  width: max-content;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: visibility 0s linear 0.5s, opacity 0.5s ease, transform 0.5s ease;;
 }
 
+.user-profile:hover .dropdown {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
 
 .dropdown ul {
   list-style: none;
