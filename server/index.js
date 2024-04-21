@@ -10,7 +10,10 @@ const { query, validationResult} = require('express-validator');
 
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+	origin: 'http://localhost:3000',
+	credentials: true
+}));
 app.use(cookieParser())
 // Server Middleware Loging to Console
 app.use((req, res, next) => {

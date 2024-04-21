@@ -4,7 +4,7 @@ const loginFunction = require('../accounts/login');
 const accountCreation = require('../accounts/accountCreation');
 const validator = require("email-validator");
 const { body, validationResult} = require('express-validator');
-
+const { setCookie, validateCookie } = require('../utils/cookie.js');
 
 
 router.get("/", (req, res) => {
@@ -37,7 +37,8 @@ router.post("/loginChecker",
 
         const result = await loginFunction.login(email, password);
 
-        if (result) {
+        if (result.success) {
+            await setCookie(res, result.message);
             res.status(200).json({ data: "Login successful"});
         }
         else {
@@ -88,11 +89,12 @@ router.post("/createUser",
 
             const result = await accountCreation.makeUser(email, fname, lname, dob, password);
 
-            if (result === true) {
+            if (result.success === true) {
+                await setCookie(res, result.message);
                 res.status(200).json({ data: "User created"});
             }
             else {
-                res.status(401).json({ errors: result});
+                res.status(401).json({ errors: result.message});
             }
         }
         catch (error) {
