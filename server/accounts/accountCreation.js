@@ -35,7 +35,7 @@ async function makeUser(email,fname,lname,dob,password){
     //Checks that the user has been added via their userID, and then inserts in to the Password table
     if ((await(db.query('isUUIDtaken',[userID])))[0].count != 0){
         (await db.query('addPassword',[userID,hashedPassword,salt]))
-        return "User Created Successfully"
+        return true
     }
 
     return "Error adding User"
