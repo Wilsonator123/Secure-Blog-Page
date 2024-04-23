@@ -17,10 +17,6 @@ zxcvbnOptions.setOptions(options);
 zxcvbnOptions.addMatcher('pwned', matcherPwned);
 
 const hasLength = /.{8,64}/g
-const hasUppercase = /(?=.*[A-Z]).*/g
-const hasLowercase = /(?=.*[a-z]).*/g
-const hasDigit = /(?=.*\d).*/g
-const hasSpecial = /(?=.*[@$!%*?&\-_]).*/g
 
 export const checkPasswordStrength = async (password) => {
     'use server'
@@ -60,7 +56,7 @@ const checkCommonPassword = async (password) => {
     });
 }
 
-//This may not be needed?
+
 const checkPasswordRequirements = (password) => {
     if (!password.match(hasLength)) {
         return {
@@ -69,34 +65,6 @@ const checkPasswordRequirements = (password) => {
         }
     }
 
-    if (!password.match(hasUppercase)) {
-        return {
-            success: false,
-            reason: "Password must contain at least one uppercase letter"
-        }
-    }
-
-    if (!password.match(hasLowercase)) {
-        return {
-            success: false,
-            reason: "Password must contain at least one lowercase letter"
-        }
-    }
-
-    if (!password.match(hasDigit)) {
-        return {
-            success: false,
-            reason: "Password must contain at least one digit"
-        }
-
-    }
-
-    if (!password.match(hasSpecial)) {
-        return {
-            success: false,
-            reason: "Password must contain at least one special character"
-        }
-    }
     return {
         success: true
     }

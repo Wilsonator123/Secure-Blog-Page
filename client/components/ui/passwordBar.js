@@ -53,7 +53,7 @@ export default function PasswordBar({passwordStrength}) {
     }
 
     return (
-        <div className="flex flex-col justify-center text-sm w-3/5 text-white mb-5">
+        <div className="flex flex-col justify-center text-sm w-full text-white mb-2">
             Password Strength: {scoreToText()}
             <div className=" bg-[#b7b6b5]">{setPasswordBar()}</div>
         </div>
