@@ -32,26 +32,25 @@ class Database {
         }
     }
 
-    async read_file(db , args) {
-        return db.findOne(args);
+    async read_file(db, args) {
+        const query = db.find(args);
+        const result = [];
+        for await (const doc of query) {
+            result.push(doc);
+        }
+        return result;
     }
 
     async create_file(db, data) {
-        return db.insertOne(data);
+        return await db.insertOne(data);
     }
 
-    async write_to_file(db, args, data, operation=null) {
-        if(operation === 'push'){
-            return db.updateOne(args, { $push: data });
-        }
-        else if (operation === 'delete'){
-            return db.updateOne(args, { $pull: {"comments": data}});
-        }
-        return db.updateOne(args, { $set: data }, { upsert: true });
+    async write_to_file(db, args, operation, options={}) {
+        return await db.update(args, operation, options);
     }
 
     async delete_file(db, args) {
-        return db.deleteOne(args);
+        return await db.delete(args);
     }
 }
 
