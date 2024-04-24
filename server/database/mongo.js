@@ -2,7 +2,7 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const fs = require("fs");
 // Replace the placeholder with your Atlas connection string
 
-const secretFilePath = '/run/secrets/db-password';
+const secretFilePath = '/run/secrets/mongo';
 
 class Database {
     uri = null;
@@ -21,14 +21,14 @@ class Database {
 
     async run(func, collection, ...args) {
         try {
-            this.client.connect();
+            await this.client.connect();
             const db = this.client.db('DSS').collection(collection)
             return await func(db, ...args);
         } catch (error) {
             console.error(error);
             return null;
         } finally {
-            this.client.close();
+            await this.client.close();
         }
     }
 
@@ -36,11 +36,17 @@ class Database {
         return db.findOne(args);
     }
 
-    async create_file(db, data,) {
+    async create_file(db, data) {
         return db.insertOne(data);
     }
 
-    async write_to_file(db, args, data) {
+    async write_to_file(db, args, data, operation=null) {
+        if(operation === 'push'){
+            return db.updateOne(args, { $push: data });
+        }
+        else if (operation === 'delete'){
+            return db.updateOne(args, { $pull: {"comments": data}});
+        }
         return db.updateOne(args, { $set: data }, { upsert: true });
     }
 
