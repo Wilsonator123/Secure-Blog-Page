@@ -46,11 +46,11 @@ class Database {
     }
 
     async write_to_file(db, args, operation, options={}) {
-        return await db.update(args, operation, options);
+        return await db.updateMany(args, operation, options);
     }
 
     async delete_file(db, args) {
-        return await db.delete(args);
+        return await db.deleteMany(args);
     }
 }
 

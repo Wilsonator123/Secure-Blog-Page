@@ -31,7 +31,7 @@ async function modifyComment(action, args, comment = {}, data={}){
         case "get":
             result = await db.run(db.read_file, 'posts', args)
             if(result){
-                return result.comments.filter((data) => data.message === comment['comment.message'])
+                return result.map((post) => post.comments.filter((data) => data.message === comment['comment.message']))
             }
             return "Comment not found"
 
@@ -41,7 +41,7 @@ async function modifyComment(action, args, comment = {}, data={}){
 
             result = await db.run(db.write_to_file, 'posts', args, {'$push': {"comments": data}})
 
-            if (result.modifiedCount > 0 || result.matchedCount > 0) {
+            if (result?.modifiedCount > 0 || result?.matchedCount > 0) {
                 return 'Comment added'
             }
 
@@ -51,7 +51,7 @@ async function modifyComment(action, args, comment = {}, data={}){
             data['edited'] = true
             data['edited_at'] = new Date()
             result = await db.run(db.write_to_file, 'posts', args, {'$set': {"comments.$[comment]": data}}, { "arrayFilters": [comment] })
-            if (result.modifiedCount > 0 || result.matchedCount > 0) {
+            if (result?.modifiedCount > 0 || result?.matchedCount > 0) {
                 return 'Comment edited'
             }
 
@@ -59,7 +59,7 @@ async function modifyComment(action, args, comment = {}, data={}){
 
         case "delete":
             result = await db.run(db.write_to_file, 'posts', args, {'$pull': {"comments": data}})
-            if (result.modifiedCount > 0 || result.matchedCount > 0) {
+            if (result?.modifiedCount > 0 || result?.matchedCount > 0) {
                 return 'Comment deleted'
             }
             return 'Comment not found/deleted'
