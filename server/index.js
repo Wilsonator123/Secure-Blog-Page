@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 const port = 8000;
 const db = require('./database/index.js');
+const { query, validationResult} = require('express-validator');
 
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
@@ -23,10 +24,24 @@ app.use((req, res, next) => {
 // Routes
 app.use("/apiTest", require('./routes/apiTest.js')); //
 app.use("/login", require('./routes/login.js'));
+app.use("/posts", require('./routes/posts.js'));
 
-app.get('/', async (req, res) => {
-    const result = await db.query('SELECT NOW()').catch(e => console.error(e.stack))
-    res.json(result?.rows)
+app.get('/',
+	query('name')
+		.notEmpty().withMessage('Name is required')
+		.isString().withMessage('Name must be a string')
+		.isLength({ min: 3 }).withMessage('Name must be at least 3 chars long'),
+
+	async (req, res) => {
+
+		const errors = validationResult(req);
+		if (errors.isEmpty()) {
+			res.json(req.query.name)
+		}
+		else {
+			res.json({ errors: errors.array().map((error) => {return error.msg}) })
+		}
+
 })
 
 
