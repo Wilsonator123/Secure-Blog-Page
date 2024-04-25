@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import UserPFP from '@/components/ui/user-pfp';
@@ -12,7 +14,7 @@ import Logout from '@/assets/logout.svg';
 export default function SettingsPage({toggle}) {
     
   return (
-    <main className="flex min-h-screen flex-col items-center bg-background">
+    <main className="flex min-h-screen flex-col items-center bg-opacity-0">
       <Card className="bg-primary border-accent mt-8">
 
         <CardHeader className="flex relative items-center justify-center w-full">
@@ -31,10 +33,9 @@ export default function SettingsPage({toggle}) {
 
           {/* Icons and Buttons Grid */}
           <div className="grid grid-cols-3 gap-16">
-
             {/* UserPFP Icon */}
-            <div className="flex flex-col items-center space-y-5">
-              <UserPFP className="w-24 h-24" />
+            <div className="flex flex-col items-center space-y-6">
+              <UserPFP className="adjustable-avatar"/>
               <Button variant='secondary' className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
                     Change PFP
               </Button>

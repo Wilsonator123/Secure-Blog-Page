@@ -1,21 +1,23 @@
 'use client'
 
+import React, { useState } from 'react';
 import Account from '@/components/ui/account';
 import SettingsPage from '@/components/ui/settings-page';
-import React, { useState } from 'react'
-
+import Modal from '@/components/ui/Modal';
 
 export default function Home() {
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  const [toggleForm, setToggleForm] = useState(false);
-
-  const toggle = () => {
-    setToggleForm(!toggleForm);
-  }
+  const toggleModal = () => {
+    setModalOpen(!isModalOpen);
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-background">
-      { toggleForm ? <SettingsPage toggle={toggle}/> :  <Account toggle={toggle}/> }
+      <Account toggle={toggleModal} />
+      <Modal isOpen={isModalOpen}>
+        <SettingsPage toggle={toggleModal} />
+      </Modal>
     </main>
   );
 }
