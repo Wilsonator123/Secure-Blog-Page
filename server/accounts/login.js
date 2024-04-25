@@ -11,13 +11,13 @@ async function login(email,password){
 
     //Checks to see if the email has been taken.
     if ((await db.query("isEmail", [email]))[0].count === 0){
-        return false
+        return {success: false, message: "Email not found"}
     } 
 
     let userID = (await db.query("getUserID",[email]))
 
     if(userID.length === 0){
-        return false
+        return {success: false, message: "Error getting User ID"}
     }else{
         userID = userID[0].userid
     }
@@ -30,7 +30,9 @@ async function login(email,password){
     let passwordAttempt = hash.saltNhash(password,userSalt);
 
     //Compares the hash password Attempt with the Stored hashed password.
-    return userHashedPassword === passwordAttempt;
+    if(userHashedPassword === passwordAttempt){
+        return {success: true, message: userID}
+    };
 
 
 }
