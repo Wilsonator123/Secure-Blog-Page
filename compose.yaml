@@ -27,11 +27,13 @@ services:
           condition: service_healthy
     secrets:
       - db-password
+      - mongo
     environment:
       NODE_ENV: development
       POSTGRES_HOST: db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+      MONGO_URI_FILE: /run/secrets/mongo
       POSTGRES_DB: dss
       DB_PORT: 5432
   db:
@@ -61,4 +63,6 @@ volumes:
 secrets:
   db-password:
     file: ./server/db/password.txt
+  mongo:
+    file: ./server/db/mongo.txt
 
