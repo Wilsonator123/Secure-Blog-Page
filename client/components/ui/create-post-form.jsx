@@ -14,8 +14,8 @@ export default function CreatePostForm(){
 
 
     return(
-        <Card className="w-full bg-primary border-secondary mt-8 rounded-3xl">
-            <CardContent className="flex  w-4/5 mx-auto">
+        <Card className="w-full bg-primary border-secondary mt-8 ">
+            <CardContent className="flex  w-7/8 mx-auto">
                 <form className="relative flex flex-col justify-center w-full items-center">
                 <div className="relative flex flex-col w-full justify-center items-center pb-6">
                     <Input className="my-4 h-14 bg-black border-secondary text-text focus:border-accent"
