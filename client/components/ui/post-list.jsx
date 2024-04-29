@@ -4,6 +4,7 @@ import usePosts from "@/hooks/usePosts";
 
 export default function PostList() {
     const { posts, loading, error} = usePosts();
+    console.log(posts);
     
 
     if (loading) {
