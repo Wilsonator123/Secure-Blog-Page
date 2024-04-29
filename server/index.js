@@ -7,7 +7,7 @@ const app = express();
 const port = 8000;
 const db = require('./database/index.js');
 const { query, validationResult} = require('express-validator');
-const { authenticate, authorize } = require('./middleware.js');
+const { authorize } = require('./middleware.js');
 
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
@@ -37,10 +37,9 @@ app.get('/',
 		.notEmpty().withMessage('Name is required')
 		.isString().withMessage('Name must be a string')
 		.isLength({ min: 3 }).withMessage('Name must be at least 3 chars long'),
-	authenticate, authorize('read'),
+		authorize([''], true),
 
 	async (req, res) => {
-
 		const errors = validationResult(req);
 		if (errors.isEmpty()) {
 			res.json(req.query.name)

@@ -1,21 +1,42 @@
-const passport = require('./passport-config');
+const { validateCookie } = require('./utils/cookie.js');
+const { readJWT } = require('./utils/auth.js');
 const db = require('./database/index.js');
-const authenticate = passport.authenticate('jwt', { session: false });
 
-const authorize = (requirePermission) => {
-    return (req, res, next) => {
-        const id = req.id?.userId;
-        if (!id) {
-            res.status(401).send('Unauthorized');
+const authorize = (requiredPermission=[], cookie=false, userID=null) => {
+    return async (req, res, next) => {
+        if (requiredPermission.length === 0) {
+            return next();
         }
-        const permissions = db.query('getPermissions', [id]);
-        if (permissions.includes(requirePermission)) {
-            next();
+
+        if (!cookie && !userID) {
+            return res.status(403).send('Forbidden');
         }
-        else {
-            res.status(403).send('Forbidden');
+
+        let permissions = [];
+
+        if (cookie) {
+            const validCookie = await validateCookie(req, res);
+
+            if (validCookie) {
+                const payload = await readJWT(req.cookies.id);
+                const id = payload.sub
+                if (!id) {
+                    return res.status(403).send('Forbidden');
+                }
+                permissions = payload.scopes;
+            } else {
+                return res.status(403).send('Forbidden');
+            }
+        } else {
+            permissions = db.query('getPermissions', [userID]);
+        }
+
+        if (permissions.every(scope => requiredPermission.includes(scope))) {
+            return next();
+        } else {
+            return res.status(403).send('Forbidden');
         }
     }
 }
 
-module.exports = { authenticate, authorize };
+module.exports = { authorize };
