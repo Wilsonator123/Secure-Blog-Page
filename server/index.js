@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 app.use("/apiTest", require('./routes/apiTest.js')); //
 app.use("/login", require('./routes/login.js'));
 app.use("/posts", require('./routes/posts.js'));
+app.use("/account", require('./routes/account.js'));
 
 app.get('/',
 	query('name')

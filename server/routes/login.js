@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
     res.send({ data: "Login route"});
 })
 
-router.post("/loginChecker",
+router.post("/login",
     body('email')
         .notEmpty().withMessage('Email is required')
         .isString().withMessage('Email must be a string')
