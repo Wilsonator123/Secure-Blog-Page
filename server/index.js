@@ -33,16 +33,11 @@ app.use("/posts", require('./routes/posts.js'));
 app.use("/account", require('./routes/account.js'));
 
 app.get('/',
-	query('name')
-		.notEmpty().withMessage('Name is required')
-		.isString().withMessage('Name must be a string')
-		.isLength({ min: 3 }).withMessage('Name must be at least 3 chars long'),
-		authorize([''], true),
-
+		authorize(['read'], true),
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (errors.isEmpty()) {
-			res.json(req.query.name)
+			res.json('We made it')
 		}
 		else {
 			res.json({ errors: errors.array().map((error) => {return error.msg}) })
