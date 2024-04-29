@@ -45,7 +45,7 @@ export default function LoginForm({toggle}) {
       })
 
       if(response.status === 200){
-        router.push('/feed');
+        router.push('/home');
       }
       
     } catch (error) {

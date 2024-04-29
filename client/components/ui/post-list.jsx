@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { usePosts } from "@/hooks/usePosts";
+import Post from "@/components/ui/post";
 
 
 export default function PostList() {
@@ -19,11 +20,7 @@ export default function PostList() {
             {loading ? <p>Loading...</p> :
                 <>
                     {posts.map((post) => (
-                        <div key={post.id} className="flex flex-col my-4 p-4 bg-primary border-border border-secondary">
-                            <p className="text-text text-2xl">{post.title}</p>
-                            <p className="text-text text-lg">{post.content}</p>
-                            <p className="text-text text-lg">Votes: test</p>
-                        </div>
+                        <Post key={post._id} post={post} />
                     ))}
                 </>
             }

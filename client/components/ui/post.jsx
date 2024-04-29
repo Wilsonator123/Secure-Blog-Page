@@ -6,8 +6,9 @@ import {Card,CardDescription,CardFooter,CardHeader,CardTitle,} from "@/component
 
 export default function Post({post}){
 
-    
+    const numberOfComments = post.comments && Object.keys(post.comments).length;
 
+    
     return (
         <Card className="bg-primary w-4/5 max-h-96 my-4 mx-auto border-secondary">
             <CardHeader >
@@ -15,7 +16,7 @@ export default function Post({post}){
                 <CardDescription className="text-text">{post.content}</CardDescription>
             </CardHeader>
             <CardFooter className='text-text '>
-                <p>Votes: {post.votes}</p>
+                <p>Comments: {numberOfComments}</p>
             </CardFooter>
         </Card>
     )
