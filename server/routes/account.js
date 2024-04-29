@@ -10,24 +10,38 @@ router.get("/", (req, res) => {
 })
 
 router.post("/getUser", cookie('id').custom(
-    async (value) => {
-        if (await validateCookie(value) === false) {
-            throw new Error('Invalid cookie');
+    (value, {req}) => {
+        const cookie = req.cookies.id;
+        if(!cookie){
+            throw new Error("Cookie 'id' not found")
         }
-        return true;
+        return true
     }),
 
     async(req, res) => {
         try {
-            const result = await account.getUser(req.cookies.id);
-
-            if (result) {
-                res.status(200).json({data: result});
-            } else {
-                res.status(401).json({errors: "User not found"});
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({errors: errors.array().map((error) => {return error.msg})});
             }
+
+            const id = await validateCookie(req, res);
+
+
+            if (id) {
+                const result = await account.getUser(req.cookies.id);
+                if (result) {
+                    res.status(200).json({data: result});
+                } else {
+                    res.status(401).json({errors: "User not found"});
+                }
+            }else{
+                res.status(401).json({errors: "Unauthorized"});
+            }
+
         } catch (error) {
             console.log(error);
+            res.status(500).json({errors: "Internal Server Error"});
         }
     }
 );

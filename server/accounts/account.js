@@ -1,10 +1,15 @@
 const db = require('../database/index.js');
+const { readJWT } = require('../utils/auth.js');
 async function getUser(userID){
-    let result = await db.query("getUser",[userID])
-    if(result.rows.length === 0){
+    const payload = await readJWT(userID)
+    const id = payload.sub
+
+    let result = await db.query("getUser",[id])
+
+    if(result.length === 0){
         return false
     } else {
-        return result.rows[0]
+        return result[0]
     }
 }
 

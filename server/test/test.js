@@ -1,4 +1,5 @@
 const hash = require('../utils/hash.js');
+const auth = require('../utils/auth.js');
 const username = require('../utils/username.js')
 const newUUID = require('../utils/uuid.js')
 var expect = require('expect.js');
@@ -23,6 +24,25 @@ describe('Hash a Password', function(){
         const SecondHash = hash.saltNhash("Password",CreateSalt);
        expect(FirstHash).to.be(SecondHash);
     });
+});
+
+describe("Testing JWT", function() {
+    it("should return a JWT", async function() {
+        const jwt = await auth.createAndSignJWT(1)
+        expect(jwt).to.be.a('string')
+    })
+    it("Should return decoded JWT", async function() {
+        const jwt = await auth.createAndSignJWT(1)
+        const payload = await auth.readJWT(jwt)
+        expect(payload.sub).to.be(1)
+    })
+    it("Should reject invalid signature", async function() {
+        const jwt = await auth.createAndSignJWT(1)
+        const invalidJWT = jwt.slice(0, -1)
+        const payload = await auth.verifyJWT(invalidJWT)
+        expect(payload).to.be(false)
+    });
+
 });
 
 describe('makea a UUID', function(){
@@ -51,4 +71,3 @@ describe('Make a unique username', function(){
 
 
 
- 
