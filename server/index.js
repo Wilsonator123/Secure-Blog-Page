@@ -9,9 +9,6 @@ const db = require('./database/index.js');
 const { query, validationResult} = require('express-validator');
 const { authenticate, authorize } = require('./middleware.js');
 
-
-
-
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
@@ -33,6 +30,7 @@ app.use("/apiTest", require('./routes/apiTest.js')); //
 app.use("/login", require('./routes/login.js'));
 app.use("/auth", require('./routes/auth.js'));
 app.use("/posts", require('./routes/posts.js'));
+app.use("/account", require('./routes/account.js'));
 
 app.get('/',
 	query('name')

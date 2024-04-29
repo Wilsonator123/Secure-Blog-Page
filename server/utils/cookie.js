@@ -15,6 +15,7 @@ async function validateCookie(req, res) {
     const result = await verifyJWT(jwt)
 
     if(!result) {
+        console.log('Invalid Cookie')
         clearCookie(res)
         return false
     } else {
