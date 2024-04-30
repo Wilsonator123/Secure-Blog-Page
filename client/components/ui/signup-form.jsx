@@ -1,3 +1,4 @@
+'use client'
 import React, { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -97,9 +98,10 @@ export default function SignupForm({toggle}){
                 dob: dateOfBirth
             },
     {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+            }
             })
 
             if(response.status === 200){
@@ -108,7 +110,7 @@ export default function SignupForm({toggle}){
 
         } catch (error) {
             console.log(error)
-            if (error.response.status === 401){
+            if (error.response?.status === 401){
                 setError("Email already exists");
             }
             else{

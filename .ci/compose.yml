@@ -19,6 +19,7 @@ services:
       POSTGRES_PASSWORD_FILE: /run/secrets/db-password
       POSTGRES_DB: test
       DB_PORT: 5432
+      JWT_SECRET: HbsuSBeo4JXDHdOUbnaQMf43JYGCuhTC2HwlEqJNkLuYgqUFfka1l6YgoexOQ07O
 
   db:
     image: postgres
