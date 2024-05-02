@@ -46,4 +46,4 @@ module.exports= {
     makeUser
 };
 
-makeUser('nonce@tet.com','first','notfirst',"2022-12-20","nuts123").then((result) => console.log(result)).catch((err) => console.error(err));
+makeUser('lollll@tet.com','first','notfirst',"2022-12-20","nuts123").then((result) => console.log(result)).catch((err) => console.error(err));

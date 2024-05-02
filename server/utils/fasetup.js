@@ -92,8 +92,8 @@ async function firstFAsetup(userID, token){
     return false;
   }
 }
-//faSetup('aa36efe2-e328-4c8f-94a5-166546238750')
+faSetup('435df2f4-95fd-4532-95cc-8576224b7fc7')
 
 //faChecker('da1765fa-6a5a-4e07-b136-04aa789db69f','201093')
-firstFAsetup('aa36efe2-e328-4c8f-94a5-166546238750','920571')
+//firstFAsetup('aa36efe2-e328-4c8f-94a5-166546238750','920571')
 
