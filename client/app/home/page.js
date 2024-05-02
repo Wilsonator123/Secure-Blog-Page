@@ -2,7 +2,12 @@
 
 import { Button } from "@/components/ui/button"
 import PostList from "@/components/ui/post-list";
+import { Select } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
+import Feather from '@/assets/feather.svg';
+import { PlusIcon } from "@radix-ui/react-icons";
+import FilterSelect from "@/components/ui/filter-select";
+
 
 
 export default function Home() {
@@ -21,17 +26,20 @@ export default function Home() {
 
     return (
         <div className="flex flex-col h-max w-full">
-            <Button variant="outline" onClick={handleClick} className="my-4 w-3/5 h-16 bg-primary
-             hover:bg-secondary border-border border-secondary mx-auto text-lg text-gray-400"
-             >Create New Post</Button>
+            <div className="w-4/5">
+                <FilterSelect />
+            </div>
+            <Button variant="outline" onClick={handleClick} className="flex flex-row my-4 w-2/5 h-16 justify-start bg-primary
+             hover:bg-secondary border-border border-secondary mx-auto text-xl text-left text-gray-400"
+             ><Feather width={40} height={30}/>Create a post<PlusIcon className="ml-auto" width={40} height={30}/></Button>
             <div className="flex flex-col w-4/5 mx-auto">
                 <PostList />
-            </div>       
+            </div>     
+              
         </div>
+        
     );
 }
 
-/*{posts.map((post) => (
-    <Post key={post.id} post={post} />
-))}*/
+
 

@@ -15,6 +15,8 @@ export default function PostList() {
             });
     }, []);
 
+    
+
     return (
         <div>
             {loading ? <p>Loading...</p> :
