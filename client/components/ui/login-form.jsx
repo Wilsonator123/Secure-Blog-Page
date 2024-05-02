@@ -23,6 +23,7 @@ import PasswordIcon from '@/assets/password.svg'
 
 export default function LoginForm({toggle}) {
     const passwordBox = useRef();
+    const emailBox = useRef();
   //form data states
 
   const [showPassword, setShowPassword] = useState("password");
@@ -41,19 +42,27 @@ export default function LoginForm({toggle}) {
       const response = await axios.post('http://localhost:8000/login/loginChecker', {
         email: email,
         password: password
-      })
-      console.log(response);
-      if (response.status === 401){
-        setError("Incorrect username or password");
-      }
+      },
+          {
+            withCredentials: true,
+                headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+
       if(response.status === 200){
-        console.log(response.status);
         router.push('/feed');
       }
       
     } catch (error) {
-      console.log(error);
-      setError("There was a problem with the server.")
+        if (error.response.status === 401){
+            setError("Incorrect username or password");
+            emailBox.current.focus();
+        }
+        else{
+            setError("There was a problem with the server.")
+            emailBox.current.focus();
+        }
     }
 
     
@@ -76,7 +85,8 @@ export default function LoginForm({toggle}) {
               <Input id="login-email" type="email" className="my-4 h-14 bg-black border-secondary text-text
               pl-12 focus:border-accent"
               required value={email} autoComplete="email"
-              onChange={(e) => setEmail(e.target.value)} />
+              onChange={(e) => setEmail(e.target.value)}
+              ref={emailBox} />
               <div className="text-text absolute left-2 z-10">
                 <Mail width={30} height={30} fill={'#fff'}/>
               </div>
