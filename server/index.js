@@ -6,16 +6,41 @@ const cookieParser = require('cookie-parser')
 const app = express();
 const port = 8000;
 const db = require('./database/index.js');
+const helmet = require('helmet');
+const { RateLimiterMemory } = require('rate-limiter-flexible');
 const { query, validationResult} = require('express-validator');
 const { authorize } = require('./middleware.js');
-
-app.use(express.json()); // for parsing application/json
-app.use(express.urlencoded({ extended: true }));
 app.use(cors({
 	origin: 'http://localhost:3000',
 	credentials: true
 }));
 app.use(cookieParser())
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
+
+const opts = {
+	points: 10, // 100 requests
+	duration: 1, // Per second
+	blockDuration: 5*60
+};
+
+const rateLimiter = new RateLimiterMemory(opts);
+
+const rateLimiterMiddleware = (req, res, next) => {
+	rateLimiter.consume(req.ip)
+		.then(() => {
+			next();
+		})
+		.catch(() => {
+			res.status(429).send('Too Many Requests');
+		});
+};
+
+app.use(rateLimiterMiddleware);
+
+
+
 // Server Middleware Loging to Console
 app.use((req, res, next) => {
 	const start = +new Date();
