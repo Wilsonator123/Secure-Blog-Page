@@ -1,8 +1,8 @@
 const { createAndSignJWT, verifyJWT } = require('./auth');
-
-
-async function setCookie(res, userID, permissions = ['read']) {
-    const jwt = await createAndSignJWT(userID, permissions)
+const { getPresetRoles } = require('./roles');
+async function setCookie(res, userID, permissions = null) {
+    const presetRoles = permissions ? getPresetRoles(permissions) : null
+    const jwt = await createAndSignJWT(userID, presetRoles)
     return res.cookie('id', jwt, {httpOnly: true, maxAge: 604800000})
 }
 
@@ -15,7 +15,6 @@ async function validateCookie(req, res) {
     const result = await verifyJWT(jwt)
 
     if(!result) {
-        console.log('Invalid Cookie')
         clearCookie(res)
         return false
     } else {

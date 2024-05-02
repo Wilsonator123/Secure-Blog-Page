@@ -18,7 +18,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 
 import PasswordBar from "@/components/ui/passwordBar";
 import { checkPasswordStrength } from "@/helper/password";
-import {router} from "next/client";
 
 export default function SignupForm({toggle}){
 

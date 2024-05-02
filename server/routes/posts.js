@@ -60,7 +60,6 @@ router.post('/deletePost', async(req, res) => {
 router.post('/updateComment', async(req, res) => {
     try {
         const result = await posts.modifyComment(req.body.action, req.body.args, req.body?.comment, req.body?.data);
-        console.log(result)
         if (result) {
             res.status(200).json({ result });
         }
