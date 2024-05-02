@@ -25,7 +25,6 @@ async function validateCookie(req, res) {
 
 function clearCookie(res) {
     res.cookie('id', '', { expires: new Date(0), httpOnly: true, sameSite: 'none' })
-    console.log('Cookie Cleared')
 }
 
 module.exports = {
