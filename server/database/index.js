@@ -27,7 +27,8 @@ queries = {
     getUserID: 'SELECT userid FROM "User" WHERE Email = $1',
     getUserSalt: 'SELECT salt FROM "Password" WHERE userid = $1',
     getUserPassword: 'SELECT password FROM "Password" WHERE userid = $1',
-    addUser2FA: 'UPDATE "Password" SET FAsalt = $1 WHERE UserID = $2'
+    addUser2FA: 'UPDATE "Password" SET FAsalt = $1 WHERE UserID = $2',
+    getUser2FAsalt: 'SELECT fasalt FROM "Password" WHERE UserID = $1'
 };
 
 async function query(name,params){
