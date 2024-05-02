@@ -60,13 +60,14 @@ export async function middleware(request) {
     }
     if(request.nextUrl.pathname.startsWith('/account')){
         if(id){
-            const res = await checkPermission(['account:read'], id)
+            const res = await checkPermission(['read'], id)
             if(res.ok){
                 return NextResponse.next()
             }
         }
         return NextResponse.redirect(new URL('/login', request.url))
     }
+
     if(request.nextUrl.pathname.startsWith('/admin')){
         if(id){
             const res = await checkPermission(['admin:read'], id)
