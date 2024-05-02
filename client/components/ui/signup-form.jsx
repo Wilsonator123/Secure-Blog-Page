@@ -89,7 +89,7 @@ export default function SignupForm({toggle}){
         }
 
         try {
-            const response = await axios.post('http://localhost:8000/login/createUser',
+            const response = await axios.post('http://127.0.0.1:8000/login/createUser',
         {
                 email: email,
                 password: password,
