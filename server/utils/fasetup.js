@@ -18,12 +18,13 @@ async function faSetup(userID){
     const base32_secret = generateBase32Secret();  //store in database
   
    (await db.query('addUser2FA',[base32_secret,userID]))
-   console.log(base32_secret);
+   let username =  (await db.query('getUsername',[userID]))[0].username
+   //console.log(base32_secret);
 
     // Generate a QR code URL for the user to scan
     let totp = new OTPAuth.TOTP({
         issuer: "CryptoBros",
-        label: "User",
+        label: username,
         algorithm: "SHA1",
         digits: 6,
         secret: base32_secret,
@@ -50,7 +51,7 @@ async function faChecker(userID,token){
 let usertoken = (await db.query('getUser2FAsalt',[userID]))[0].fasalt
 //console.log(usertoken);
 
-//Recreates the OTP Auth to allow us to recreate that users token.
+//Recreates the OTP Auth to allow us to recreate that users token
   let totp = new OTPAuth.TOTP({
     issuer: "CryptoBros",
     label: "User",
@@ -84,13 +85,15 @@ let usertoken = (await db.query('getUser2FAsalt',[userID]))[0].fasalt
 //Added flag in db for 2fa validation checker and flip if this function passes and if not left 2fasetup be rerun
 async function firstFAsetup(userID, token){
   if ((await faChecker(userID,token))){
+    (await db.query('update2FAstatus',[userID]))
+    console.log('all good');
     return true;
   }else{
     return false;
   }
 }
-//faSetup('6b0a8513-3207-474b-a759-af5ab069d792')
+//faSetup('aa36efe2-e328-4c8f-94a5-166546238750')
 
-//faChecker('6b0a8513-3207-474b-a759-af5ab069d792','582101')
-firstFAsetup('6b0a8513-3207-474b-a759-af5ab069d792','736659')
+//faChecker('da1765fa-6a5a-4e07-b136-04aa789db69f','201093')
+firstFAsetup('aa36efe2-e328-4c8f-94a5-166546238750','920571')
 
