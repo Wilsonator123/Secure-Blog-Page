@@ -20,12 +20,12 @@ async function makeUser(email,fname,lname,dob,password){
 
     //Checks if the email is valid using regex (library)
     if (validator.validate(email) == false){
-        return "Email is not valid"
+        return {success: false, message: "Email is not valid"}
     }
 
     //Checks to see if the email has been taken.
     if ((await db.query("isEmail", [email]))[0].count != 0){
-        return "Email taken"
+        return {success: false, message: "Email taken"}
     }
 
 
@@ -35,10 +35,10 @@ async function makeUser(email,fname,lname,dob,password){
     //Checks that the user has been added via their userID, and then inserts in to the Password table
     if ((await(db.query('isUUIDtaken',[userID])))[0].count != 0){
         (await db.query('addPassword',[userID,hashedPassword,salt]))
-        return "User Created Successfully"
+        return {success: true, message: userID}
     }
 
-    return "Error adding User"
+    return {success: false, message: "Error adding User"}
    
 };
 

@@ -31,7 +31,8 @@ queries = {
     getUser2FAsalt: 'SELECT fasalt FROM "Password" WHERE UserID = $1',
     update2FAperm: 'UPDATE "User" SET FAsalt = $1 WHERE UserID = $2',
     update2FAstatus: 'UPDATE "User" SET FAVald = TRUE WHERE UserID = $1',
-    getUsername: 'SELECT username FROM "User" WHERE UserID = $1'
+    getUsername: 'SELECT username FROM "User" WHERE UserID = $1',
+    getUser: 'SELECT * FROM "User" WHERE UserID = $1'
 };
 
 async function query(name,params){

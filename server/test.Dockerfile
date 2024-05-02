@@ -7,7 +7,7 @@
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
 # Use Node.js LTS version as base image
-FROM node:14-alpine
+FROM node:latest
 
 # Set working directory
 WORKDIR /app/server
