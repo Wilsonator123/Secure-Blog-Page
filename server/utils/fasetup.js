@@ -38,13 +38,19 @@ async function faSetup(userID){
 };
 
 
-// Checks 2FA 
-
-
+// Checks 2FA token 
 async function faChecker(userID,token){
 
+  //checks that the userID is valid
+  if ((await(db.query('isUUIDtaken',[userID])))[0].count == 0){
+    return "UserID no valid"  //edit this error response
+}
+
+//Gets the user secret from database
 let usertoken = (await db.query('getUser2FAsalt',[userID]))[0].fasalt
-console.log(usertoken);
+//console.log(usertoken);
+
+//Recreates the OTP Auth to allow us to recreate that users token.
   let totp = new OTPAuth.TOTP({
     issuer: "CryptoBros",
     label: "User",
@@ -54,26 +60,37 @@ console.log(usertoken);
    });
 
    let currentToken = totp.generate() //Test to see what it thinks the current token is
-   console.log(currentToken);
-   console.log(token);
+   console.log('Current:',currentToken);
+   console.log('Input:',token);
 
   let delta = totp.validate({token, window: 1});
   console.log(delta);
 
   if(currentToken == token){
-    console.log('Valid 1');
+    console.log('Valid 0');
     return true
   }else{
     if(delta){
-      console.log('Valid 2');
+      console.log('Valid 1');
       return true
     }else{
-      console.log('False 3');
+      console.log('False');
       return false
     }
   }
 
 }
+
+//Added flag in db for 2fa validation checker and flip if this function passes and if not left 2fasetup be rerun
+async function firstFAsetup(userID, token){
+  if ((await faChecker(userID,token))){
+    return true;
+  }else{
+    return false;
+  }
+}
 //faSetup('6b0a8513-3207-474b-a759-af5ab069d792')
 
-//faChecker('6b0a8513-3207-474b-a759-af5ab069d792','137320')
+//faChecker('6b0a8513-3207-474b-a759-af5ab069d792','582101')
+firstFAsetup('6b0a8513-3207-474b-a759-af5ab069d792','736659')
+
