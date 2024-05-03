@@ -25,13 +25,13 @@ export default function Home() {
     }
 
     return (
-        <div className="flex flex-col h-max w-full">
+        <div className="flex flex-col h-max w-4/5 ">
             <div className="w-4/5">
                 <FilterSelect />
             </div>
-            <Button variant="outline" onClick={handleClick} className="flex flex-row my-4 w-2/5 h-16 justify-start bg-primary
-             hover:bg-secondary border-border border-secondary mx-auto text-xl text-left text-gray-400"
-             ><Feather width={40} height={30}/>Create a post<PlusIcon className="ml-auto" width={40} height={30}/></Button>
+            <Button variant="outline" onClick={handleClick} className="flex flex-row my-4 w-4/6 h-16 justify-start bg-primary
+             hover:bg-secondary border-border border-secondary mx-auto text-3xl text-left text-gray-400"
+             ><Feather className="mr-2" width={50} height={40} />Create a post<PlusIcon className="ml-auto" width={40} height={30}/></Button>
             <div className="flex flex-col w-4/5 mx-auto">
                 <PostList />
             </div>     

@@ -5,7 +5,7 @@ export default function FilterSelect({}) {
 
     return (
         <Select className="">
-            <SelectTrigger className="w-24 ml-16 my-4 rounded-full bg-primary border-secondary text-gray-400">
+            <SelectTrigger className="w-24 ml-16 mt-2 mb-8 rounded-full bg-primary border-secondary text-gray-400">
                 <SelectValue placeholder="Filters"></SelectValue>
             </SelectTrigger>
             <SelectContent className="bg-primary text-gray-400 border-secondary">
