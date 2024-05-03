@@ -28,6 +28,7 @@
     "react-dom": "^18",
     "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.51.0",
+    "react-router-dom": "^6.23.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "wait-on": "^7.2.0",

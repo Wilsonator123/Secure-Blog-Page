@@ -5,10 +5,13 @@ import { Button } from '@/components/ui/button';
 import Settings from '@/assets/settings.svg';
 import PostsCard from '@/components/ui/posts-card';
 import UserPFP from '@/components/ui/user-pfp';
+import { useRouter } from 'next/navigation';
 
 export default function Account({toggle}) {
+    const router = useRouter();
 
     const handleUsernameClick = () => {
+        router.push('/account');
         console.log("@placeholderat clicked"); {/* placeholder for further functionality */}
 
     };

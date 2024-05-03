@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import UserPFP from '@/components/ui/user-pfp';
 import Mail from '@/assets/mail.svg';
@@ -10,9 +11,31 @@ import DeleteAccount from '@/assets/deleteaccount.svg';
 import Placeholder from '@/assets/placeholder.svg';
 import Close from '@/assets/close.svg';
 import Logout from '@/assets/logout.svg';
+const API_URL = 'http://127.0.0.1:8000/'
 
-export default function SettingsPage({toggle}) {
-    
+
+export default function SettingsPage({ toggle }) {
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      const response = await fetch(API_URL + 'auth/logout', {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        router.push('/login');
+        toggle();
+      } else {
+        throw new Error('Failed to log out');
+      }
+    } catch (error) {
+      console.error('Logout Error:', error);
+    }
+  };
+
+
   return (
     <main className="flex min-h-screen flex-col items-center bg-opacity-0">
       <Card className="bg-primary border-accent mt-8">
@@ -89,7 +112,7 @@ export default function SettingsPage({toggle}) {
         {/* Log out Button */}
         <CardFooter className="flex flex-col items-center space-y-4 mb-10">
             <div className="flex justify-center items-center">
-                <Button variant='destructive' className="h-12 text-text text-xl w-96 mt-10 border border-transparent hover:border hover:border-accent ">
+                <Button variant='destructive' onClick={handleSignOut} className="h-12 text-text text-xl w-96 mt-10 border border-transparent hover:border hover:border-accent" >
                     <Logout fill = {'#ffff'}/>Sign Out
                 </Button>
             </div>

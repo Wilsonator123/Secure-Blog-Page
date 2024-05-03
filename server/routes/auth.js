@@ -35,4 +35,9 @@ router.post("/hasPermission", async (req, res) => {
 
 });
 
+router.get("/logout", (req, res) => {
+    res.clearCookie('id'); 
+    res.status(200).send("Logged out successfully");
+});
+
 module.exports = router;
