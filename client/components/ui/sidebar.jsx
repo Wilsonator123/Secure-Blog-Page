@@ -13,7 +13,7 @@ export default function Sidebar() {
     }
 
     return(
-        <Command className="flex min-h-screen w-1/5 bg-primary border border-secondary ">
+        <Command className="flex min-h-screen w-1/5 bg-primary border border-secondary border-t-0 border-l-0 border-b-0">
             <CommandList>
                 <CommandGroup className="mt-6">
                     <CommandItem className=" text-text text-2xl h-16 " 
