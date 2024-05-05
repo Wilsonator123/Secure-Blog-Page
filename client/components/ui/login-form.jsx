@@ -51,11 +51,11 @@ export default function LoginForm({toggle}) {
         })
 
       if(response.status === 200){
-        router.push('/feed');
+        router.push('/home');
       }
       
     } catch (error) {
-        if (error.response.status === 401){
+        if (error.status === 401){
             setError("Incorrect username or password");
             emailBox.current.focus();
         }
