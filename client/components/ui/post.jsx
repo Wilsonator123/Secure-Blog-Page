@@ -53,7 +53,7 @@ export default function Post({post}){
     return (
         <Card className="bg-primary w-6/6 max-h-96 my-4 mx-auto rounded-none border-secondary cursor-pointer">
             <CardHeader className="h-1 -my-2 text-text text-sm flex flex-row">
-                Post Authour <DotFilledIcon width={18} height={18}/> {timeSincePost}
+                Post Authour {typeof timeSincePost === "string" ? <><DotFilledIcon width={18} height={18}/> {timeSincePost} </> : ""}
                 <Ellipsis className="ml-auto"/>
             </CardHeader>
             <CardHeader >
