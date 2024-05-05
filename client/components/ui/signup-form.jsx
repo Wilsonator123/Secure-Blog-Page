@@ -1,6 +1,8 @@
+'use client'
 import React, { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import Captcha from '@/components/ui/captcha';
 
 import {
   Card,
@@ -28,6 +30,7 @@ export default function SignupForm({toggle}){
     const [fName, setFName] = useState("");
     const [lName, setLName] = useState("");
     const [error, setError] = useState("");
+    const [captcha, setCaptcha] = useState(false);
 
     const passwordBox = useRef();
 
@@ -74,7 +77,10 @@ export default function SignupForm({toggle}){
     async function handleSubmit(event){
         event.preventDefault();
 
-
+        if(!captcha){
+            setError("Please complete the captcha");
+            return;
+        }
 
         if(passwordMessage != null || passwordStrength < 3) {
             setError("Password does not meet requirements");
@@ -92,9 +98,10 @@ export default function SignupForm({toggle}){
                 dob: dateOfBirth
             },
     {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+            }
             })
 
             if(response.status === 200){
@@ -103,7 +110,7 @@ export default function SignupForm({toggle}){
 
         } catch (error) {
             console.log(error)
-            if (error.response.status === 401){
+            if (error.response?.status === 401){
                 setError("Email already exists");
             }
             else{
@@ -181,6 +188,8 @@ export default function SignupForm({toggle}){
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 onBlur={(e) => confirmPasswordCheck(e.target.value)}/>
             </div>
+
+            <Captcha setCaptcha={setCaptcha}/>
 
             <div className="flex justify-center items-center mt-2">
                 <Button variant={'secondary'} className="h-12 bg-secondary text-text text-xl w-96 max-w-xs

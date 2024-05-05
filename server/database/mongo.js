@@ -1,28 +1,20 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient } = require("mongodb");
 const fs = require("fs");
 // Replace the placeholder with your Atlas connection string
 
 const secretFilePath = '/run/secrets/mongo';
+const password = fs.readFileSync(secretFilePath, 'utf8');
 
 class Database {
-    uri = null;
-    client = null
-
     constructor() {
-        try {
-            this.uri = fs.readFileSync(secretFilePath, 'utf8');
-            this.client = new MongoClient(this.uri, {
-                serverApi: ServerApiVersion.v1
-            });
-        } catch (error) {
-            console.error(error);
-        }
+        this.url = `mongodb://dbUser:${password}@mongo:27017`;
+        this.client = new MongoClient(this.url);
     }
 
     async run(func, collection, ...args) {
         try {
             await this.client.connect();
-            const db = this.client.db('DSS').collection(collection)
+            const db = this.client.db('DSS').collection(collection);
             return await func(db, ...args);
         } catch (error) {
             console.error(error);
@@ -33,12 +25,7 @@ class Database {
     }
 
     async read_file(db, args) {
-        const query = db.find(args);
-        const result = [];
-        for await (const doc of query) {
-            result.push(doc);
-        }
-        return result;
+        return await db.find(args).toArray();
     }
 
     async create_file(db, data) {
@@ -46,11 +33,11 @@ class Database {
     }
 
     async write_to_file(db, args, operation, options={}) {
-        return await db.update(args, operation, options);
+        return await db.updateMany(args, operation, options);
     }
 
     async delete_file(db, args) {
-        return await db.delete(args);
+        return await db.deleteMany(args);
     }
 }
 

@@ -26,7 +26,8 @@ queries = {
     addPassword: 'INSERT INTO "Password" (UserID, Password, Salt) VALUES ($1, $2, $3)',
     getUserID: 'SELECT userid FROM "User" WHERE Email = $1',
     getUserSalt: 'SELECT salt FROM "Password" WHERE userid = $1',
-    getUserPassword: 'SELECT password FROM "Password" WHERE userid = $1'
+    getUserPassword: 'SELECT password FROM "Password" WHERE userid = $1',
+    getUser: 'SELECT * FROM "User" WHERE UserID = $1',
 };
 
 async function query(name,params){

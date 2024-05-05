@@ -42,7 +42,13 @@ export default function LoginForm({toggle}) {
       const response = await axios.post('http://localhost:8000/login/loginChecker', {
         email: email,
         password: password
-      })
+      },
+          {
+            withCredentials: true,
+                headers: {
+                'Content-Type': 'application/json',
+            }
+        })
 
       if(response.status === 200){
         router.push('/home');
