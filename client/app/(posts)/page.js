@@ -21,7 +21,7 @@ export default function Home() {
     function handleClick(e)
     {
         e.preventDefault();
-        router.push('/home/create');
+        router.push('/create');
     }
 
     return (

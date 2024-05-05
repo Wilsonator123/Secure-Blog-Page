@@ -9,7 +9,7 @@ export default function Sidebar() {
     const router = useRouter();
 
     function clickHome(){
-        router.push('/home')
+        router.push('/')
     }
 
     return(
