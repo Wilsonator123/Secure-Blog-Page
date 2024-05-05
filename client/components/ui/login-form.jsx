@@ -39,7 +39,7 @@ export default function LoginForm({toggle}) {
 
     try {
       
-      const response = await axios.post('http://localhost:8000/login/loginChecker', {
+      const response = await axios.post('http://localhost:8000/login/login', {
         email: email,
         password: password
       },
@@ -51,7 +51,7 @@ export default function LoginForm({toggle}) {
         })
 
       if(response.status === 200){
-        router.push('/home');
+        router.push('/');
       }
       
     } catch (error) {
