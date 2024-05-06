@@ -25,7 +25,7 @@ class Database {
     }
 
     async read_file(db, args) {
-        return await db.find(args).toArray();
+        return await db.find(args).sort({ "created_at": -1}).toArray();
     }
 
     async create_file(db, data) {
