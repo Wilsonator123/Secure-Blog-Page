@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const posts = require('../posts/posts');
-const validator = require("email-validator");
 const { body, validationResult} = require('express-validator');
-
+const { readJWT } = require('../utils/auth');
+const { ObjectId } = require('mongodb');
 router.get("/", (req, res) => {
     res.send({ data: "Blog route"});
 })
@@ -14,10 +14,10 @@ router.post('/createPost'
         .isString().withMessage('Title must be a string')
         .isLength({ min: 3 }).withMessage('Title must be at least 3 chars long')
         .escape()
-    , body('content')
-        .notEmpty().withMessage('Content is required')
-        .isString().withMessage('Content must be a string')
-        .isLength({ min: 3 }).withMessage('Content must be at least 3 chars long')
+    , body('description')
+        .notEmpty().withMessage('Description is required')
+        .isString().withMessage('Description must be a string')
+        .isLength({ min: 3 }).withMessage('Description must be at least 3 chars long')
         .escape()
     , async(req, res) => {
 
@@ -26,11 +26,26 @@ router.post('/createPost'
         return res.status(401).json({ errors: errors.array().map((error) => {return error.msg}) });
     }
 
+
     try {
-        const result = await posts.createPost(req.body);
+
+        const userID = (await readJWT(req.cookies.id))?.sub ?? new Error("No user ID found");
+        const postId = new ObjectId();
+        const data = {
+            _id: postId,
+            title: req.body['title'],
+            description: req.body['description'],
+            created_at: new Date(),
+            created_by: userID,
+            comments: req.body['comments'] ?? []
+        }
+        const result = await posts.createPost(data);
 
         if (result) {
-            res.status(200).json({ data: "Blog created"});
+            res.status(200).json({ data: {
+                postId: postId,
+                message: "Blog created"
+                }});
         }
         else {
             res.status(401).json({ errors: "Blog not created"});
@@ -60,7 +75,6 @@ router.post('/deletePost', async(req, res) => {
 router.post('/updateComment', async(req, res) => {
     try {
         const result = await posts.modifyComment(req.body.action, req.body.args, req.body?.comment, req.body?.data);
-        console.log(result)
         if (result) {
             res.status(200).json({ result });
         }

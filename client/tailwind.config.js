@@ -24,7 +24,7 @@ module.exports = {
         background: "#1a1a1a",
         foreground: "hsl(var(--foreground))",
         text: "#ffffff",
-
+        select: '#4b4e67',
         primary: "#292b30",
         secondary: "#30769f",
         error: '#ff1f1f',
