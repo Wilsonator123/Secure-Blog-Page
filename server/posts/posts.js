@@ -1,35 +1,42 @@
 const Database = require('../database/mongo.js');
 const { ObjectId } = require('mongodb');
-const db = new Database();
-
+const mongo = new Database();
+const db = require('../database/index.js');
 async function createPost(data) {
-    data = {
-        title: data['title'],
-        content: data['content'],
-        created_at: new Date(),
-        comments: data['comments'] ?? []
-    }
-    return await db.run(db.create_file, 'posts',  data);
+    return await mongo.run(mongo.create_file, 'posts',  data);
 }
 
 async function getPosts(args){
-    const result = await db.run(db.read_file, 'posts', args)
-    return result
+    if (args['_id']){
+        args['_id'] = new ObjectId(args['_id'])
+    }
+
+    try {
+        const response = await mongo.run(mongo.read_file, 'posts', args)
+        for (const data of response) {
+            const user = await db.query("getUser", [data.created_by])
+            data.created_by = user[0]?.username
+
+        }
+        return response
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 async function modifyPost(args, data){
-    return await db.run(db.write_to_file, 'posts', args, {'$set': data})
+    return await mongo.run(mongo.write_to_file, 'posts', args, {'$set': data})
 }
 
 async function deletePost(data){
-    return await db.run(db.delete_file, 'posts',  data)
+    return await mongo.run(mongo.delete_file, 'posts',  data)
 }
 
 async function modifyComment(action, args, comment = {}, data={}){
     let result;
     switch(action){
         case "get":
-            result = await db.run(db.read_file, 'posts', args)
+            result = await mongo.run(mongo.read_file, 'posts', args)
             if(result){
                 return result.comments.filter((data) => data.message === comment['comment.message'])
             }
@@ -39,7 +46,7 @@ async function modifyComment(action, args, comment = {}, data={}){
             data['comment_id'] = new ObjectId()
             data['created_at'] = new Date()
 
-            result = await db.run(db.write_to_file, 'posts', args, {'$push': {"comments": data}})
+            result = await mongo.run(mongo.write_to_file, 'posts', args, {'$push': {"comments": data}})
 
             if (result.modifiedCount > 0 || result.matchedCount > 0) {
                 return 'Comment added'
@@ -50,7 +57,7 @@ async function modifyComment(action, args, comment = {}, data={}){
         case "edit":
             data['edited'] = true
             data['edited_at'] = new Date()
-            result = await db.run(db.write_to_file, 'posts', args, {'$set': {"comments.$[comment]": data}}, { "arrayFilters": [comment] })
+            result = await mongo.run(mongo.write_to_file, 'posts', args, {'$set': {"comments.$[comment]": data}}, { "arrayFilters": [comment] })
             if (result.modifiedCount > 0 || result.matchedCount > 0) {
                 return 'Comment edited'
             }
@@ -58,7 +65,7 @@ async function modifyComment(action, args, comment = {}, data={}){
             return 'Comment not found/edited'
 
         case "delete":
-            result = await db.run(db.write_to_file, 'posts', args, {'$pull': {"comments": data}})
+            result = await mongo.run(mongo.write_to_file, 'posts', args, {'$pull': {"comments": data}})
             if (result.modifiedCount > 0 || result.matchedCount > 0) {
                 return 'Comment deleted'
             }

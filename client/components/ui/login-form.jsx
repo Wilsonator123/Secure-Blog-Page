@@ -39,7 +39,7 @@ export default function LoginForm({toggle}) {
 
     try {
       
-      const response = await axios.post('http://localhost:8000/login/loginChecker', {
+      const response = await axios.post('http://localhost:8000/login/login', {
         email: email,
         password: password
       },
@@ -51,11 +51,11 @@ export default function LoginForm({toggle}) {
         })
 
       if(response.status === 200){
-        router.push('/feed');
+        router.push('/');
       }
       
     } catch (error) {
-        if (error.response.status === 401){
+        if (error.status === 401){
             setError("Incorrect username or password");
             emailBox.current.focus();
         }
