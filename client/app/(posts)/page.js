@@ -10,11 +10,7 @@ import FilterSelect from "@/components/ui/filter-select";
 
 
 export default function Home() {
-    
-
-    /*const posts = [ {id: 1, title: "Testing", content: "Testing 1 2 3", votes: 0},
-    {id: 2, title: "Bitcoin, more like SHITcoin", content: "See title lmao", votes: -50},
-    {id: 3, title: "KEEP HOLD OF YOUR GAMESTOP STONKS", content: "TO THE MOOOOON", votes: 10000} ];*/   
+     
     const router = useRouter();
     
     function handleClick(e)

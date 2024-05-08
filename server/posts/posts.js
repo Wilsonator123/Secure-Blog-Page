@@ -15,7 +15,7 @@ async function getPosts(args){
         const response = await mongo.run(mongo.read_file, 'posts', args)
         for (const data of response) {
             const user = await db.query("getUser", [data.created_by])
-            data.created_by = user[0].username
+            data.created_by = user[0]?.username
 
         }
         return response
