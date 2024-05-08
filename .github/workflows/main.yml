@@ -29,15 +29,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Docker Compose Down
+        run: docker-compose down
 
       - name: Build docker images
-        run: docker-compose build
-
-      - name: NPM Install
-        run: npm --prefix ./server/ install
-        
-      - name: Run backend tests
-        run: docker-compose run server
+        run: docker-compose up --build
 
 
 
