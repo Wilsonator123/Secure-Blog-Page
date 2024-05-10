@@ -7,7 +7,7 @@ import ProfileIcon from '@/assets/profile.svg';
 import LogoutIcon from '@/assets/logout.svg';
 import Modal from '@/components/ui/Modal';
 import SettingsPage from '@/components/ui/settings-page';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 const API_URL = 'http://127.0.0.1:8000/'
 
 export default function NavBar() {
@@ -15,12 +15,12 @@ export default function NavBar() {
   const router = useRouter();
 
   const toggleSettingsModal = (event) => {
-    event.stopPropagation(); 
+    event.stopPropagation();
     setSettingsModalOpen(!isSettingsModalOpen);
   };
 
   const profile = (event) => {
-    event.stopPropagation(); 
+    event.stopPropagation();
     router.push('/account');
   };
 
@@ -30,7 +30,7 @@ export default function NavBar() {
   };
 
   const handleSignOut = async (event) => {
-    event.stopPropagation(); 
+    event.stopPropagation();
     try {
       const response = await fetch(API_URL + 'auth/logout', {
         method: 'GET',
@@ -52,14 +52,20 @@ export default function NavBar() {
     <section className="bg-primary h-20 w-full flex justify-center items-center px-8 rounded-b-3xl">
       <div className="w-4/5 flex justify-between items-center" >
         <h1 className="text-text unselectable" onClick={feed}>Logo</h1>
-
+        {showHeader &&
+          <div className="relative rounded">
+            <div className="flex text-white p-2 text-lg items-center">
+              {user ? <h1 className="self-center font-semibold text-xl"> Hello {user.fname} </h1> : <h1 className="font-semibold self-center text-xl">Hello Guest</h1>}
+            </div>
+          </div>
+        }
         <div className="relative flex items-center user-profile" onClick={profile}>
-          <UserPFP className="unselectable"/>
+          <UserPFP className="unselectable" />
           <div className="dropdown">
             <ul>
-              <li className="flex items-center" onClick={profile}><ProfileIcon fill="#ffff"/>Profile</li>
-              <li className="flex items-center" onClick={toggleSettingsModal}><SettingsIcon fill="#ffff"/>Settings</li>
-              <li className="flex items-center" onClick={handleSignOut}><LogoutIcon fill="#F54D28"/>Sign Out</li>
+              <li className="flex items-center" onClick={profile}><ProfileIcon fill="#ffff" />Profile</li>
+              <li className="flex items-center" onClick={toggleSettingsModal}><SettingsIcon fill="#ffff" />Settings</li>
+              <li className="flex items-center" onClick={handleSignOut}><LogoutIcon fill="#F54D28" />Sign Out</li>
             </ul>
           </div>
         </div>

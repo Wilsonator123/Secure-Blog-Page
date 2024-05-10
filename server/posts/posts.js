@@ -7,11 +7,15 @@ async function createPost(data) {
 }
 
 async function getPosts(args){
+    if (args['_id']){
+        args['_id'] = new ObjectId(args['_id'])
+    }
+
     try {
         const response = await mongo.run(mongo.read_file, 'posts', args)
         for (const data of response) {
             const user = await db.query("getUser", [data.created_by])
-            data.created_by = user[0].username
+            data.created_by = user[0]?.username
 
         }
         return response
