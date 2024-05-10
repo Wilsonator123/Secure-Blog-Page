@@ -88,7 +88,7 @@ export default function SettingsPage({ toggle }) {
             <div className="grid grid-cols-3 gap-16">
 
               <div className="flex flex-col items-center space-y-6">
-                <UserPFP className="w-24 h-24" fill = {'#ffff'}/>
+              <UserPFP containerClassName ="mid-avatar" identiconClassName="scale-up"/>
                 <Button variant='secondary' onClick={() => setActiveSetting('profile')} className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
                   Change PFP
                 </Button>

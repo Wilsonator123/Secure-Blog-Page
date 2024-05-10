@@ -1,16 +1,22 @@
-import React, { useState } from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import React from 'react';
+import Identicon from 'react-identicons';
+import { useUserStore } from '@/context/UserContext';
 
+export default function UserPFP({ containerClassName, identiconClassName }) {
+    const user = useUserStore(state => state.user);
 
-export default function UserPFP({className}) {
-
-        
     return (
-        <div className="flex flex-row items-center w-full justify-center">
-            <Avatar className= {`${className}`}>
-                <AvatarImage src=""/>
-                <AvatarFallback>PFP</AvatarFallback>
-            </Avatar>
+        <div className={`flex items-center justify-center overflow-hidden rounded-full border border-accent ${containerClassName}`}>
+            {user ? (
+                <Identicon
+                    className={`object-cover ${identiconClassName}`} // Added identiconClassName here
+                    string={user.username}
+                />
+            ) : (
+                <div className="flex items-center justify-center w-full h-full bg-gray-300">
+                    PFP
+                </div>
+            )}
         </div>
     );
 }

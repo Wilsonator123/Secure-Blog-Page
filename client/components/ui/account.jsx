@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import Settings from '@/assets/settings.svg';
-import PostsCard from '@/components/ui/posts-card';
 import UserPFP from '@/components/ui/user-pfp';
 import { useRouter } from 'next/navigation';
 import { usePosts } from '@/hooks/usePosts';
@@ -24,7 +23,7 @@ export default function Account({ user, toggle }) {
             <div className="flex items-center justify-center mt-10">
 
                 {/* avatar on the left */}
-                <UserPFP className="responsive-avatar" />
+                <UserPFP containerClassName ="large-avatar" identiconClassName="scale-50"/>
 
                 {/* settings button */}
                 <div className="-mt-[-100px] ml-[-30px] z-10">
@@ -48,13 +47,11 @@ export default function Account({ user, toggle }) {
                 <h1 className="text-2xl text-text font-bold mb-1">Your Content</h1>
                 <div className="w-3/5 mx-auto border-t-2 border-secondary"></div>
 
+                <br />
+
                 <PostList args={{ 'created_by': user.userid }} />
 
             </div>
-
-            <br />
-
-            {/* example cards */}
 
         </main>
     );

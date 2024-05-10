@@ -75,20 +75,37 @@
   }
 }
 
-.responsive-avatar {
+.large-avatar {
   width: 100%; 
   height: auto;
-  max-width: 300px; /* Sets the maximum size */
+  max-width: 200px !important;/* Sets the maximum size */
   aspect-ratio: 1 / 1; 
   user-select: none;
 }
 
-.adjustable-avatar {
+.mid-avatar {
   width: 100%; 
   height: auto;
-  max-width: 96px; /* Sets the maximum size */
+  max-width: 100px; /* Sets the maximum size */
   aspect-ratio: 1 / 1; 
   user-select: none;
+}
+
+.sm-avatar {
+  width: 100%; 
+  height: auto;
+  max-width: 50px; /* Sets the maximum size */
+  aspect-ratio: 1 / 1; 
+  user-select: none;
+}
+
+
+.scale-up {
+  transform: scale(0.25);
+}
+
+.scale-down {
+  transform: scale(0.125);
 }
 
 .user-profile {
