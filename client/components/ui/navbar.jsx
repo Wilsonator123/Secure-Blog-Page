@@ -10,6 +10,7 @@ import SettingsPage from '@/components/ui/settings-page';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/context/UserContext';
 import { updateUser, logout } from '@/hooks/user';
+import Identicon from 'react-identicons';
 
 const API_URL = 'http://127.0.0.1:8000/'
 
@@ -57,7 +58,7 @@ export default function NavBar() {
           </div>
         }
         <div className="relative flex items-center user-profile" onClick={profile}>
-          <UserPFP className="unselectable" />
+          <Identicon className="unselectable" string={user ? user?.username : "guest"} size={50} />
           <div className="dropdown">
             <ul>
               <li className="flex items-center" onClick={profile}><ProfileIcon fill="#ffff" />Profile</li>
