@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UserPFP from '@/components/ui/user-pfp';
 import SettingsIcon from '@/assets/settings.svg';
 import ProfileIcon from '@/assets/profile.svg';
@@ -8,11 +8,17 @@ import LogoutIcon from '@/assets/logout.svg';
 import Modal from '@/components/ui/Modal';
 import SettingsPage from '@/components/ui/settings-page';
 import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/context/UserContext';
+import { updateUser, logout } from '@/hooks/user';
+
 const API_URL = 'http://127.0.0.1:8000/'
 
 export default function NavBar() {
   const [isSettingsModalOpen, setSettingsModalOpen] = useState(false);
   const router = useRouter();
+  const user = useUserStore(state => state.user);
+  const [showHeader, setShowHeader] = useState(false);
+
 
   const toggleSettingsModal = (event) => {
     event.stopPropagation();
@@ -29,23 +35,14 @@ export default function NavBar() {
     router.push('/feed');
   };
 
-  const handleSignOut = async (event) => {
-    event.stopPropagation();
-    try {
-      const response = await fetch(API_URL + 'auth/logout', {
-        method: 'GET',
-        credentials: 'include'
-      });
-
-      if (response.ok) {
-        router.push('/login');
-      } else {
-        throw new Error('Failed to log out');
-      }
-    } catch (error) {
-      console.error('Logout Error:', error);
+  useEffect(() => {
+    async function fetchUser() {
+      await updateUser().then(
+        setShowHeader(true)
+      )
     }
-  };
+    fetchUser()
+  }, [])
 
 
   return (
@@ -65,7 +62,7 @@ export default function NavBar() {
             <ul>
               <li className="flex items-center" onClick={profile}><ProfileIcon fill="#ffff" />Profile</li>
               <li className="flex items-center" onClick={toggleSettingsModal}><SettingsIcon fill="#ffff" />Settings</li>
-              <li className="flex items-center" onClick={handleSignOut}><LogoutIcon fill="#F54D28" />Sign Out</li>
+              <li className="flex items-center" onClick={logout}><LogoutIcon fill="#F54D28" />Sign Out</li>
             </ul>
           </div>
         </div>
