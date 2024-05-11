@@ -20,16 +20,20 @@ router.post('/createPost'
         .isLength({ min: 3 }).withMessage('Description must be at least 3 chars long')
         .escape()
     , async(req, res) => {
-
+    console.log(1);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(401).json({ errors: errors.array().map((error) => {return error.msg}) });
     }
-
+    
 
     try {
 
-        const userID = (await readJWT(req.cookies.id))?.sub ?? new Error("No user ID found");
+        const userID = (await readJWT(req.cookies.id))?.sub ??
+        new Error("Invalid User ID");
+        if (userID instanceof Error) {
+            return res.status(401).json({ errors: "Invalid User ID"});
+        }
         const postId = new ObjectId();
         const data = {
             _id: postId,
@@ -73,8 +77,26 @@ router.post('/deletePost', async(req, res) => {
 })
 
 router.post('/updateComment', async(req, res) => {
+    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(401).json({ errors: errors.array().map((error) => {return error.msg}) });
+    }
+    
     try {
-        const result = await posts.modifyComment(req.body.action, req.body.args, req.body?.comment, req.body?.data);
+        
+        const userID = (await readJWT(req.cookies.id))?.sub ??
+        new Error("Invalid User ID");
+        if (userID instanceof Error) {
+            return res.status(401).json({ errors: "Invalid User ID"});
+        }
+        
+        
+        const data = {
+            created_by: userID,
+            message: req.body.data['message']
+        }
+        const result = await posts.modifyComment(req.body.action, req.body.args, req.body?.comment, data);
         if (result) {
             res.status(200).json({ result });
         }

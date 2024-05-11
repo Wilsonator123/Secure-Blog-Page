@@ -46,7 +46,11 @@ async function modifyComment(action, args, comment = {}, data={}){
             data['comment_id'] = new ObjectId()
             data['created_at'] = new Date()
 
+            const user = await db.query("getUser", [data.created_by])
+            data.created_by = user[0]?.username
+
             result = await mongo.run(mongo.write_to_file, 'posts', args, {'$push': {"comments": data}})
+            
 
             if (result.modifiedCount > 0 || result.matchedCount > 0) {
                 return 'Comment added'
