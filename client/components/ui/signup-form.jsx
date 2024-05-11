@@ -121,7 +121,7 @@ export default function SignupForm({toggle}){
 
 
     return (
-        <Card className="h-3/5 w-1/2 bg-primary border-accent mt-8 rounded-3xl">
+        <Card className="h-3/5 w-1/2 bg-primary border-accent rounded-3xl my-8">
         <CardHeader >
           <CardTitle className="text-3xl m-auto text-text">Signup</CardTitle>
           <CardDescription className="m-auto text-text">Create your CryptoBros account. 

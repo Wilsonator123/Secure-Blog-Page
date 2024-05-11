@@ -46,24 +46,24 @@ export async function middleware(request) {
         }
     }
     if(request.nextUrl.pathname.startsWith('/create')){
-        const id = await checkPermission(['user:write'], id)
-        if(id.ok){
+        const res = await checkPermission(['user:write'], id)
+        if(res.ok){
             return NextResponse.next()
         } else {
             return NextResponse.redirect(new URL('/login', request.url))
         }
     }
     if(request.nextUrl.pathname.startsWith('/account')){
-        const id = await checkPermission(['user:logged_in', 'user:read'], id)
-        if(id.ok){
+        const res = await checkPermission(['user:logged_in', 'user:read'], id)
+        if(res.ok){
             return NextResponse.next()
         } else {
             return NextResponse.redirect(new URL('/login', request.url))
         }
     }
     if(request.nextUrl.pathname.startsWith('/admin')){
-        const id = await checkPermission(['admin'], id)
-        if(id.ok){
+        const res = await checkPermission(['admin'], id)
+        if(res.ok){
             return NextResponse.next()
         } else {
             return NextResponse.redirect(new URL('/404', request.url))
