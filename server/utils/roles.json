@@ -1,54 +1,40 @@
 {
-  "types": {
-    "posts": [
-      "posts:read",
-      "posts:create",
-      "posts:update",
-      "posts:delete"
-    ],
-    "account": [
-      "account:read",
-      "account:create",
-      "account:update",
-      "account:delete"
-    ],
-    "comments": [
-      "comments:read",
-      "comments:create",
-      "comments:update",
-      "comments:delete"
-    ],
-    "admin": [
-      "admin:read",
-      "admin:create",
-      "admin:update",
-      "admin:delete"
-    ],
-    "roles": [
-      "roles:read",
-      "roles:create",
-      "roles:update",
-      "roles:delete",
-      "roles:assign",
-      "roles:revoke"
-    ]
-  },
-  "presets": {
-    "user": [
-      "posts:read",
-      "posts:create",
-      "posts:update",
-      "posts:delete",
-      "comments:read",
-      "comments:create",
-      "comments:update",
-      "comments:delete",
-      "account:read"
-    ],
-    "verified_user": [
-      "account:update",
-      "account:delete"
-    ]
-  }
-
+	"types": {
+		"posts": ["posts:read", "posts:create", "posts:update", "posts:delete"],
+		"account": [
+			"account:read",
+			"account:create",
+			"account:update",
+			"account:delete"
+		],
+		"comments": [
+			"comments:read",
+			"comments:create",
+			"comments:update",
+			"comments:delete"
+		],
+		"admin": ["admin:read", "admin:create", "admin:update", "admin:delete"],
+		"roles": [
+			"roles:read",
+			"roles:create",
+			"roles:update",
+			"roles:delete",
+			"roles:assign",
+			"roles:revoke"
+		]
+	},
+	"presets": {
+		"user": [
+			"posts:read",
+			"posts:create",
+			"posts:update",
+			"posts:delete",
+			"comments:read",
+			"comments:create",
+			"comments:update",
+			"comments:delete",
+			"account:read"
+		],
+		"verified_user": ["account:update", "account:delete"]
+	}
 }
