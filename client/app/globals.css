@@ -86,7 +86,7 @@
 .mid-avatar {
   width: 100%; 
   height: auto;
-  max-width: 100px; 
+  max-width: 96px; 
   aspect-ratio: 1 / 1; 
   user-select: none;
 }
@@ -94,7 +94,7 @@
 .sm-avatar {
   width: 100%; 
   height: auto;
-  max-width: 50px;
+  max-width: 48px;
   aspect-ratio: 1 / 1; 
   user-select: none;
 }

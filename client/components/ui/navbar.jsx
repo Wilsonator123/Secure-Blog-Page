@@ -29,6 +29,11 @@ export default function NavBar() {
     router.push('/account');
   };
 
+  const handleLogout = async () => {
+    await logout();
+    router.push('/login');
+  }
+
 
   const handleFeed = (event) => {
     event.stopPropagation();
@@ -64,7 +69,7 @@ export default function NavBar() {
                   <li className="flex items-center" onClick={logout}><LogoutIcon fill="#F54D28"/> Sign Out</li>
                 </>
               ) : (
-                <li className="dropdown flex items-center" onClick={handleProfile}><LoginIcon fill="#ffff"/> Sign In</li>
+                <li className="dropdown flex items-center" onClick={handleLogout}><LoginIcon fill="#ffff"/> Sign In</li>
               )}
             </ul>
           </div>
