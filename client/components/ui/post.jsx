@@ -25,7 +25,7 @@ export default function Post({post}){
             </CardHeader>
             <CardHeader >
                 <CardTitle className="text-xl text-text" >{post.title}</CardTitle>
-                <CardDescription className="text-text overflow-hidden">{post.description}</CardDescription>
+                <CardDescription className="text-text overflow-hidden">{post.comments}</CardDescription>
             </CardHeader>
             <CardFooter className='text-text '>
                 <CtaButtons numberOfComments={numberOfComments}/>
