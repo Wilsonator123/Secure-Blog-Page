@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import UserPFP from '@/components/ui/user-pfp';
@@ -13,11 +13,22 @@ import Close from '@/assets/close.svg';
 import Logout from '@/assets/logout.svg';
 import { logout } from '@/hooks/user';
 import Return from '@/assets/return.svg';
-const API_URL = 'http://127.0.0.1:8000/';
+import {Input} from '@/components/ui/input';
+import ShowPassword from '@/assets/showPassword.svg'
+import HidePassword from '@/assets/hidePassword.svg'
 
 export default function SettingsPage({ toggle }) {
   const [activeSetting, setActiveSetting] = useState('');
   const router = useRouter();
+
+  const [showPassword, setShowPassword] = useState("password");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const passwordBox = useRef();
+  const emailBox = useRef();
+
 
   const handleSignOut = async () => {
     try {
@@ -33,24 +44,108 @@ export default function SettingsPage({ toggle }) {
   };
 
   const renderSettingForm = () => {
-    switch(activeSetting) {
+    switch (activeSetting) {
       case 'email':
-        return <div className='text-text'>Form to change email</div>;
-      case 'password':
-        return <div>Form to change password</div>;
+        return (
+          <section>
+            <h2 className="text-text text-2xl font-bold text-center mb-6">Change Email</h2>
+            <div className="relative flex flex-col w-full justify-center items-center">
+              <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
+
+              <Input id="login-password" type={`${showPassword}`} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+              required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox}/>
+
+              <div className="text-text absolute left-2 z-10">
+                <PasswordPin fill={'#fff'}/>
+              </div>
+
+              <div onClick={() => {setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus();}} 
+              className="text-text absolute right-2 z-10">
+                {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
+              </div>
+            </div>
+
+            <div className="relative flex flex-col w-full justify-center items-center pb-6">
+              <label className='text-text absolute -top-2 left-1' htmlFor="login-email">New E-mail</label>
+
+              <Input id="login-email" type="email" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+              required value={email} autoComplete="email" ref={emailBox} />
+
+              <div className="text-text absolute left-2 z-10">
+                <Mail width={30} height={30} fill={'#fff'}/>
+              </div>
+            </div>
+          </section>
+        );
+        case 'password':
+          return (
+            <section>
+              <h2 className="text-text text-2xl font-bold text-center mb-6">Change Password</h2>
+                <div className="relative flex flex-col w-full justify-center items-center pb-4">
+                  <label className='text-text absolute -top-2 left-1' htmlFor="login-email">Email</label>
+
+                  <Input id="login-email" type="email" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+                  required value={email} autoComplete="email" onChange={(e) => setEmail(e.target.value)} ref={emailBox}/>
+
+                  <div className="text-text absolute left-2 z-10">
+                    <Mail width={30} height={30} fill={'#fff'}/>
+                  </div>
+                </div>
+  
+                <div className="relative flex flex-col w-full justify-center items-center">
+                  <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
+                  
+                  <Input id="login-password" type={`${showPassword}`} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+                  required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox}/>
+
+                  <div className="text-text absolute left-2 z-10">
+                    <PasswordPin fill={'#fff'}/>
+                  </div>
+
+                  <div onClick={() => {setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus();}} 
+                  className="text-text absolute right-2 z-10">
+                    {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
+                  </div>
+                </div>
+  
+                <div className="relative flex flex-col w-full justify-center items-center mt-6">
+                  <label className='text-text absolute -top-2 left-1' htmlFor="login-password-new">New Password</label>
+                  
+                  <Input id="login-password-new" type={`${showPassword}`} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+                  required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox}/>
+
+                  <div className="text-text absolute left-2 z-10">
+                    <PasswordPin fill={'#fff'}/>
+                  </div>
+
+                  <div onClick={() => {setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus();}} 
+                  className="text-text absolute right-2 z-10">
+                    {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
+                  </div>
+                </div>
+            </section>
+          );
       case 'accountInfo':
-        return <div>Form to update account information</div>;
+        return (
+          <section>
+            <h2 className="text-text text-2xl font-bold text-center mb-6">Change Account Info</h2>
+            <div className="text-text text-center mb-4">Manage your account information here.</div>
+          </section>
+        );
       case '2fa':
-        return <div>Form to update Two-Factor Authentication settings</div>;
-      case 'deleteAccount':
-        return <div>Form to delete account</div>;
+        return (
+          <section>
+            <h2 className="text-text text-2xl font-bold text-center mb-6">Update 2FA Settings</h2>
+            <div className="text-text text-center mb-4">Manage your two-factor authentication settings here.</div>
+          </section>
+        );
       default:
-        return <div>Select a setting to modify.</div>;
+        return <div className="text-text">Select a setting to update.</div>;
     }
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-opacity-0">
+    <main className="flex h-screen w-screen flex-col items-center justify-center bg-opacity-0">
       <Card className="bg-primary border-accent mt-8">
       <CardHeader className="relative flex items-center justify-center w-full p-4">
         {activeSetting ? (
@@ -75,7 +170,7 @@ export default function SettingsPage({ toggle }) {
         
         <div className="w-4/5 mx-auto border-t border-grey-700 m-5"></div>
 
-        <CardContent className="flex flex-col items-center w-full px-20 py-10 min-h-[400px] min-w-[994px]">
+        <CardContent className="flex flex-col items-center w-full px-20 py-10">
           {!activeSetting && (
             <div className="grid grid-cols-3 gap-16">
 

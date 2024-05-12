@@ -3,13 +3,14 @@ const router = express.Router();
 const account = require("../accounts/account.js");
 const { cookie, validationResult } = require("express-validator");
 const { setCookie, validateCookie } = require("../utils/cookie.js");
-
+const { authorize } = require("../middleware.js");
 router.get("/", (req, res) => {
 	res.send({ data: "Account route" });
 });
 
 router.post(
 	"/getUser",
+	authorize(["account:read"]),
 	cookie("id").custom((value, { req }) => {
 		const cookie = req.cookies.id;
 		if (!cookie) {
@@ -30,6 +31,7 @@ router.post(
 			}
 
 			const id = await validateCookie(req, res);
+
 			if (id) {
 				const result = await account.getUser(req.cookies.id);
 				if (result) {

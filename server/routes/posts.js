@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const posts = require("../posts/posts");
+const validator = require("email-validator");
 const { body, validationResult } = require("express-validator");
+const { authorize } = require("../middleware");
 const { readJWT } = require("../utils/auth");
 const { ObjectId } = require("mongodb");
+
 router.get("/", (req, res) => {
 	res.send({ data: "Blog route" });
 });
@@ -39,24 +42,16 @@ router.post(
 		try {
 			const userID =
 				(await readJWT(req.cookies.id))?.sub ??
-				new Error("No user ID found");
-			const postId = new ObjectId();
-			const data = {
-				_id: postId,
-				title: req.body["title"],
-				description: req.body["description"],
-				created_at: new Date(),
-				created_by: userID,
-				comments: req.body["comments"] ?? [],
-			};
-			const result = await posts.createPost(data);
+				new Error("Invalid user ID");
+			if (userID instanceof Error) {
+				return res.status(401).json({ errors: userID });
+			}
+			const result = await posts.createPost(userID, req.body);
 
 			if (result) {
 				res.status(200).json({
-					data: {
-						postId: postId,
-						message: "Blog created",
-					},
+					postId: result,
+					message: "Blog created",
 				});
 			} else {
 				res.status(401).json({ errors: "Blog not created" });
@@ -67,42 +62,40 @@ router.post(
 	}
 );
 
-router.post("/deletePost", async (req, res) => {
-	try {
-		const result = await posts.deletePost(req.body);
+router.post(
+	"/deletePost",
+	authorize(["posts:delete"]),
+	body("postId")
+		.notEmpty()
+		.withMessage("Post ID is required")
+		.isString()
+		.escape(),
+	async (req, res) => {
+		try {
+			const userID =
+				(await readJWT(req.cookies.id))?.sub ??
+				new Error("Invalid user ID");
+			if (userID instanceof Error) {
+				return res.status(401).json({ errors: userID });
+			}
+			const result = await posts.deletePost(userID, req.body.postId);
 
-		if (result) {
-			res.status(200).json({ data: "Blog deleted" });
-		} else {
-			res.status(401).json({ errors: "Blog not deleted" });
+			if (result) {
+				res.status(200).json({ data: "Blog deleted" });
+			} else {
+				res.status(401).json({ errors: "Blog not deleted" });
+			}
+		} catch (error) {
+			console.log(error);
 		}
-	} catch (error) {
-		console.log(error);
 	}
-});
+);
 
-router.post("/updateComment", async (req, res) => {
+router.post("/getPosts", authorize([]), async (req, res) => {
 	try {
-		const result = await posts.modifyComment(
-			req.body.action,
-			req.body.args,
-			req.body?.comment,
-			req.body?.data
-		);
-		if (result) {
-			res.status(200).json({ result });
-		} else {
-			res.status(401).json({ errors: "Blog not updated" });
-		}
-	} catch (error) {
-		console.log(error);
-	}
-});
+		const userID = (await readJWT(req.cookies.id))?.sub ?? "";
 
-router.post("/getPosts", async (req, res) => {
-	try {
-		console.log(req.body?.args);
-		const result = await posts.getPosts(req.body.args ?? {});
+		const result = await posts.getPosts(userID, req.body.args ?? {});
 
 		if (result) {
 			res.status(200).json({ data: result });
