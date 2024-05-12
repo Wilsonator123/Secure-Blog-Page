@@ -20,7 +20,7 @@ router.post('/createPost'
         .isLength({ min: 3 }).withMessage('Description must be at least 3 chars long')
         .escape()
     , async(req, res) => {
-    console.log(1);
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(401).json({ errors: errors.array().map((error) => {return error.msg}) });
