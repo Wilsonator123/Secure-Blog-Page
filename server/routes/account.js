@@ -31,7 +31,6 @@ router.post(
 			}
 
 			const id = await validateCookie(req, res);
-
 			if (id) {
 				const result = await account.getUser(req.cookies.id);
 				if (result) {

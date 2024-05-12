@@ -64,9 +64,6 @@ export default function LoginForm({ toggle }) {
         emailBox.current.focus();
       }
     }
-
-
-
   }
 
   function forgottenPassword() {
