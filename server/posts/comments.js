@@ -3,6 +3,7 @@ const db = require("../database/index.js");
 const { ObjectId } = require("mongodb");
 const mongo = new Database();
 const { readJWT } = require("../utils/auth");
+const isOwner = require("../utils/isOwner");
 
 const createComment = async (userID, postId, comment) => {
 	try {
@@ -36,6 +37,9 @@ const createComment = async (userID, postId, comment) => {
 
 const deleteComment = async (userID, commentId) => {
 	try {
+		if (!(await isOwner(userID, "comment", commentId))) {
+			return false;
+		}
 		commentId = new ObjectId(commentId);
 		const result = await mongo.run(
 			mongo.write_to_file,
@@ -59,6 +63,9 @@ const deleteComment = async (userID, commentId) => {
 
 const editComment = async (userID, commentId, comment) => {
 	try {
+		if (!(await isOwner(userID, "comment", commentId))) {
+			return false;
+		}
 		commentId = new ObjectId(commentId);
 		const result = await mongo.run(
 			mongo.write_to_file,
@@ -82,7 +89,6 @@ const editComment = async (userID, commentId, comment) => {
 
 const getComments = async (userID, args) => {
 	try {
-		console.log(args);
 		if (args.postId) {
 			const postId = new ObjectId(args.postId);
 			const result = await mongo.run(mongo.read_file, "posts", {
