@@ -5,14 +5,17 @@ const isOwner = require("../utils/isOwner.js");
 const db = require("../database/index.js");
 
 async function createPost(userID, data) {
+	const postId = new ObjectId();
 	data = {
+		_id: postId,
 		title: data["title"],
 		content: data["content"],
 		created_at: new Date(),
 		comments: data["comments"] ?? [],
 		created_by: userID,
 	};
-	return await mongo.run(mongo.create_file, "posts", data);
+	await mongo.run(mongo.create_file, "posts", data);
+	return postId.toString();
 }
 
 async function getPosts(userID, args) {
