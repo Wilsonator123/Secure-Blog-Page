@@ -15,7 +15,6 @@ import { updateUser, logout } from '@/hooks/user';
 import axios from 'axios';
 import UserResult from './userResult';
 import PostResult from './postResult';
-import Post from './post';
 
 const API_URL = 'http://127.0.0.1:8000/'
 
