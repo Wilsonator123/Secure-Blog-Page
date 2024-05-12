@@ -8,13 +8,13 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  client:
-    build: ./client
-    ports:
-      - 3000:3000
-    volumes:
-        - ./client:/app/client
-    restart: always
+    client:
+        build: ./client
+        ports:
+            - 3000:3000
+        volumes:
+            - ./client:/app/client
+        restart: always
 
   server:
     build: ./server
@@ -77,11 +77,10 @@ services:
       timeout: 5s
       retries: 5
 volumes:
-  db-data:
-  mongo-data:
+    db-data:
+    mongo-data:
 secrets:
-  db-password:
-    file: ./server/db/password.txt
-  mongo:
-    file: ./server/db/mongo.txt
-
+    db-password:
+        file: ./server/db/password.txt
+    mongo:
+        file: ./server/db/mongo.txt
