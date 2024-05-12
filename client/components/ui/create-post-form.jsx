@@ -9,12 +9,33 @@ import { useForm } from "react-hook-form";
 import Bold from "@/assets/bold.svg";
 import FontIncrease from "@/assets/fontIncrease.svg";
 import FontDecrease from "@/assets/fontDecrease.svg";
-
+import axios from "axios";
 export default function CreatePostForm(){
     const router = useRouter();
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = async (data) => {
-        console.log(data);
+        try{
+            const response = await axios.post('http://localhost:8000/posts/createPost',
+                {
+                    title: data['title'],
+                    description: data['description'],
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+            )
+            const post = response.data.data?.postId ?? ''
+            if(response.status === 200){
+                router.push(`/posts/${post}`);
+            } else {
+                console.log('There was an error creating the post');
+            }
+        }catch(err){
+            console.log(err);
+        }
     }
 
     return(
@@ -41,7 +62,7 @@ export default function CreatePostForm(){
                         placeholder="Description" {...register("description", {required:true, minLength:3})} />
                     </div>
 
-                    <input type="submit" value="Post" className="text-text font-semibold self-end border border-accent px-7 py-2 rounded-full hover:bg-accent/60"/>
+                    <input type="submit" value="Post" className="text-text cursor-pointer font-semibold self-end border border-accent px-7 py-2 rounded-full hover:bg-accent/60"/>
 
                 </form>
             </CardContent>

@@ -51,7 +51,7 @@ export default function LoginForm({ toggle }) {
         })
 
       if (response.status === 200) {
-        router.push('/home');
+        router.push('/');
       }
 
     } catch (error) {

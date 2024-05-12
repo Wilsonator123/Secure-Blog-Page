@@ -1,7 +1,8 @@
 const Database = require("../database/mongo.js");
 const { ObjectId } = require("mongodb");
-const db = new Database();
+const mongo = new Database();
 const isOwner = require("../utils/isOwner.js");
+const db = require("../database/index.js");
 
 async function createPost(userID, data) {
 	data = {
@@ -11,27 +12,42 @@ async function createPost(userID, data) {
 		comments: data["comments"] ?? [],
 		created_by: userID,
 	};
-	return await db.run(db.create_file, "posts", data);
+	return await mongo.run(mongo.create_file, "posts", data);
 }
 
-async function getPosts(userID, args) {
-	const result = await db.run(db.read_file, "posts", args);
-	return result.map((post) => {
-		post.owner = post.created_by === userID;
-		if (post?.comments) {
-			post.comments = post.comments.map((comment) => {
-				comment.owner = comment.created_by === userID;
-				return comment;
-			});
-		}
-		return post;
-	});
+async function getPosts(args) {
+	if (args["_id"]) {
+		args["_id"] = new ObjectId(args["_id"]);
+	}
+
+	try {
+		const result = await mongo.run(mongo.read_file, "posts", args);
+
+		return result.map(async (post) => {
+			post.owner = post.created_by === userID;
+			const user = await db.query("getUser", [post.created_by]);
+			post.created_by = user[0]?.username;
+			if (post?.comments) {
+				post.comments = post.comments.map(async (comment) => {
+					comment.owner = comment.created_by === userID;
+					const user = await db.query("getUser", [
+						comment.created_by,
+					]);
+					post.created_by = user[0]?.username;
+					return comment;
+				});
+			}
+			return post;
+		});
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 async function modifyPost(args, postId) {
 	if (await isOwner(userID, "post", postId)) {
-		return await db.run(
-			db.write_to_file,
+		return await mongo.run(
+			mongo.write_to_file,
 			"posts",
 			{ _id: new ObjectId(postId) },
 			{ $set: data }
@@ -42,7 +58,7 @@ async function modifyPost(args, postId) {
 
 async function deletePost(userID, postId) {
 	if (await isOwner(userID, "post", postId)) {
-		return await db.run(db.delete_file, "posts", {
+		return await mongo.run(mongo.delete_file, "posts", {
 			_id: new ObjectId(postId),
 		});
 	} else {

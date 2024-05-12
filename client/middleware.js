@@ -3,11 +3,6 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 const API_URL = "http://localhost:8000/";
 
-// This function can be marked `async` if using `await` inside
-
-// I think we should give ids to unauthenticated users which allow them to read
-
-// There should be routes for users /account, /create etc.
 async function checkPermission(scope, cookie) {
 	return await fetch(API_URL + "auth/hasPermission", {
 		method: "POST",
@@ -19,7 +14,7 @@ async function checkPermission(scope, cookie) {
 		body: JSON.stringify({ scope }),
 	});
 }
-// There should be admin routes /admin
+
 export async function middleware(request) {
 	const id = request.cookies.get("id")?.value ?? "";
 
