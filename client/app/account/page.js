@@ -6,6 +6,8 @@ import SettingsPage from "@/components/ui/settings-page";
 import Modal from "@/components/ui/Modal";
 import { useUserStore } from "@/context/UserContext";
 import { updateUser } from "@/hooks/user";
+
+
 export default function Home() {
 	const user = useUserStore((state) => state.user);
 	const [isModalOpen, setModalOpen] = useState(false);

@@ -46,12 +46,9 @@ export default function Account({ user, toggle }) {
             <div className="flex flex-col items-center mt-5 mb-5">
                 <h1 className="text-2xl text-text font-bold mb-1">Your Content</h1>
                 <div className="w-3/5 mx-auto border-t-2 border-secondary"></div>
-
-                <br />
-
-                <PostList args={{ 'created_by': user.userid }} />
-
             </div>
+            
+            <PostList className="w-3/5 mx-auto" args={{ 'created_by': user.userid }} />
 
         </main>
     );

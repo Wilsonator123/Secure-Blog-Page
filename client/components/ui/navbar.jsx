@@ -4,13 +4,13 @@ import React, { useState, useEffect } from 'react';
 import UserPFP from '@/components/ui/user-pfp';
 import SettingsIcon from '@/assets/settings.svg';
 import ProfileIcon from '@/assets/profile.svg';
+import LoginIcon from '@/assets/login.svg';
 import LogoutIcon from '@/assets/logout.svg';
 import Modal from '@/components/ui/Modal';
 import SettingsPage from '@/components/ui/settings-page';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/context/UserContext';
 import { updateUser, logout } from '@/hooks/user';
-import Identicon from 'react-identicons';
 
 const API_URL = 'http://127.0.0.1:8000/'
 
@@ -20,50 +20,52 @@ export default function NavBar() {
   const user = useUserStore(state => state.user);
   const [showHeader, setShowHeader] = useState(false);
 
-
   const toggleSettingsModal = (event) => {
-    event.stopPropagation();
     setSettingsModalOpen(!isSettingsModalOpen);
   };
 
-  const profile = (event) => {
+  const handleProfile = (event) => {
     event.stopPropagation();
     router.push('/account');
   };
 
-  const feed = (event) => {
+
+  const handleFeed = (event) => {
     event.stopPropagation();
     router.push('/');
   };
 
   useEffect(() => {
     async function fetchUser() {
-      await updateUser().then(
-        setShowHeader(true)
-      )
+      await updateUser().then(() => setShowHeader(true));
     }
-    fetchUser()
-  }, [])
-
+    fetchUser();
+  }, []);
 
   return (
     <section className="bg-primary h-20 w-full flex justify-center items-center px-8 rounded-b-3xl">
-      <div className="w-4/5 flex justify-between items-center" >
-        <h1 className="text-text unselectable" onClick={feed}>Logo</h1>
+      <div className="w-4/5 flex justify-between items-center">
+        <h1 className="text-text unselectable" onClick={handleFeed}>Logo</h1>
         {showHeader &&
           <div className="relative rounded">
             <div className="flex text-white p-2 text-lg items-center">
-              {user ? <h1 className="self-center font-semibold text-xl"> Hello {user.fname} </h1> : <h1 className="font-semibold self-center text-xl">Hello Guest</h1>}
+              {user ? <h1 className="self-center font-semibold text-xl">Hello {user.fname}</h1> : <h1 className="font-semibold self-center text-xl">Hello Guest</h1>}
             </div>
           </div>
         }
-        <div className="relative flex items-center user-profile" onClick={profile}>
-          <UserPFP containerClassName ="sm-avatar" identiconClassName="scale-down"/>
+        <div className="relative flex items-center user-profile" onClick={handleProfile}>
+          <UserPFP containerClassName="sm-avatar" identiconClassName="scale-down" />
           <div className="dropdown">
             <ul>
-              <li className="flex items-center" onClick={profile}><ProfileIcon fill="#ffff" />Profile</li>
-              <li className="flex items-center" onClick={toggleSettingsModal}><SettingsIcon fill="#ffff" />Settings</li>
-              <li className="flex items-center" onClick={logout}><LogoutIcon fill="#F54D28" />Sign Out</li>
+              {user ? (
+                <>
+                  <li className="flex items-center" onClick={handleProfile}><ProfileIcon fill="#ffff" /> Profile</li>
+                  <li className="flex items-center" onClick={toggleSettingsModal}><SettingsIcon fill="#ffff"/> Settings</li>
+                  <li className="flex items-center" onClick={logout}><LogoutIcon fill="#F54D28"/> Sign Out</li>
+                </>
+              ) : (
+                <li className="dropdown flex items-center" onClick={handleProfile}><LoginIcon fill="#ffff"/> Sign In</li>
+              )}
             </ul>
           </div>
         </div>

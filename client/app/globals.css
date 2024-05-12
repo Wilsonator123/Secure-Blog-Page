@@ -78,7 +78,7 @@
 .large-avatar {
   width: 100%; 
   height: auto;
-  max-width: 200px !important;/* Sets the maximum size */
+  max-width: 200px !important;
   aspect-ratio: 1 / 1; 
   user-select: none;
 }
@@ -86,7 +86,7 @@
 .mid-avatar {
   width: 100%; 
   height: auto;
-  max-width: 100px; /* Sets the maximum size */
+  max-width: 100px; 
   aspect-ratio: 1 / 1; 
   user-select: none;
 }
@@ -94,7 +94,7 @@
 .sm-avatar {
   width: 100%; 
   height: auto;
-  max-width: 50px; /* Sets the maximum size */
+  max-width: 50px;
   aspect-ratio: 1 / 1; 
   user-select: none;
 }
@@ -117,7 +117,6 @@
   position: absolute;
   right: 0;
   top: 100%;
-  margin-top: .5rem;
   padding: 0.5rem 0;
   background: #292B30;
   color: white;

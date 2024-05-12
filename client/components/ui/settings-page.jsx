@@ -11,6 +11,7 @@ import DeleteAccount from '@/assets/deleteaccount.svg';
 import Placeholder from '@/assets/placeholder.svg';
 import Close from '@/assets/close.svg';
 import Logout from '@/assets/logout.svg';
+import { logout } from '@/hooks/user';
 import Return from '@/assets/return.svg';
 const API_URL = 'http://127.0.0.1:8000/';
 
@@ -20,22 +21,13 @@ export default function SettingsPage({ toggle }) {
 
   const handleSignOut = async () => {
     try {
-      const response = await fetch(API_URL + 'auth/logout', {
-        method: 'GET',
-        credentials: 'include'
-      });
-
-      if (response.ok) {
-        router.push('/login');
-        toggle();
-      } else {
-        throw new Error('Failed to log out');
-      }
+      await logout();
+      router.push('/login');
+      toggle();  
     } catch (error) {
       console.error('Logout Error:', error);
     }
   };
-
   const resetToMainSettings = () => {
     setActiveSetting(''); 
   };
@@ -140,7 +132,7 @@ export default function SettingsPage({ toggle }) {
         {/* Log out / Submit Button */}
         <CardFooter className="flex flex-col items-center space-y-4 mb-10">
           {activeSetting ? (
-            <Button variant='secondary' className="h-12 text-text text-xl w-full w-full max-w-sm mt-10 border-transparent hover:border hover:border-accent" type="submit">
+            <Button variant='secondary' className="h-12 text-text text-xl w-full max-w-sm mt-10 border-transparent hover:border hover:border-accent" type="submit">
               Submit
             </Button>
 
