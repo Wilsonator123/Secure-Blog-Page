@@ -6,6 +6,7 @@ import SettingsIcon from '@/assets/settings.svg';
 import ProfileIcon from '@/assets/profile.svg';
 import LoginIcon from '@/assets/login.svg';
 import LogoutIcon from '@/assets/logout.svg';
+import Logo from '@/assets/logo.svg';
 import Modal from '@/components/ui/Modal';
 import SettingsPage from '@/components/ui/settings-page';
 import { useRouter } from 'next/navigation';
@@ -34,7 +35,6 @@ export default function NavBar() {
     router.push('/login');
   }
 
-
   const handleFeed = (event) => {
     event.stopPropagation();
     router.push('/');
@@ -50,7 +50,9 @@ export default function NavBar() {
   return (
     <section className="bg-primary h-20 w-full flex justify-center items-center px-8 rounded-b-3xl">
       <div className="w-4/5 flex justify-between items-center">
-        <h1 className="text-text unselectable" onClick={handleFeed}>Logo</h1>
+        <div className="text-text unselectable" onClick={handleFeed}>
+          <Logo className="h-12 w-12" fill="#FFDA54" />
+        </div>
         {showHeader &&
           <div className="relative rounded">
             <div className="flex text-white p-2 text-lg items-center">
