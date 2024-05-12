@@ -1,24 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { usePosts } from "@/hooks/usePosts";
 import Post from "@/components/ui/post";
 
 
-export default function PostList() {
+export default function PostList({ args, className }) {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        usePosts()
+        usePosts(args)
             .then((response) => {
                 setPosts(response);
                 setLoading(false);
             });
     }, []);
 
-    
+
 
     return (
-        <div>
+        <div className ={`${className}`} >
             {loading ? <p>Loading...</p> :
                 <>
                     {posts.map((post) => (

@@ -17,7 +17,7 @@ export default function Post({post}){
     const numberOfComments = post.comments && Object.keys(post.comments).length;
 
     return (
-        <Card className="bg-primary w-6/6 max-h-96 my-4 mx-auto rounded-none border-secondary cursor-pointer"
+        <Card className="bg-primary w-6/6 max-h-96 my-4 mx-auto rounded-2xl border-secondary cursor-pointer"
               onClick={() => router.push(`/posts/${post._id}`)}>
             <CardHeader className="h-1 -my-2 text-text text-sm flex flex-row">
                 {post.created_by} <DotFilledIcon width={18} height={18}/> {dateToString(post.created_at)}

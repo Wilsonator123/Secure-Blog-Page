@@ -63,19 +63,6 @@ app.use("/posts", require("./routes/posts.js"));
 app.use("/account", require("./routes/account.js"));
 app.use("/comments", require("./routes/comments.js"));
 
-app.get("/", authorize(["read"], true), async (req, res) => {
-	const errors = validationResult(req);
-	if (errors.isEmpty()) {
-		res.json("We made it");
-	} else {
-		res.json({
-			errors: errors.array().map((error) => {
-				return error.msg;
-			}),
-		});
-	}
-});
-
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);
 });
