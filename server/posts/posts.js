@@ -15,30 +15,38 @@ async function createPost(userID, data) {
 	return await mongo.run(mongo.create_file, "posts", data);
 }
 
-async function getPosts(args) {
-	if (args["_id"]) {
+async function getPosts(userID, args) {
+	if (args?._id) {
 		args["_id"] = new ObjectId(args["_id"]);
 	}
 
 	try {
 		const result = await mongo.run(mongo.read_file, "posts", args);
 
-		return result.map(async (post) => {
-			post.owner = post.created_by === userID;
-			const user = await db.query("getUser", [post.created_by]);
-			post.created_by = user[0]?.username;
-			if (post?.comments) {
-				post.comments = post.comments.map(async (comment) => {
-					comment.owner = comment.created_by === userID;
-					const user = await db.query("getUser", [
-						comment.created_by,
-					]);
-					post.created_by = user[0]?.username;
-					return comment;
-				});
-			}
-			return post;
-		});
+		const modifiedResults = await Promise.all(
+			result.map(async (post) => {
+				post.owner = post.created_by === userID;
+				const user = await db.query("getUser", [post.created_by]);
+				post.created_by = user[0]?.username;
+
+				if (post?.comments) {
+					post.comments = await Promise.all(
+						post.comments.map(async (comment) => {
+							comment.owner = comment.created_by === userID;
+							const user = await db.query("getUser", [
+								comment.created_by,
+							]);
+							comment.created_by = user[0]?.username;
+							return comment;
+						})
+					);
+				}
+
+				return post;
+			})
+		);
+
+		return modifiedResults;
 	} catch (error) {
 		console.log(error);
 	}
