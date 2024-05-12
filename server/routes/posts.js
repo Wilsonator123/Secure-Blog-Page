@@ -49,7 +49,10 @@ router.post(
 			const result = await posts.createPost(userID, req.body);
 
 			if (result) {
-				res.status(200).json({ data: "Blog created" });
+				res.status(200).json({
+					postId: result,
+					message: "Blog created",
+				});
 			} else {
 				res.status(401).json({ errors: "Blog not created" });
 			}
