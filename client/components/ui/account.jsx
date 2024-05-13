@@ -7,11 +7,13 @@ import UserPFP from '@/components/ui/user-pfp';
 import { useRouter } from 'next/navigation';
 import { usePosts } from '@/hooks/usePosts';
 import PostList from "@/components/ui/post-list";
+import { useUserStore } from '@/context/UserContext';
 
 export default function Account({ user, toggle }) {
     const router = useRouter();
     const [posts, setPosts] = useState([{}]);
     const [loading, setLoading] = useState(true);
+    const currentUser = useUserStore(state => state.user);
 
     const handleUsernameClick = () => {
         router.push('/account');
@@ -25,12 +27,14 @@ export default function Account({ user, toggle }) {
                 {/* avatar on the left */}
                 <UserPFP containerClassName="large-avatar" identiconClassName="scale-50" user={user.username} />
 
-                {/* settings button */}
+                {/* conditional settings button */}
+                {user.username === currentUser.username && (
                 <div className="-mt-[-100px] ml-[-30px] z-10">
                     <Button variant="outline" className="bg-primary border-secondary rounded-full p-1">
                         <Settings onClick={toggle} fill="#ffff" width={30} height={30} />
                     </Button>
                 </div>
+                )};
 
                 {/* text on the right */}
                 <div className="flex flex-col ml-20">
