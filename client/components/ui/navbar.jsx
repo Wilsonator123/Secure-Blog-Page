@@ -111,7 +111,7 @@ export default function NavBar() {
               </div>
             </div>
           }
-          <UserPFP containerClassName="sm-avatar" identiconClassName="scale-down" user={user.username} />
+          <UserPFP containerClassName="sm-avatar" identiconClassName="scale-down" user={user?.username} />
           <div className="dropdown">
             <ul>
               {user ? (
