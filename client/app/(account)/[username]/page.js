@@ -13,6 +13,7 @@ export default function Home() {
 	const [isModalOpen, setModalOpen] = useState(false);
 	const [activeSetting, setActiveSetting] = useState(""); // Manage active setting
 	const [loading, setLoading] = useState(true);
+    
 	const toggleModal = () => {
 		setModalOpen(!isModalOpen);
 	};

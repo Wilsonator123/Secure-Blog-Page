@@ -6,7 +6,7 @@ import Settings from '@/assets/settings.svg';
 import UserPFP from '@/components/ui/user-pfp';
 import { useRouter } from 'next/navigation';
 import { usePosts } from '@/hooks/usePosts';
-import PostList from './post-list';
+import PostList from "@/components/ui/post-list";
 
 export default function Account({ user, toggle }) {
     const router = useRouter();

@@ -45,7 +45,7 @@ const rateLimiterMiddleware = (req, res, next) => {
 		});
 };
 
-app.use(rateLimiterMiddleware);
+//app.use(rateLimiterMiddleware);
 
 // Server Middleware Loging to Console
 app.use((req, res, next) => {

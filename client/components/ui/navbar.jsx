@@ -40,9 +40,13 @@ export default function NavBar() {
 
   const handleProfile = (event) => {
     event.stopPropagation();
-    router.push('/account');
+    if (user && user.username) {
+      router.push(`/account/${user.username}`);
+    } else {
+      console.error("User ID is not available");
+    }
   };
-
+  
   const handleLogout = async () => {
     await logout();
     router.push('/login');

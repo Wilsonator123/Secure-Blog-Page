@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import UserPFP from '@/components/ui/user-pfp';
@@ -11,23 +11,27 @@ import DeleteAccount from '@/assets/deleteaccount.svg';
 import Placeholder from '@/assets/placeholder.svg';
 import Close from '@/assets/close.svg';
 import Logout from '@/assets/logout.svg';
-import { logout } from '@/hooks/user';
+import { updateUser, logout } from '@/hooks/user';
 import Return from '@/assets/return.svg';
 import {Input} from '@/components/ui/input';
 import ShowPassword from '@/assets/showPassword.svg'
 import HidePassword from '@/assets/hidePassword.svg'
 
-export default function SettingsPage({ toggle }) {
+export default function SettingsPage({ user, toggle }) {
   const [activeSetting, setActiveSetting] = useState('');
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [fName, setFName] = useState("");
+  const [lName, setLName] = useState("");
   const [error, setError] = useState("");
-
   const passwordBox = useRef();
   const emailBox = useRef();
+  const [isChecked, setIsChecked] = useState(false); 
 
 
   const handleSignOut = async () => {
@@ -65,7 +69,7 @@ export default function SettingsPage({ toggle }) {
               </div>
             </div>
 
-            <div className="relative flex flex-col w-full justify-center items-center pb-6">
+            <div className="relative flex flex-col w-full justify-center items-center mt-6">
               <label className='text-text absolute -top-2 left-1' htmlFor="login-email">New E-mail</label>
 
               <Input id="login-email" type="email" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
@@ -128,9 +132,39 @@ export default function SettingsPage({ toggle }) {
       case 'accountInfo':
         return (
           <section>
-            <h2 className="text-text text-2xl font-bold text-center mb-6">Change Account Info</h2>
-            <div className="text-text text-center mb-4">Manage your account information here.</div>
-          </section>
+          <h2 className="text-text text-2xl font-bold text-center mb-2">Change Account Information</h2>
+          <div className="text-text text-center mb-6">This does not change your username.</div>
+
+          <div className="relative flex flex-col w-full justify-center items-center mb-6">
+            <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
+
+            <Input id="login-password" type={`${showPassword}`} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+            required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox}/>
+
+            <div className="text-text absolute left-2 z-10">
+              <PasswordPin fill={'#fff'}/>
+            </div>
+
+            <div onClick={() => {setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus();}} 
+            className="text-text absolute right-2 z-10">
+              {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
+            </div>
+          </div>
+
+          <div className="relative flex flex-col w-full justify-center items-center pb-6">
+            <label className='text-text absolute -top-2 left-1' htmlFor="newFname">First Name</label>
+
+            <Input type="name" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+            required value={fName} placeholder="Joe" autoComplete="give-name" onChange={(e) => setFName(e.target.value)}/>
+          </div>
+
+            <div className="relative flex flex-col w-full justify-center items-center">
+              <label className='text-text absolute -top-2 left-1' htmlFor="newLname">Last Name</label>
+
+              <Input type="name" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+              required value={lName} placeholder="Bloggs" autoComplete="family-name" onChange={(e) => setLName(e.target.value)}/>
+            </div>
+        </section>
         );
       case '2fa':
         return (
@@ -139,10 +173,54 @@ export default function SettingsPage({ toggle }) {
             <div className="text-text text-center mb-4">Manage your two-factor authentication settings here.</div>
           </section>
         );
+        case 'deleteAccount':
+          return (
+            <section>
+              <h2 className="text-text text-2xl font-bold text-center mb-2">Account Deletion</h2>
+              <div className="relative flex flex-col w-full justify-center items-center pb-6">
+                <label className='text-text absolute -top-2 left-1' htmlFor="login-email">New E-mail</label>
+
+                <Input id="login-email" type="email" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+                required value={email} autoComplete="email" ref={emailBox} />
+
+                <div className="text-text absolute left-2 z-10">
+                  <Mail width={30} height={30} fill={'#fff'}/>
+                </div>
+              </div>
+
+              <div className="relative flex flex-col w-full justify-center items-center">
+              <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
+
+              <Input id="login-password" type={`${showPassword}`} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+              required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox}/>
+
+              <div className="text-text absolute left-2 z-10">
+                <PasswordPin fill={'#fff'}/>
+              </div>
+
+              <div onClick={() => {setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus();}} 
+              className="text-text absolute right-2 z-10">
+                {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center mt-4">
+              <input type="checkbox" id="confirmDelete" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} className="w-6 h-6"/>
+              <label htmlFor="confirmDelete" className="ml-2 text-text">I understand that this action cannot be reversed.</label>
+            </div>
+            </section>
+          );
       default:
         return <div className="text-text">Select a setting to update.</div>;
     }
   };
+
+  useEffect(() => {
+    async function fetchUser() {
+      await updateUser()
+    }
+    fetchUser();
+  }, []);
 
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center bg-opacity-0">
@@ -176,9 +254,8 @@ export default function SettingsPage({ toggle }) {
 
               <div className="flex flex-col items-center space-y-6">
               <UserPFP containerClassName ="mid-avatar" identiconClassName="scale-up"/>
-                <Button variant='secondary' onClick={() => setActiveSetting('profile')} className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
-                  Change PFP
-                </Button>
+                <h1 className="text-3xl text-text mb-2">{user?.fname}</h1>
+                {console.log("user.fname: ", user?.fname)}
               </div>
 
               <div className="flex flex-col items-center space-y-6">
@@ -227,7 +304,7 @@ export default function SettingsPage({ toggle }) {
         {/* Log out / Submit Button */}
         <CardFooter className="flex flex-col items-center space-y-4 mb-10">
           {activeSetting ? (
-            <Button variant='secondary' className="h-12 text-text text-xl w-full max-w-sm mt-10 border-transparent hover:border hover:border-accent" type="submit">
+            <Button variant='secondary' className="h-12 text-text text-xl w-full max-w-sm mt-10 border-transparent hover:border hover:border-accent" type="submit" disabled={!isChecked}>
               Submit
             </Button>
 
