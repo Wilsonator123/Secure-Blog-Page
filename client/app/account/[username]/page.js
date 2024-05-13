@@ -53,7 +53,7 @@ export default function UserAccountPage({ params }) {
 						toggle={() => handleSettingChange("profile")}
 					/>
 
-					{user.username === currentUser.username && (
+					{user.username === currentUser?.username && (
 						<Modal isOpen={isModalOpen} onClose={toggleModal}>
 							<SettingsPage
 								toggle={toggleModal}

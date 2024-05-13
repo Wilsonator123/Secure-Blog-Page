@@ -16,8 +16,8 @@ export default function Account({ user, toggle }) {
     const currentUser = useUserStore(state => state.user);
 
     const handleUsernameClick = () => {
-        router.push('/account');
-        console.log("@placeholderat clicked"); {/* placeholder for further functionality */ }
+        router.push(`/account/${user.username}`);
+        console.log("@ clicked"); {/* placeholder for further functionality */ }
     };
 
     return (
@@ -28,7 +28,7 @@ export default function Account({ user, toggle }) {
                 <UserPFP containerClassName="large-avatar" identiconClassName="scale-50" user={user.username} />
 
                 {/* conditional settings button */}
-                {user.username === currentUser.username && (
+                {user.username === currentUser?.username && (
                 <div className="-mt-[-100px] ml-[-30px] z-10">
                     <Button variant="outline" className="bg-primary border-secondary rounded-full p-1">
                         <Settings onClick={toggle} fill="#ffff" width={30} height={30} />

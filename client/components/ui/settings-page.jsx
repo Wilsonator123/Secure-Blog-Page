@@ -45,6 +45,7 @@ export default function SettingsPage({ user, toggle }) {
   };
   const resetToMainSettings = () => {
     setActiveSetting(''); 
+    setIsChecked(false); 
   };
 
   const renderSettingForm = () => {
@@ -52,7 +53,9 @@ export default function SettingsPage({ user, toggle }) {
       case 'email':
         return (
           <section>
-            <h2 className="text-text text-2xl font-bold text-center mb-6">Change Email</h2>
+            <h2 className="text-text text-2xl font-bold text-center mb-2">Change Email</h2>
+            <div className="text-text text-center mb-8">Change the Email attached to your account</div>
+
             <div className="relative flex flex-col w-full justify-center items-center">
               <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
 
@@ -79,12 +82,20 @@ export default function SettingsPage({ user, toggle }) {
                 <Mail width={30} height={30} fill={'#fff'}/>
               </div>
             </div>
+
+            <div className="flex items-center justify-center mt-4">
+              <input type="checkbox" id="confirmDelete" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} className="w-6 h-6"/>
+              <label htmlFor="confirmDelete" className="ml-2 text-text">I would like to make these changes.</label>
+            </div>
+
           </section>
         );
         case 'password':
           return (
             <section>
-              <h2 className="text-text text-2xl font-bold text-center mb-6">Change Password</h2>
+              <h2 className="text-text text-2xl font-bold text-center mb-2">Change Password</h2>
+              <div className="text-text text-center mb-8">Change the Password attached to your account</div>
+
                 <div className="relative flex flex-col w-full justify-center items-center pb-4">
                   <label className='text-text absolute -top-2 left-1' htmlFor="login-email">Email</label>
 
@@ -127,13 +138,18 @@ export default function SettingsPage({ user, toggle }) {
                     {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
                   </div>
                 </div>
+
+                <div className="flex items-center justify-center mt-4">
+                  <input type="checkbox" id="confirmDelete" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} className="w-6 h-6"/>
+                  <label htmlFor="confirmDelete" className="ml-2 text-text">I would like to make these changes.</label>
+                </div>
             </section>
           );
       case 'accountInfo':
         return (
           <section>
           <h2 className="text-text text-2xl font-bold text-center mb-2">Change Account Information</h2>
-          <div className="text-text text-center mb-6">This does not change your username.</div>
+          <div className="text-text text-center mb-8">This does not change your username.</div>
 
           <div className="relative flex flex-col w-full justify-center items-center mb-6">
             <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
@@ -158,25 +174,55 @@ export default function SettingsPage({ user, toggle }) {
             required value={fName} placeholder="Joe" autoComplete="give-name" onChange={(e) => setFName(e.target.value)}/>
           </div>
 
-            <div className="relative flex flex-col w-full justify-center items-center">
-              <label className='text-text absolute -top-2 left-1' htmlFor="newLname">Last Name</label>
+          <div className="relative flex flex-col w-full justify-center items-center">
+            <label className='text-text absolute -top-2 left-1' htmlFor="newLname">Last Name</label>
 
-              <Input type="name" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-              required value={lName} placeholder="Bloggs" autoComplete="family-name" onChange={(e) => setLName(e.target.value)}/>
-            </div>
+            <Input type="name" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+            required value={lName} placeholder="Bloggs" autoComplete="family-name" onChange={(e) => setLName(e.target.value)}/>
+          </div>
+
+          <div className="flex items-center justify-center mt-4">
+            <input type="checkbox" id="confirmDelete" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} className="w-6 h-6"/>
+            <label htmlFor="confirmDelete" className="ml-2 text-text">I would like to make these changes.</label>
+          </div>
+
         </section>
         );
       case '2fa':
         return (
           <section>
-            <h2 className="text-text text-2xl font-bold text-center mb-6">Update 2FA Settings</h2>
-            <div className="text-text text-center mb-4">Manage your two-factor authentication settings here.</div>
+            <h2 className="text-text text-2xl font-bold text-center mb-2">Update 2FA Settings</h2>
+            <div className="text-text text-center mb-8">Manage your two-factor authentication settings here.</div>
+
+            <div className="relative flex flex-col w-full justify-center items-center">
+                <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
+                  
+                <Input id="login-password" type={`${showPassword}`} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
+                required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox}/>
+
+                <div className="text-text absolute left-2 z-10">
+                  <PasswordPin fill={'#fff'}/>
+                </div>
+
+                <div onClick={() => {setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus();}} 
+                  className="text-text absolute right-2 z-10">
+                  {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-center mt-4">
+                <input type="checkbox" id="confirmDelete" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} className="w-6 h-6"/>
+                <label htmlFor="confirmDelete" className="ml-2 text-text">I would like to make these changes.</label>
+              </div>
+
           </section>
         );
         case 'deleteAccount':
           return (
             <section>
               <h2 className="text-text text-2xl font-bold text-center mb-2">Account Deletion</h2>
+              <div className="text-text text-center mb-8">Delete your account off the website here</div>
+
               <div className="relative flex flex-col w-full justify-center items-center pb-6">
                 <label className='text-text absolute -top-2 left-1' htmlFor="login-email">New E-mail</label>
 
@@ -224,7 +270,7 @@ export default function SettingsPage({ user, toggle }) {
 
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center bg-opacity-0">
-      <Card className="bg-primary border-accent mt-8">
+      <Card className="bg-primary border-accent mt-8 min-w-[700px]">
       <CardHeader className="relative flex items-center justify-center w-full p-4">
         {activeSetting ? (
           <Button variant="outline" onClick={resetToMainSettings} className="absolute left-14 top-11 bg-primary border-secondary rounded-full p-0.5">
