@@ -30,6 +30,7 @@ queries = {
 	getUser: 'SELECT * FROM "User" WHERE UserID = $1',
 	search: 'SELECT * FROM "User" WHERE username LIKE $1 OR email = $1 OR fname LIKE $1 or lname LIKE $1',
 	getUserIDFromUsername: 'SELECT userid FROM "User" WHERE username LIKE $1',
+	getUserByUsername: 'SELECT * FROM "User" WHERE username = $1',
 };
 
 async function query(name, params) {

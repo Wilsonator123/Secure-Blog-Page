@@ -18,7 +18,7 @@ export default function PostList({ args, className }) {
 
 
     return (
-        <div className ={`${className}`} >
+        <div className={`${className}`} >
             {loading ? <p>Loading...</p> :
                 <>
                     {posts.map((post) => (

@@ -23,7 +23,7 @@ export default function Account({ user, toggle }) {
             <div className="flex items-center justify-center mt-10">
 
                 {/* avatar on the left */}
-                <UserPFP containerClassName ="large-avatar" identiconClassName="scale-50"/>
+                <UserPFP containerClassName="large-avatar" identiconClassName="scale-50" user={user.username} />
 
                 {/* settings button */}
                 <div className="-mt-[-100px] ml-[-30px] z-10">
@@ -47,7 +47,7 @@ export default function Account({ user, toggle }) {
                 <h1 className="text-2xl text-text font-bold mb-1">Your Content</h1>
                 <div className="w-3/5 mx-auto border-t-2 border-secondary"></div>
             </div>
-            
+
             <PostList className="w-3/5 mx-auto" args={{ 'created_by': user.userid }} />
 
         </main>

@@ -46,7 +46,7 @@ export default function NavBar() {
       console.error("User ID is not available");
     }
   };
-  
+
   const handleLogout = async () => {
     await logout();
     router.push('/login');
@@ -81,7 +81,7 @@ export default function NavBar() {
           />
 
           {showResults && (
-            <div className="p-1 absolute top-12 left-0 w-full text-lg text-text bg-primary shadow-xl z-10">
+            <div className="p-1 absolute top-12 left-0 w-full text-lg text-text bg-primary shadow-xl z-20">
               {searchResults.users?.length > 0 &&
                 <div className='border-b'>
                   <h1 className="font-semibold underline">Users:</h1>
@@ -111,7 +111,7 @@ export default function NavBar() {
               </div>
             </div>
           }
-          <UserPFP containerClassName="sm-avatar" identiconClassName="scale-down" />
+          <UserPFP containerClassName="sm-avatar" identiconClassName="scale-down" user={user.username} />
           <div className="dropdown">
             <ul>
               {user ? (

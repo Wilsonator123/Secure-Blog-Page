@@ -1,24 +1,30 @@
 "use server";
 
+import axios from "axios";
 import { cookies } from "next/headers";
-export const getUser = async () => {
+export const getUser = async (username = undefined) => {
 	"use server";
 	try {
 		const id = cookies().get("id");
 		if (!id) return false;
 
-		const response = await fetch("http://localhost:8000/account/getUser", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Cookie: "id=" + id.value,
+		const response = await axios.post(
+			"http://localhost:8000/account/getUser",
+			{
+				username: username,
 			},
-			withCredentials: true,
-			credentials: "include",
-		});
-		const data = await response.json();
-		return data.data;
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Cookie: "id=" + id.value,
+				},
+				withCredentials: true,
+			}
+		);
+		return response.data.data;
 	} catch (error) {
+		console.error("Failed to fetch user data:", error);
 		return false;
 	}
 };
