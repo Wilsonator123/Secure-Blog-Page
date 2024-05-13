@@ -47,16 +47,28 @@ export async function middleware(request) {
 			return NextResponse.redirect(new URL("/login", request.url));
 		}
 	}
-	if (request.nextUrl.pathname.startsWith("/account")) {
-		const res = await checkPermission(["account:read"], id);
-		if (res.ok) {
-			return NextResponse.next();
+	if (request.nextUrl.pathname == "/account") {
+		const result = await fetch(API_URL + "account/getUser", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Cookie: "id=" + id,
+			},
+			credentials: "include",
+		});
+		const user = (await result.json()).data;
+		console.log(user.username);
+		if (result.ok) {
+			return NextResponse.redirect(
+				new URL(`/account/${user.username}`, request.url)
+			);
 		} else {
 			return NextResponse.redirect(new URL("/login", request.url));
 		}
 	}
 	if (request.nextUrl.pathname.startsWith("/admin")) {
 		const res = await checkPermission(["admin"], id);
+
 		if (res.ok) {
 			return NextResponse.next();
 		} else {

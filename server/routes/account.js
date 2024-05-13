@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const account = require("../accounts/account.js");
-const { cookie, validationResult } = require("express-validator");
+const { cookie, body, validationResult } = require("express-validator");
 const { setCookie, validateCookie } = require("../utils/cookie.js");
 const { authorize } = require("../middleware.js");
 router.get("/", (req, res) => {
@@ -11,6 +11,7 @@ router.get("/", (req, res) => {
 router.post(
 	"/getUser",
 	authorize(["account:read"]),
+	body("username").isString().optional(),
 	cookie("id").custom((value, { req }) => {
 		const cookie = req.cookies.id;
 		if (!cookie) {
@@ -18,7 +19,6 @@ router.post(
 		}
 		return true;
 	}),
-
 	async (req, res) => {
 		try {
 			const errors = validationResult(req);
@@ -29,18 +29,22 @@ router.post(
 					}),
 				});
 			}
+			let result = undefined;
 
-			const id = await validateCookie(req, res);
-
-			if (id) {
-				const result = await account.getUser(req.cookies.id);
-				if (result) {
-					res.status(200).json({ data: result });
-				} else {
-					res.status(401).json({ errors: "User not found" });
-				}
+			if (req.body?.username) {
+				result = await account.getUserByUsername(req.body.username);
 			} else {
-				res.status(401).json({ errors: "Unauthorized" });
+				if (await validateCookie(req, res)) {
+					result = await account.getUser(req.cookies.id);
+				} else {
+					return res.status(401).json({ errors: "Unauthorized" });
+				}
+			}
+
+			if (result) {
+				res.status(200).json({ data: result });
+			} else {
+				res.status(401).json({ errors: "User not found" });
 			}
 		} catch (error) {
 			console.log(error);
