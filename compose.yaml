@@ -16,66 +16,66 @@ services:
             - ./client:/app/client
         restart: always
 
-  server:
-    build: ./server
-    ports:
-      - 8000:8000
-    volumes:
-        - ./server:/app/server
-    depends_on:
-        db:
-          condition: service_healthy
-        mongo:
-          condition: service_healthy
-    secrets:
-      - db-password
-      - mongo
-    environment:
-      NODE_ENV: development
-      POSTGRES_HOST: db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
-      MONGO_URI_FILE: /run/secrets/mongo
-      POSTGRES_DB: dss
-      DB_PORT: 5432
-  db:
-    image: postgres
-    restart: always
-    user: postgres
-    ports:
-      - 5432:5432
-    secrets:
-      - db-password
-    volumes:
-      - ./server/database/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=dss
-      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
-    expose:
-      - 5432
-    healthcheck:
-      test: [ "CMD", "pg_isready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-  mongo:
-    image: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: dbUser
-      MONGO_INITDB_ROOT_PASSWORD: Bulstrode_52
-    volumes:
-      - mongo-data:/data/db
-    expose:
-      - 27017
-    ports:
-      - 27017:27017
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    server:
+        build: ./server
+        ports:
+            - 8000:8000
+        volumes:
+            - ./server:/app/server
+        depends_on:
+            db:
+                condition: service_healthy
+            mongo:
+                condition: service_healthy
+        secrets:
+            - db-password
+            - mongo
+        environment:
+            NODE_ENV: development
+            POSTGRES_HOST: db
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+            MONGO_URI_FILE: /run/secrets/mongo
+            POSTGRES_DB: dss
+            DB_PORT: 5432
+    db:
+        image: postgres
+        restart: always
+        user: postgres
+        ports:
+            - 5432:5432
+        secrets:
+            - db-password
+        volumes:
+            - ./server/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - db-data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=dss
+            - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+        expose:
+            - 5432
+        healthcheck:
+            test: ["CMD", "pg_isready"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+    mongo:
+        image: mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: dbUser
+            MONGO_INITDB_ROOT_PASSWORD: Bulstrode_52
+        volumes:
+            - mongo-data:/data/db
+        expose:
+            - 27017
+        ports:
+            - 27017:27017
+        healthcheck:
+            test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+            interval: 10s
+            timeout: 5s
+            retries: 5
 volumes:
     db-data:
     mongo-data:
