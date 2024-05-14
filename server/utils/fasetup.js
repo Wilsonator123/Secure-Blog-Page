@@ -19,7 +19,7 @@ async function faSetup(userID){
   
    (await db.query('addUser2FA',[base32_secret,userID]))
    let username =  (await db.query('getUsername',[userID]))[0].username
-   //console.log(base32_secret);
+
 
     // Generate a QR code URL for the user to scan
     let totp = new OTPAuth.TOTP({
@@ -33,8 +33,17 @@ async function faSetup(userID){
     let otpauth_url = totp.toString();
 
 
-  QRCode.toString(otpauth_url,function(err,url){console.log(url);})
-  // QRCode.toDataURL //This version with some changes is needed to send it to the front end
+ // QRCode.toString(otpauth_url,function(err,url){console.log(url);}) //this line is what prints to terminal. will need to edit it for requests
+ 
+
+
+let qr_data = {
+  "OTP_SECRET": base32_secret,
+  "QR": (await QRCode.toDataURL(otpauth_url))
+}
+
+console.log(qr_data);
+return data  //This returns the secret and the url for the QR code
 
 };
 
@@ -49,7 +58,6 @@ async function faChecker(userID,token){
 
 //Gets the user secret from database
 let usertoken = (await db.query('getUser2FAsalt',[userID]))[0].fasalt
-//console.log(usertoken);
 
 //Recreates the OTP Auth to allow us to recreate that users token
   let totp = new OTPAuth.TOTP({
@@ -61,21 +69,20 @@ let usertoken = (await db.query('getUser2FAsalt',[userID]))[0].fasalt
    });
 
    let currentToken = totp.generate() //Test to see what it thinks the current token is
-   console.log('Current:',currentToken);
-   console.log('Input:',token);
+
 
   let delta = totp.validate({token, window: 1});
-  console.log(delta);
 
+ //Compares the users given token to the current and then 1 delta back
   if(currentToken == token){
-    console.log('Valid 0');
+
     return true
   }else{
     if(delta){
-      console.log('Valid 1');
+
       return true
     }else{
-      console.log('False');
+
       return false
     }
   }
@@ -86,14 +93,14 @@ let usertoken = (await db.query('getUser2FAsalt',[userID]))[0].fasalt
 async function firstFAsetup(userID, token){
   if ((await faChecker(userID,token))){
     (await db.query('update2FAstatus',[userID]))
-    console.log('all good');
+   
     return true;
   }else{
     return false;
   }
 }
-faSetup('435df2f4-95fd-4532-95cc-8576224b7fc7')
+//faSetup('435df2f4-95fd-4532-95cc-8576224b7fc7')
 
-//faChecker('da1765fa-6a5a-4e07-b136-04aa789db69f','201093')
-//firstFAsetup('aa36efe2-e328-4c8f-94a5-166546238750','920571')
+//faChecker('435df2f4-95fd-4532-95cc-8576224b7fc7','399142')
+//firstFAsetup('435df2f4-95fd-4532-95cc-8576224b7fc7','758112')
 
