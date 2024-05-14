@@ -1,6 +1,7 @@
 const { getUser } = require("../accounts/account.js");
 const { makeUser } = require("../accounts/accountCreation.js");
 const { login } = require("../accounts/login.js");
+var expect = require("expect.js");
 
 describe("Testing User Creation", function () {
 	it("Creating User with Invalid Email", async function () {

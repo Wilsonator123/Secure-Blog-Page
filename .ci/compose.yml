@@ -1,50 +1,73 @@
 services:
-  server:
-    build:
-      context: ../server
-      dockerfile: test.Dockerfile
-    ports:
-      - 8000:8000
-    volumes:
-      - ../server:/app/server
-    depends_on:
-      db:
-        condition: service_healthy
-    secrets:
-      - db-password
-    environment:
-      NODE_ENV: test
-      POSTGRES_HOST: db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
-      POSTGRES_DB: test
-      DB_PORT: 5432
-      JWT_SECRET: HbsuSBeo4JXDHdOUbnaQMf43JYGCuhTC2HwlEqJNkLuYgqUFfka1l6YgoexOQ07O
+    server:
+        build:
+            context: ../server
+            dockerfile: test.Dockerfile
+        ports:
+            - 8000:8000
+        volumes:
+            - ../server:/app/server
+        depends_on:
+            db:
+                condition: service_healthy
+        secrets:
+            - db-password
+            - mongo-password
+        environment:
+            NODE_ENV: test
+            POSTGRES_HOST: db
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+            POSTGRES_DB: test
+            DB_PORT: 5432
+            JWT_SECRET: HbsuSBeo4JXDHdOUbnaQMf43JYGCuhTC2HwlEqJNkLuYgqUFfka1l6YgoexOQ07O
 
-  db:
-    image: postgres
-    restart: always
-    user: postgres
-    ports:
-      - 5432:5432
-    secrets:
-      - db-password
-    volumes:
-      - ../server/database/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=test
-      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
-    expose:
-      - 5432
-    healthcheck:
-      test: [ "CMD", "pg_isready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    db:
+        image: postgres
+        restart: always
+        user: postgres
+        ports:
+            - 5432:5432
+        secrets:
+            - db-password
+        volumes:
+            - ../server/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - db-data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=test
+            - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+        expose:
+            - 5432
+        healthcheck:
+            test: ["CMD", "pg_isready"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    mongo:
+        image: mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: dbUser
+            MONGO_INITDB_ROOT_PASSWORD: Bulstrode_52
+        secrets:
+            - mongo-password
+        volumes:
+            - mongo-data:/data/db
+        expose:
+            - 27017
+        ports:
+            - 27017:27017
+        healthcheck:
+            test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+            interval: 10s
+            timeout: 5s
+            retries: 5
 volumes:
-  db-data:
+    db-data:
+    mongo-data:
 secrets:
-  db-password:
-    file: ./password.txt
-
+    db-password:
+        file: ./password.txt
+    mongo-password:
+        file: ./mongo-password.txt

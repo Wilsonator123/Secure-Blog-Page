@@ -66,14 +66,3 @@ describe("Make a unique username", function () {
 		expect(newUsername.length).to.be.below(17);
 	});
 });
-
-describe("Testing Account Functionality", function () {
-	it("should return a user object", async function () {
-		const user = await account.getUser(1);
-		expect(user).to.be.an("object");
-	});
-	it("should return false if user does not exist", async function () {
-		const user = await account.getUser(0);
-		expect(user).to.be(false);
-	});
-});
