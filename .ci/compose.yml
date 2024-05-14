@@ -10,9 +10,11 @@ services:
         depends_on:
             db:
                 condition: service_healthy
+            mongo:
+                condition: service_healthy
         secrets:
             - db-password
-            - mongo-password
+            - mongo
         environment:
             NODE_ENV: test
             POSTGRES_HOST: db
@@ -21,7 +23,6 @@ services:
             POSTGRES_DB: test
             DB_PORT: 5432
             JWT_SECRET: HbsuSBeo4JXDHdOUbnaQMf43JYGCuhTC2HwlEqJNkLuYgqUFfka1l6YgoexOQ07O
-
     db:
         image: postgres
         restart: always
@@ -49,9 +50,9 @@ services:
         restart: always
         environment:
             MONGO_INITDB_ROOT_USERNAME: dbUser
-            MONGO_INITDB_ROOT_PASSWORD: Bulstrode_52
+            MONGO_INITDB_ROOT_PASSWORD: test
         secrets:
-            - mongo-password
+            - mongo
         volumes:
             - mongo-data:/data/db
         expose:
@@ -69,5 +70,5 @@ volumes:
 secrets:
     db-password:
         file: ./password.txt
-    mongo-password:
-        file: ./mongo-password.txt
+    mongo:
+        file: ./mongo.txt
