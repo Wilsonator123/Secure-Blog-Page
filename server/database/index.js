@@ -31,7 +31,8 @@ queries = {
 	search: 'SELECT * FROM "User" WHERE username LIKE $1 OR email = $1 OR fname LIKE $1 or lname LIKE $1',
 	getUserIDFromUsername: 'SELECT userid FROM "User" WHERE username LIKE $1',
 	getUserByUsername: 'SELECT * FROM "User" WHERE username = $1',
-	updateUser: 'UPDATE $1 SET $2 = $3 WHERE userid = $4',
+	updateUser: `UPDATE "User" SET "$1" = $2 WHERE userid = $3`,
+	updatePassword: `UPDATE "Password" SET "$1" = $2 WHERE userid = $3`,
 	deleteUser: 'DELETE FROM "User" WHERE userid = $1',
 };
 
