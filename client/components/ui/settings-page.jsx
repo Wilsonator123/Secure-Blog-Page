@@ -10,7 +10,6 @@ import axios from 'axios';
 //forms + visual
 import { checkPasswordStrength } from '@/helper/password';
 import { Button } from "@/components/ui/button";
-import { Input } from '@/components/ui/input';
 import ChangeForm from '@/components/ui/changeForm';
 import PasswordField from '@/components/ui/passwordField';
 import EmailField from '@/components/ui/emailField';
@@ -25,20 +24,16 @@ import Placeholder from '@/assets/placeholder.svg';
 import Close from '@/assets/close.svg';
 import Logout from '@/assets/logout.svg';
 import Return from '@/assets/return.svg';
-import ShowPassword from '@/assets/showPassword.svg';
-import HidePassword from '@/assets/hidePassword.svg';
+
 
 export default function SettingsPage({ user, toggle }) {
   const [activeSetting, setActiveSetting] = useState('');
   const router = useRouter();
   const currentUser = useUserStore(state => state.user);
 
-  const { register, handleSubmit, setError: setFormError, clearErrors, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, setError: setFormError, clearErrors, formState: { errors }, getValues } = useForm();
   const [showPassword, setShowPassword] = useState("password");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
   const [error, setError] = useState("");
@@ -60,6 +55,7 @@ export default function SettingsPage({ user, toggle }) {
   const resetToMainSettings = () => {
     setActiveSetting('');
     setIsChecked(false);
+    reset(); // Reset form
   };
 
   const handleUpdateUser = async (updates) => {
@@ -70,8 +66,7 @@ export default function SettingsPage({ user, toggle }) {
 
     try {
       const response = await axios.post('http://localhost:8000/account/updateUser', {
-        userid: currentUser.id,
-        currentPassword: password,
+        currentPassword: getValues('password'),
         updates
       }, {
         withCredentials: true,
@@ -133,7 +128,7 @@ export default function SettingsPage({ user, toggle }) {
             <EmailField label="New E-mail" name="newEmail" register={register} errors={errors} />
           </>
         ),
-        onSubmit: () => handleUpdateUser({ email }),
+        onSubmit: () => handleUpdateUser({ email: getValues('newEmail') }),
       },
       password: {
         title: 'Change Password',
@@ -146,7 +141,7 @@ export default function SettingsPage({ user, toggle }) {
             <PasswordField label="Confirm New Password" showPassword={showPassword} setShowPassword={setShowPassword} name="confirmPassword" register={register} errors={errors} validate={(value) => newPasswordCheck(value)} />
           </>
         ),
-        onSubmit: () => handleUpdateUser({ password: newPassword }),
+        onSubmit: () => handleUpdateUser({ password: getValues('newPassword') }),
       },
       accountInfo: {
         title: 'Change Account Information',
@@ -154,13 +149,13 @@ export default function SettingsPage({ user, toggle }) {
         children: (
           <>
             <PasswordField label="Password" showPassword={showPassword} setShowPassword={setShowPassword} name="password" register={register} errors={errors} />
-            <NameField label="First Name" value={fName} onChange={(e) => setFName(e.target.value)} placeholder="Joe" name="firstName" register={register} errors={errors} />
-            <NameField label="Last Name" value={lName} onChange={(e) => setLName(e.target.value)} placeholder="Bloggs" name="lastName" register={register} errors={errors} />
+            <NameField label="First Name" value={fName} onChange={(e) => setFName(e.target.value)} placeholder="Joe" name="fname" register={register} errors={errors} />
+            <NameField label="Last Name" value={lName} onChange={(e) => setLName(e.target.value)} placeholder="Bloggs" name="lname" register={register} errors={errors} />
           </>
         ),
         onSubmit: () => {
-          handleUpdateUser({ firstName: fName });
-          handleUpdateUser({ lastName: lName });
+          handleUpdateUser({ fname: getValues('fname')});
+          handleUpdateUser({ lname: getValues('lname')});
         },
       },
       deleteAccount: {
@@ -169,7 +164,7 @@ export default function SettingsPage({ user, toggle }) {
         children: (
           <PasswordField label="Password" showPassword={showPassword} setShowPassword={setShowPassword} name="password" register={register} errors={errors} />
         ),
-        onSubmit: () => handleUpdateUser({ deleteAccount: true }),
+        onSubmit: () => handleUpdateUser({ password: getValues('password') }),
       },
       twoFA: {
         title: 'Update 2FA Settings',
@@ -177,7 +172,7 @@ export default function SettingsPage({ user, toggle }) {
         children: (
           <PasswordField label="Password" showPassword={showPassword} setShowPassword={setShowPassword} name="password" register={register} errors={errors} />
         ),
-        onSubmit: () => handleUpdateUser({ twoFA: true }),
+        onSubmit: () => handleUpdateUser({ password: getValues('password') }),
       },
     };
 
@@ -186,12 +181,12 @@ export default function SettingsPage({ user, toggle }) {
     if (!config) return null;
 
     return (
-      <ChangeForm 
-        title={config.title} 
-        subtitle={config.subtitle} 
-        onSubmit={handleSubmit(config.onSubmit)} 
-        isChecked={isChecked} 
-        setIsChecked={setIsChecked} 
+      <ChangeForm
+        title={config.title}
+        subtitle={config.subtitle}
+        onSubmit={handleSubmit(config.onSubmit)}
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
         error={error}
       >
         {config.children}
@@ -274,9 +269,9 @@ export default function SettingsPage({ user, toggle }) {
 
         <CardFooter className="flex flex-col items-center space-y-4 mb-10">
           {activeSetting ? (
-            <Button variant='secondary' className="h-12 text-text text-xl w-full max-w-sm mt-10 border-transparent hover:border hover:border-accent" type="submit" 
-            onClick={handleSubmit(renderSettingForm().props.onSubmit)}
-            disabled={!isChecked}>
+            <Button variant='secondary' className="h-12 text-text text-xl w-full max-w-sm mt-10 border-transparent hover:border hover:border-accent" type="submit"
+              onClick={handleSubmit(renderSettingForm().props.onSubmit)}
+              disabled={!isChecked}>
               Submit
             </Button>
           ) : (

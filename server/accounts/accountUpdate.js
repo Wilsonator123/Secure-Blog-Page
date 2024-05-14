@@ -34,8 +34,24 @@ async function updateUserInfo(userid, currentPassword, updates) {
 			if (emailCheck[0].count != 0) {
 				return { success: false, message: "Email taken" };
 			}
-			await db.query("updateUser", [column, value, userid]);
+			await db.query("updateEmail", [value, userid]);
 		}
+
+        // First Name update
+        if (column === "fname") {
+            if (typeof value !== 'string' || value.trim().length === 0) {
+                return { success: false, message: "First name is not valid" };
+            }
+                await db.query("updateFname", [value, userid]);
+            }
+        
+        // Last Name update
+        if (column === "lname") {
+            if (typeof value !== 'string' || value.trim().length === 0) {
+                return { success: false, message: "Last name is not valid" };
+            }
+                await db.query("updateLname", [value, userid]);
+            }
 
 		// Password + hashing
 		if (column === "password") {
@@ -51,13 +67,12 @@ async function updateUserInfo(userid, currentPassword, updates) {
 			let hashedPassword = hash.saltNhash(value, salt);
 			// Table change 'Password'
 
-			await db.query("updatePassword", [column, hashedPassword, userid]);
+			await db.query("updatePassword", [hashedPassword, userid]);
 
 			// Update salt
-			await db.query("updatePassword", ["salt", salt, userid]);
+			await db.query("updateSalt", [salt, userid]);
 		}
 
-		// General updat
 	}
 
 	return { success: true, message: "User updated successfully" };

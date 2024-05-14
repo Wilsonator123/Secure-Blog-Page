@@ -152,6 +152,32 @@
 	background-color: #4b4e57;
 }
 
+.input-container {
+	position: relative;
+	width: 100%;
+  }
+  
+  .input-field {
+	width: 100%;
+	padding-left: 40px; /* Adjust based on icon size */
+	padding-right: 40px; /* Adjust based on icon size */
+	box-sizing: border-box;
+  }
+  
+  .input-icon {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 10px; /* Adjust based on design */
+  }
+  
+  .password-toggle-icon {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 10px; /* Adjust based on design */
+  }
+  
 .unselectable {
 	user-select: none;
 }

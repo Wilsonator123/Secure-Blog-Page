@@ -11,9 +11,8 @@ const PasswordField = ({ label, showPassword, setShowPassword, register, errors,
       <Input
         id={name}
         type={showPassword}
-        className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-        {...register(name, { required: `${label} is required`,validate: validate})}
-      />
+        className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent "
+        {...register(name, { required: `${label} is required`,validate: validate})}/>
       <div className="text-text absolute left-2 z-10">
         <PasswordPin fill={'#fff'} />
       </div>
