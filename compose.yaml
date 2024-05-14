@@ -79,3 +79,9 @@ services:
 volumes:
     db-data:
     mongo-data:
+
+secrets:
+    db-password:
+        file: ./server/db/password.txt
+    mongo:
+        file: ./server/db/mongo.txt
