@@ -45,5 +45,3 @@ async function makeUser(email,fname,lname,dob,password){
 module.exports= {
     makeUser
 };
-
-//makeUser('lest@tet.com','first','notfirst',"2022-12-20","nuts123").then((result) => console.log(result)).catch((err) => console.error(err));
