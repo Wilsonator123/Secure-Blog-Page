@@ -1,40 +1,51 @@
-'use client'
-
+//key bitches
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { updateUser, logout } from '@/hooks/user';
+import { useUserStore } from '@/context/UserContext';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import UserPFP from '@/components/ui/user-pfp';
-import Mail from '@/assets/mail.svg';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+
+//forms + visual
+import { checkPasswordStrength } from '@/helper/password';
 import { Button } from "@/components/ui/button";
+import { Input } from '@/components/ui/input';
+import ChangeForm from '@/components/ui/changeForm';
+import PasswordField from '@/components/ui/passwordField';
+import EmailField from '@/components/ui/emailField';
+import NameField from '@/components/ui/nameField';
+import UserPFP from '@/components/ui/user-pfp';
+
+//svgs
+import Mail from '@/assets/mail.svg';
 import PasswordPin from '@/assets/passwordpin.svg';
 import DeleteAccount from '@/assets/deleteaccount.svg';
 import Placeholder from '@/assets/placeholder.svg';
 import Close from '@/assets/close.svg';
 import Logout from '@/assets/logout.svg';
 import Return from '@/assets/return.svg';
-import { updateUser, logout } from '@/hooks/user';
-import { Input } from '@/components/ui/input';
 import ShowPassword from '@/assets/showPassword.svg';
 import HidePassword from '@/assets/hidePassword.svg';
-import axios from 'axios';
-import { useUserStore } from '@/context/UserContext';
-
 
 export default function SettingsPage({ user, toggle }) {
   const [activeSetting, setActiveSetting] = useState('');
   const router = useRouter();
+  const currentUser = useUserStore(state => state.user);
 
+  const { register, handleSubmit, setError: setFormError, clearErrors, formState: { errors } } = useForm();
   const [showPassword, setShowPassword] = useState("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
   const [error, setError] = useState("");
-  const passwordBox = useRef();
-  const emailBox = useRef();
   const [isChecked, setIsChecked] = useState(false);
-  const currentUser = useUserStore(state => state.user);
+
+  const [passwordStrength, setPasswordStrength] = useState(null);
+  const [passwordMessage, setPasswordMessage] = useState(null);
 
   const handleSignOut = async () => {
     try {
@@ -51,7 +62,7 @@ export default function SettingsPage({ user, toggle }) {
     setIsChecked(false);
   };
 
-  const handleSubmit = async (updates) => {
+  const handleUpdateUser = async (updates) => {
     if (!isChecked) {
       setError('Please confirm the changes by checking the checkbox.');
       return;
@@ -83,6 +94,27 @@ export default function SettingsPage({ user, toggle }) {
     }
   };
 
+  const validatePassword = async (value) => {
+    const result = await checkPasswordStrength(value);
+    if (result.success) {
+      setPasswordMessage(null);
+      setPasswordStrength(result.score);
+      return true;
+    } else {
+      setPasswordMessage(result.warning);
+      setPasswordStrength(result.score ?? 0);
+      return result.warning;
+    }
+  };
+
+  const newPasswordCheck = (value) => {
+    if (value === password) {
+      return "Your new password cannot be the same as your old password.";
+    } else {
+      return true;
+    }
+  };
+
   useEffect(() => {
     async function fetchUser() {
       await updateUser();
@@ -91,209 +123,80 @@ export default function SettingsPage({ user, toggle }) {
   }, []);
 
   const renderSettingForm = () => {
-    switch (activeSetting) {
-      case 'email':
-        return (
-          <section>
-            <h2 className="text-text text-2xl font-bold text-center mb-2">Change Email</h2>
-            <div className="text-text text-center mb-8">Change the Email attached to your account</div>
+    const formConfigs = {
+      email: {
+        title: 'Change Email',
+        subtitle: 'Change the Email attached to your account.',
+        children: (
+          <>
+            <PasswordField label="Password" showPassword={showPassword} setShowPassword={setShowPassword} name="password" register={register} errors={errors} />
+            <EmailField label="New E-mail" name="newEmail" register={register} errors={errors} />
+          </>
+        ),
+        onSubmit: () => handleUpdateUser({ email }),
+      },
+      password: {
+        title: 'Change Password',
+        subtitle: 'Change the Password attached to your account.',
+        children: (
+          <>
+            <EmailField label="Email" name="email" register={register} errors={errors} />
+            <PasswordField label="Password" showPassword={showPassword} setShowPassword={setShowPassword} name="password" register={register} errors={errors} />
+            <PasswordField label="New Password" showPassword={showPassword} setShowPassword={setShowPassword} name="newPassword" register={register} errors={errors} validate={(value) => validatePassword(value)} />
+            <PasswordField label="Confirm New Password" showPassword={showPassword} setShowPassword={setShowPassword} name="confirmPassword" register={register} errors={errors} validate={(value) => newPasswordCheck(value)} />
+          </>
+        ),
+        onSubmit: () => handleUpdateUser({ password: newPassword }),
+      },
+      accountInfo: {
+        title: 'Change Account Information',
+        subtitle: 'Change your account names. This does not change your username.',
+        children: (
+          <>
+            <PasswordField label="Password" showPassword={showPassword} setShowPassword={setShowPassword} name="password" register={register} errors={errors} />
+            <NameField label="First Name" value={fName} onChange={(e) => setFName(e.target.value)} placeholder="Joe" name="firstName" register={register} errors={errors} />
+            <NameField label="Last Name" value={lName} onChange={(e) => setLName(e.target.value)} placeholder="Bloggs" name="lastName" register={register} errors={errors} />
+          </>
+        ),
+        onSubmit: () => {
+          handleUpdateUser({ firstName: fName });
+          handleUpdateUser({ lastName: lName });
+        },
+      },
+      deleteAccount: {
+        title: 'Account Deletion',
+        subtitle: 'Delete your account off the website here',
+        children: (
+          <PasswordField label="Password" showPassword={showPassword} setShowPassword={setShowPassword} name="password" register={register} errors={errors} />
+        ),
+        onSubmit: () => handleUpdateUser({ deleteAccount: true }),
+      },
+      twoFA: {
+        title: 'Update 2FA Settings',
+        subtitle: 'Manage your account 2FA here.',
+        children: (
+          <PasswordField label="Password" showPassword={showPassword} setShowPassword={setShowPassword} name="password" register={register} errors={errors} />
+        ),
+        onSubmit: () => handleUpdateUser({ twoFA: true }),
+      },
+    };
 
-            <div className="relative flex flex-col w-full justify-center items-center">
-              <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
+    const config = formConfigs[activeSetting];
 
-              <Input id="login-password" type={showPassword} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-                required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox} />
+    if (!config) return null;
 
-              <div className="text-text absolute left-2 z-10">
-                <PasswordPin fill={'#fff'} />
-              </div>
-
-              <div onClick={() => { setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus(); }}
-                className="text-text absolute right-2 z-10">
-                {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'} /> : <ShowPassword width={30} height={30} fill={'#fff'} />}
-              </div>
-            </div>
-
-            <div className="relative flex flex-col w-full justify-center items-center mt-6">
-              <label className='text-text absolute -top-2 left-1' htmlFor="newEmail">New E-mail</label>
-
-              <Input id="newEmail" type="email" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-                required value={email} autoComplete="email" onChange={(e) => setEmail(e.target.value)} ref={emailBox} />
-
-              <div className="text-text absolute left-2 z-10">
-                <Mail width={30} height={30} fill={'#fff'} />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-center mt-4">
-              <input type="checkbox" id="confirmDelete" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} className="w-6 h-6" />
-              <label htmlFor="confirmDelete" className="ml-2 text-text">I would like to make these changes.</label>
-            </div>
-
-            {error && <div className="text-red-500 text-center mt-2">{error}</div>}
-          </section>
-        );
-      case 'password':
-        return (
-          <section>
-            <h2 className="text-text text-2xl font-bold text-center mb-2">Change Password</h2>
-            <div className="text-text text-center mb-8">Change the Password attached to your account</div>
-
-            <div className="relative flex flex-col w-full justify-center items-center pb-4">
-              <label className='text-text absolute -top-2 left-1' htmlFor="login-email">Email</label>
-
-              <Input id="login-email" type="email" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-                required value={email} autoComplete="email" onChange={(e) => setEmail(e.target.value)} ref={emailBox} />
-
-              <div className="text-text absolute left-2 z-10">
-                <Mail width={30} height={30} fill={'#fff'} />
-              </div>
-            </div>
-
-            <div className="relative flex flex-col w-full justify-center items-center">
-              <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
-
-              <Input id="login-password" type={showPassword} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-                required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox} />
-
-              <div className="text-text absolute left-2 z-10">
-                <PasswordPin fill={'#fff'} />
-              </div>
-
-              <div onClick={() => { setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus(); }}
-                className="text-text absolute right-2 z-10">
-                {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'} /> : <ShowPassword width={30} height={30} fill={'#fff'} />}
-              </div>
-            </div>
-
-            <div className="relative flex flex-col w-full justify-center items-center mt-6">
-              <label className='text-text absolute -top-2 left-1' htmlFor="login-password-new">New Password</label>
-
-              <Input id="login-password-new" type={showPassword} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-                required value={newPassword} autoComplete="current-password" onChange={(e) => setNewPassword(e.target.value)} ref={passwordBox} />
-
-              <div className="text-text absolute left-2 z-10">
-                <PasswordPin fill={'#fff'} />
-              </div>
-
-              <div onClick={() => { setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus(); }}
-                className="text-text absolute right-2 z-10">
-                {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'} /> : <ShowPassword width={30} height={30} fill={'#fff'} />}
-              </div>
-            </div>
-
-            <div className="flex items-center justify-center mt-4">
-              <input type="checkbox" id="confirmDelete" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} className="w-6 h-6" />
-              <label htmlFor="confirmDelete" className="ml-2 text-text">I would like to make these changes.</label>
-            </div>
-
-            {error && <div className="text-red-500 text-center mt-2">{error}</div>}
-          </section>
-        );
-      case 'accountInfo':
-        return (
-          <section>
-            <h2 className="text-text text-2xl font-bold text-center mb-2">Change Account Information</h2>
-            <div className="text-text text-center mb-8">This does not change your username.</div>
-
-            <div className="relative flex flex-col w-full justify-center items-center mb-6">
-              <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
-
-              <Input id="login-password" type={showPassword} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-                required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox} />
-
-              <div className="text-text absolute left-2 z-10">
-                <PasswordPin fill={'#fff'} />
-              </div>
-
-              <div onClick={() => { setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus(); }}
-                className="text-text absolute right-2 z-10">
-                {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'} /> : <ShowPassword width={30} height={30} fill={'#fff'} />}
-              </div>
-            </div>
-
-            <div className="relative flex flex-col w-full justify-center items-center pb-6">
-              <label className='text-text absolute -top-2 left-1' htmlFor="newFname">First Name</label>
-
-              <Input id="newFname" type="name" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-                required value={fName} placeholder="Joe" autoComplete="given-name" onChange={(e) => setFName(e.target.value)} />
-            </div>
-
-            <div className="relative flex flex-col w-full justify-center items-center">
-              <label className='text-text absolute -top-2 left-1' htmlFor="newLname">Last Name</label>
-
-              <Input id="newLname" type="name" className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-                required value={lName} placeholder="Bloggs" autoComplete="family-name" onChange={(e) => setLName(e.target.value)} />
-            </div>
-
-            <div className="flex items-center justify-center mt-4">
-              <input type="checkbox" id="confirmDelete" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} className="w-6 h-6" />
-              <label htmlFor="confirmDelete" className="ml-2 text-text">I would like to make these changes.</label>
-            </div>
-
-            {error && <div className="text-red-500 text-center mt-2">{error}</div>}
-          </section>
-        );
-      case 'deleteAccount':
-        return (
-          <section>
-            <h2 className="text-text text-2xl font-bold text-center mb-2">Account Deletion</h2>
-            <div className="text-text text-center mb-8">Delete your account off the website here</div>
-
-            <div className="relative flex flex-col w-full justify-center items-center">
-              <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
-
-              <Input id="login-password" type={showPassword} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-                required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox} />
-
-              <div className="text-text absolute left-2 z-10">
-                <PasswordPin fill={'#fff'} />
-              </div>
-
-              <div onClick={() => { setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus(); }}
-                className="text-text absolute right-2 z-10">
-                {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'} /> : <ShowPassword width={30} height={30} fill={'#fff'} />}
-              </div>
-            </div>
-
-            <div className="flex items-center justify-center mt-4">
-              <input type="checkbox" id="confirmDelete" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} className="w-6 h-6" />
-              <label htmlFor="confirmDelete" className="ml-2 text-text">I understand that this action cannot be reversed.</label>
-            </div>
-
-            {error && <div className="text-red-500 text-center mt-2">{error}</div>}
-          </section>
-        );
-      default: // 2FA 
-        return (
-        <section>
-        <h2 className="text-text text-2xl font-bold text-center mb-2">Update 2FA Settings</h2>
-        <div className="text-text text-center mb-8">Manage your two-factor authentication settings here.</div>
-
-        <div className="relative flex flex-col w-full justify-center items-center">
-            <label className='text-text absolute -top-2 left-1' htmlFor="login-password">Password</label>
-              
-            <Input id="login-password" type={`${showPassword}`} className="my-4 h-14 bg-black border-secondary text-text pl-12 focus:border-accent"
-            required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} ref={passwordBox}/>
-
-            <div className="text-text absolute left-2 z-10">
-              <PasswordPin fill={'#fff'}/>
-            </div>
-
-            <div onClick={() => {setShowPassword(prev => prev === 'text' ? 'password' : 'text'); passwordBox.current.focus();}} 
-              className="text-text absolute right-2 z-10">
-              {showPassword === 'password' ? <HidePassword width={30} height={30} fill={'#fff'}/> : <ShowPassword width={30} height={30} fill={'#fff'}/>}
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center mt-4">
-            <input type="checkbox" id="confirmDelete" checked={isChecked} onChange={e => setIsChecked(e.target.checked)} className="w-6 h-6"/>
-            <label htmlFor="confirmDelete" className="ml-2 text-text">I would like to make these changes.</label>
-          </div>
-
-      </section>
+    return (
+      <ChangeForm 
+        title={config.title} 
+        subtitle={config.subtitle} 
+        onSubmit={handleSubmit(config.onSubmit)} 
+        isChecked={isChecked} 
+        setIsChecked={setIsChecked} 
+        error={error}
+      >
+        {config.children}
+      </ChangeForm>
     );
-  }
   };
 
   return (
@@ -350,7 +253,7 @@ export default function SettingsPage({ user, toggle }) {
 
               <div className="flex flex-col items-center space-y-6">
                 <Placeholder className="w-24 h-24" fill={'#ffff'} />
-                <Button variant='secondary' onClick={() => setActiveSetting('2fa')} className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
+                <Button variant='secondary' onClick={() => setActiveSetting('twoFA')} className="bg-secondary text-text text-xl border border-transparent hover:border hover:border-accent">
                   Change 2FA Settings
                 </Button>
               </div>
@@ -371,18 +274,9 @@ export default function SettingsPage({ user, toggle }) {
 
         <CardFooter className="flex flex-col items-center space-y-4 mb-10">
           {activeSetting ? (
-            <Button variant='secondary' className="h-12 text-text text-xl w-full max-w-sm mt-10 border-transparent hover:border hover:border-accent" type="submit" disabled={!isChecked} onClick={() => {
-              if (activeSetting === 'email') {
-                handleSubmit({ email });
-              } else if (activeSetting === 'password') {
-                handleSubmit({ password: newPassword });
-              } else if (activeSetting === 'accountInfo') {
-                handleSubmit({ firstName: fName });
-                handleSubmit({ lastName: lName });
-              } else if (activeSetting === 'deleteAccount') {
-                handleSubmit({ deleteAccount: true });
-              }
-            }}>
+            <Button variant='secondary' className="h-12 text-text text-xl w-full max-w-sm mt-10 border-transparent hover:border hover:border-accent" type="submit" 
+            onClick={handleSubmit(renderSettingForm().props.onSubmit)}
+            disabled={!isChecked}>
               Submit
             </Button>
           ) : (
