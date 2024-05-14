@@ -17,6 +17,8 @@ import { Input } from '@/components/ui/input';
 import ShowPassword from '@/assets/showPassword.svg';
 import HidePassword from '@/assets/hidePassword.svg';
 import axios from 'axios';
+import { useUserStore } from '@/context/UserContext';
+
 
 export default function SettingsPage({ user, toggle }) {
   const [activeSetting, setActiveSetting] = useState('');
@@ -32,6 +34,7 @@ export default function SettingsPage({ user, toggle }) {
   const passwordBox = useRef();
   const emailBox = useRef();
   const [isChecked, setIsChecked] = useState(false);
+  const currentUser = useUserStore(state => state.user);
 
   const handleSignOut = async () => {
     try {
@@ -55,8 +58,8 @@ export default function SettingsPage({ user, toggle }) {
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/account/updateUser', {
-        userid: user.id,
+      const response = await axios.post('http://localhost:8000/account/updateUser', {
+        userid: currentUser.id,
         currentPassword: password,
         updates
       }, {

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const account = require("../accounts/account.js");
 const { cookie, body, validationResult } = require("express-validator");
+const { updateUserInfo } = require("../accounts/accountUpdate.js");
 const { setCookie, validateCookie } = require("../utils/cookie.js");
 const { authorize } = require("../middleware.js");
 router.get("/", (req, res) => {
@@ -51,6 +52,50 @@ router.post(
 			res.status(500).json({ errors: "Internal Server Error" });
 		}
 	}
+);
+
+router.post(
+    "/updateUser",
+    authorize(["account:read"]),
+    body("currentPassword").isString().optional(),
+    body("updates").isObject().optional(),
+    cookie("id").custom((value, { req }) => {
+        const cookie = req.cookies.id;
+        if (!cookie) {
+            throw new Error("Cookie 'id' not found");
+        }
+        return true;
+    }),
+    async (req, res) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    errors: errors.array().map((error) => {
+                        return error.msg;
+                    }),
+                });
+            }
+
+            if (await validateCookie(req, res)) {
+                const result = await updateUserInfo(
+                    req.cookies.id,
+                    req.body.currentPassword,
+                    req.body.updates
+                );
+                if (result.success) {
+                    res.status(200).json({ data: result });
+                } else {
+                    res.status(401).json({ errors: result.message });
+                }
+            } else {
+                return res.status(401).json({ errors: "Unauthorized" });
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ errors: "Internal Server Error" });
+        }
+    }
 );
 
 module.exports = router;

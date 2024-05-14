@@ -104,7 +104,7 @@ export default function SignupForm({toggle}){
             })
 
             if(response.status === 200){
-                router.push('/feed');
+                router.push('/');
             }
 
         } catch (error) {

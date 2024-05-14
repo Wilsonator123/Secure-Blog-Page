@@ -1,9 +1,10 @@
 const db = require('../database/index.js');
 const hash = require('../utils/hash.js');
 const validator = require("email-validator");
+const { checkPasswordStrength } = require("../utils/password.js");
 
 async function verifyCredentials(userid, password) {
-    const userData = await db.query('getUserPassword', [userid]); // need to implement the roles into this
+    const userData = await db.query('getUserPassword', [userid]); 
 
     if (!userData.length) return false;
     return hash.verifyHash(password, userData[0].password_hash, userData[0].salt);
@@ -11,10 +12,12 @@ async function verifyCredentials(userid, password) {
 
 // Update Account
 async function updateUserInfo(userid, currentPassword, updates) {
+    (console.log(userid, currentPassword, updates));
     const verified = await verifyCredentials(userid, currentPassword);
     if (!verified) {
         return { success: false, message: "Current password incorrect" };
     }
+
 
     let table = 'User';  // Default table
 
@@ -40,6 +43,11 @@ async function updateUserInfo(userid, currentPassword, updates) {
             const emailCheck = await db.query("getUserEmail", [userid]);
             if (emailCheck[0].email !== updates.email) {
                 return { success: false, message: "Email does not match the account email" };
+            }
+
+            // Check password strength
+            if ((await checkPasswordStrength(value)) === false) {
+                return { success: false, message: "Password is not strong enough" };
             }
 
             let salt = hash.makeSalt();
