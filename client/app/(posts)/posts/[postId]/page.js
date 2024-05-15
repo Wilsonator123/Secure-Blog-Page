@@ -12,6 +12,8 @@ import CommentList from '@/components/ui/comment-list';
 import Ellipsis from '@/assets/ellipsis.svg'
 import axios from 'axios';
 import Modal from '@/components/ui/modal';
+import { useDeletePost } from '@/hooks/useDeletePost';
+
 
 
 
@@ -24,11 +26,16 @@ export default function PostDetails({params} ) {
   const [loading, setLoading] = useState(true);
   const [owner, setOwner] = useState(false);
   const [error, setError] = useState(null);
+  const [hidden, setHidden] = useState(true);
   /*const [isModalOpen, setModalOpen] = useState(false);
   
   const toggleModal = () => {
 		setModalOpen(!isModalOpen);
 	};*/
+
+  const toggleHidden = () => {
+		setHidden(!hidden);
+	};
 
   useEffect(() => {
     getPost(params.postId)
@@ -40,6 +47,7 @@ export default function PostDetails({params} ) {
         });
 }, []);
 
+  
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -57,6 +65,24 @@ export default function PostDetails({params} ) {
     }
 
   }
+
+  async function handleDelete(event) {
+    event.preventDefault(); 
+
+    try {
+
+      const response = await useDeletePost(post[0]._id);
+      if (response) {
+        router.push('/');
+      }
+    }
+    catch (error) {
+      console.log(error);
+      setError(error.response);
+  }
+  }
+
+
         
     return (
         <div className="flex w-4/5 justify-center my-8">
@@ -72,7 +98,7 @@ export default function PostDetails({params} ) {
                     owner ? (
                       <>
                       <li className="text-text text-lg cursor-pointer">Edit</li>
-                      <li className="text-red-500 text-lg cursor-pointer" >Delete</li>
+                      <li className="text-red-500 text-lg cursor-pointer" onClick={toggleHidden}>Delete</li>
                       </>
                     ) : (
                       null
@@ -83,6 +109,17 @@ export default function PostDetails({params} ) {
                 </CardHeader>
                 <CardHeader>
                   <p className="text-text text-3xl">{post[0].title}</p>
+                  { hidden ? (
+                    null
+                  ) : (
+                    <div className='ml-auto'>
+                      <p className='text-text'>Are you sure you want to delete this post?</p>
+                      <input type="submit" value="Yes" className="bg-red-500 text-white rounded-full py-2 px-4 mr-4 cursor-pointer"
+                       onClick={handleDelete}/>
+                      <input type="submit" value="No" className="bg-green-500 text-white rounded-full py-2 px-4 cursor-pointer"
+                       onClick={toggleHidden}/>
+                    </div>
+                  )}
                 </CardHeader>
                 <CardDescription className="text-gray-300 text-lg mx-6">{post[0].content}</CardDescription>
                 <CardFooter className="my-6">
