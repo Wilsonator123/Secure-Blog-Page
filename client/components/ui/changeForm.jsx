@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Captcha from '@/components/ui/captcha'; 
+import Captcha from '@/components/ui/captcha';
 import useCsrfToken from '@/hooks/useCsrfToken';
 
 const ChangeForm = ({ title, subtitle, onSubmit, children, isChecked, setIsChecked, error }) => {
@@ -8,12 +8,19 @@ const ChangeForm = ({ title, subtitle, onSubmit, children, isChecked, setIsCheck
   const csrfToken = useCsrfToken();
   const [captcha, setCaptcha] = useState(false);
 
+  useEffect(() => {
+    await useCsrfToken((res) => {
+      setState(res)
+      setShowForm(true)
+    })
+  }, []);
+
   return (
     <>
       <h2 className="text-text text-2xl font-bold text-center mb-2">{title}</h2>
       <div className="text-text text-center mb-8">{subtitle}</div>
       <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="hidden" name="_csrf" value={csrfToken} {...register('_csrf')} />
+        <input type="hidden" name="_csrf" value={csrfToken} {...register('_csrf')} />
         {React.Children.map(children, child => {
           return React.cloneElement(child, { register, errors });
         })}

@@ -1,40 +1,39 @@
 {
-  "dependencies": {
-    "@zxcvbn-ts/core": "^3.0.4",
-    "@zxcvbn-ts/language-common": "^3.0.4",
-    "@zxcvbn-ts/language-en": "^3.0.2",
-    "@zxcvbn-ts/matcher-pwned": "^3.0.4",
-    "body-parser": "^1.20.2",
-    "bson": "^6.6.0",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "csrf": "^3.1.0",
-    "csurf": "^1.11.0",
-    "dotenv": "^16.4.5",
-    "email-validator": "^2.0.4",
-    "expect.js": "^0.3.1",
-    "express": "^4.18.3",
-    "express-validator": "^7.0.1",
-    "helmet": "^7.1.0",
-    "jose": "^5.2.4",
-    "mongodb": "^6.5.0",
-    "nodemon": "^3.1.0",
-    "pg": "^8.11.3",
-    "rate-limiter-flexible": "^5.0.0",
-    "uuid": "^9.0.1"
-  },
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon -L index.js",
-    "test": "mocha --timeout 5000"
-  },
-  "name": "server",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "mocha": "^10.3.0"
-  }
+	"dependencies": {
+		"@zxcvbn-ts/core": "^3.0.4",
+		"@zxcvbn-ts/language-common": "^3.0.4",
+		"@zxcvbn-ts/language-en": "^3.0.2",
+		"@zxcvbn-ts/matcher-pwned": "^3.0.4",
+		"body-parser": "^1.20.2",
+		"bson": "^6.6.0",
+		"cookie-parser": "^1.4.6",
+		"cors": "^2.8.5",
+		"csrf": "^3.1.0",
+		"dotenv": "^16.4.5",
+		"email-validator": "^2.0.4",
+		"expect.js": "^0.3.1",
+		"express": "^4.18.3",
+		"express-validator": "^7.0.1",
+		"helmet": "^7.1.0",
+		"jose": "^5.2.4",
+		"mongodb": "^6.5.0",
+		"nodemon": "^3.1.0",
+		"pg": "^8.11.3",
+		"rate-limiter-flexible": "^5.0.0",
+		"uuid": "^9.0.1"
+	},
+	"scripts": {
+		"start": "node index.js",
+		"dev": "nodemon -L index.js",
+		"test": "mocha --timeout 5000"
+	},
+	"name": "server",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"devDependencies": {
+		"mocha": "^10.3.0"
+	}
 }

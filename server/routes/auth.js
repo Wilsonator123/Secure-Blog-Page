@@ -3,6 +3,7 @@ const router = express.Router();
 const { setCookie, validateCookie } = require("../utils/cookie");
 const { readJWT } = require("../utils/auth");
 const { authorize } = require("../middleware");
+const { setCsrfToken } = require("../utils/csrf");
 
 router.get("/createID", async (req, res) => {
 	await setCookie(res, "Unauthorized").then(() =>
@@ -36,9 +37,8 @@ router.post("/hasPermission", authorize([]), async (req, res) => {
 	}
 });
 
-router.get("/logout", (req, res) => {
-    res.clearCookie('id'); 
-    res.status(200).send("Logged out successfully");
+router.post("/genCsrf", async (req, res, next) => {
+	return setCsrfToken(req, res, next);
 });
 
 module.exports = router;

@@ -13,7 +13,6 @@ const { authorize } = require("./middleware.js");
 const Database = require("./database/mongo.js");
 const mongo = new Database();
 const { mapResponse } = require("./utils/mapResponse.js");
-const csurf = require('csurf');
 const csrfProtection = csurf({ cookie: true });
 
 app.use(

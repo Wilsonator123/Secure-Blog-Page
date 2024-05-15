@@ -14,6 +14,7 @@ router.get("/", (req, res) => {
 router.post(
 	"/login",
 	authorize([]),
+	verifyCSRF,
 	body("email")
 		.notEmpty()
 		.withMessage("Email is required")
