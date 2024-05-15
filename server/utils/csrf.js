@@ -1,6 +1,6 @@
 const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
-const { validateCookie } = require('@/utils/cookie'); 
+const { validateCookie } = require('./cookie'); 
 
 const csrfProtection = csrf({ cookie: true });
 
@@ -31,4 +31,4 @@ function withCSRF(handler) {
   };
 }
 
-module.exports = withCSRF;
+module.exports = { withCSRF };

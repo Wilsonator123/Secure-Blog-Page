@@ -13,6 +13,8 @@ const { authorize } = require("./middleware.js");
 const Database = require("./database/mongo.js");
 const mongo = new Database();
 const { mapResponse } = require("./utils/mapResponse.js");
+const csurf = require('csurf');
+const csrfProtection = csurf({ cookie: true });
 
 app.use(
 	cors({
@@ -25,6 +27,7 @@ app.use(cookieParser());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
+app.use(csrfProtection);
 
 const opts = {
 	points: 10, // 100 requests
