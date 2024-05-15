@@ -16,18 +16,21 @@ const pool = new Pool({
 });
 
 queries = {
-	uuidChecker: 'SELECT * FROM "User" WHERE Email = $1',
-	isUUIDtaken: `SELECT COUNT(0) FROM "User" WHERE userid = $1`,
-	isEmail: 'SELECT COUNT(0) FROM "User" WHERE email = $1',
-	isUsername: 'SELECT COUNT(0) FROM "User" WHERE username = $1',
-	addUser:
-		'INSERT INTO "User" (UserID, Username, Email, Fname, Lname, DoB) VALUES ($1, $2, $3, $4, $5, $6)',
-	addPassword:
-		'INSERT INTO "Password" (UserID, Password, Salt) VALUES ($1, $2, $3)',
-	getUserID: 'SELECT userid FROM "User" WHERE Email = $1',
-	getUserSalt: 'SELECT salt FROM "Password" WHERE userid = $1',
-	getUserPassword: 'SELECT password FROM "Password" WHERE userid = $1',
-	getUser: 'SELECT * FROM "User" WHERE UserID = $1',
+    uuidChecker:'SELECT * FROM "User" WHERE Email = $1',
+    isUUIDtaken: `SELECT COUNT(0) FROM "User" WHERE userid = $1`,
+    isEmail: 'SELECT COUNT(0) FROM "User" WHERE email = $1',
+    isUsername: 'SELECT COUNT(0) FROM "User" WHERE username = $1',
+    addUser: 'INSERT INTO "User" (UserID, Username, Email, Fname, Lname, DoB) VALUES ($1, $2, $3, $4, $5, $6)',
+    addPassword: 'INSERT INTO "Password" (UserID, Password, Salt) VALUES ($1, $2, $3)',
+    getUserID: 'SELECT userid FROM "User" WHERE Email = $1',
+    getUserSalt: 'SELECT salt FROM "Password" WHERE userid = $1',
+    getUserPassword: 'SELECT password FROM "Password" WHERE userid = $1',
+    addUser2FA: 'UPDATE "Password" SET FAsalt = $1 WHERE UserID = $2',
+    getUser2FAsalt: 'SELECT fasalt FROM "Password" WHERE UserID = $1',
+    update2FAperm: 'UPDATE "User" SET FAsalt = $1 WHERE UserID = $2',
+    update2FAstatus: 'UPDATE "User" SET FAVald = TRUE WHERE UserID = $1',
+    getUsername: 'SELECT username FROM "User" WHERE UserID = $1',
+    getUser: 'SELECT * FROM "User" WHERE UserID = $1',
 	search: 'SELECT * FROM "User" WHERE username LIKE $1 OR email = $1 OR fname LIKE $1 or lname LIKE $1',
 	getUserIDFromUsername: 'SELECT userid FROM "User" WHERE username LIKE $1',
 	getUserByUsername: 'SELECT * FROM "User" WHERE username = $1',
