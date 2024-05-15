@@ -1,18 +1,15 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import Settings from '@/assets/settings.svg';
 import UserPFP from '@/components/ui/user-pfp';
 import { useRouter } from 'next/navigation';
-import { usePosts } from '@/hooks/usePosts';
 import PostList from "@/components/ui/post-list";
 import { useUserStore } from '@/context/UserContext';
 
 export default function Account({ user, toggle }) {
     const router = useRouter();
-    const [posts, setPosts] = useState([{}]);
-    const [loading, setLoading] = useState(true);
     const currentUser = useUserStore(state => state.user);
 
     const handleUsernameClick = () => {

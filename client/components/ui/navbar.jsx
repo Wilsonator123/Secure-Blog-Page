@@ -16,7 +16,6 @@ import axios from 'axios';
 import UserResult from './userResult';
 import PostResult from './postResult';
 
-const API_URL = 'http://127.0.0.1:8000/'
 
 export default function NavBar() {
   const [isSettingsModalOpen, setSettingsModalOpen] = useState(false);
@@ -47,7 +46,7 @@ export default function NavBar() {
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogin = async () => {
     await logout();
     router.push('/login');
   }
@@ -121,7 +120,7 @@ export default function NavBar() {
                   <li className="flex items-center" onClick={logout}><LogoutIcon fill="#F54D28" /> Sign Out</li>
                 </>
               ) : (
-                <li className="dropdown flex items-center" onClick={handleLogout}><LoginIcon fill="#ffff" /> Sign In</li>
+                <li className="dropdown flex items-center" onClick={handleLogin}><LoginIcon fill="#ffff" /> Sign In</li>
               )}
             </ul>
           </div>

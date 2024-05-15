@@ -6,6 +6,9 @@ const { updateUserInfo } = require("../accounts/accountUpdate.js");
 const { setCookie, validateCookie } = require("../utils/cookie.js");
 const { readJWT } = require("../utils/auth.js");
 const { authorize } = require("../middleware.js");
+const { withCSRF } = require("../csrf.js");
+
+
 router.get("/", (req, res) => {
 	res.send({ data: "Account route" });
 });
@@ -57,7 +60,7 @@ router.post(
 
 router.post(
 	"/updateUser",
-	authorize(["account:read"]),
+	withCSRF(authorize(["account:read"])),
 	body("currentPassword").isString().optional(),
 	body("updates").isObject(),
 	cookie("id").custom((value, { req }) => {

@@ -159,8 +159,8 @@
   
   .input-field {
 	width: 100%;
-	padding-left: 40px; /* Adjust based on icon size */
-	padding-right: 40px; /* Adjust based on icon size */
+	padding-left: 40px; 
+	padding-right: 40px; 
 	box-sizing: border-box;
   }
   
@@ -168,16 +168,16 @@
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
-	left: 10px; /* Adjust based on design */
+	left: 10px; 
   }
   
   .password-toggle-icon {
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
-	right: 10px; /* Adjust based on design */
+	right: 10px; 
   }
-  
+
 .unselectable {
 	user-select: none;
 }

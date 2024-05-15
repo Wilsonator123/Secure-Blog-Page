@@ -38,6 +38,7 @@ export default function SettingsPage({ user, toggle }) {
   const [lName, setLName] = useState("");
   const [error, setError] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const [captcha, setCaptcha] = useState(false);
 
   const [passwordStrength, setPasswordStrength] = useState(null);
   const [passwordMessage, setPasswordMessage] = useState(null);
@@ -55,7 +56,7 @@ export default function SettingsPage({ user, toggle }) {
   const resetToMainSettings = () => {
     setActiveSetting('');
     setIsChecked(false);
-    reset(); // Reset form
+    reset(); 
   };
 
   const handleUpdateUser = async (updates) => {
@@ -63,6 +64,11 @@ export default function SettingsPage({ user, toggle }) {
       setError('Please confirm the changes by checking the checkbox.');
       return;
     }
+
+    if(!captcha){
+      setError("Please complete the captcha");
+      return;
+  }
 
     try {
       const response = await axios.post('http://localhost:8000/account/updateUser', {
@@ -77,6 +83,11 @@ export default function SettingsPage({ user, toggle }) {
 
       if (response.status === 200) {
         alert('Update successful!');
+        setTimeout(() => {
+          logout();
+          router.push('/');
+          toggle();
+        }, 3000);
       }
 
     } catch (error) {

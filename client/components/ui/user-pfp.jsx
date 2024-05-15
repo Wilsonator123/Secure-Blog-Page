@@ -10,7 +10,7 @@ export default function UserPFP({ containerClassName, identiconClassName, user }
             {user ? (
                 <Identicon
                     className={`object-cover ${identiconClassName}`}
-                    string={user}
+                    string={`${user}`}
                 />
             ) : (
                 <div className="flex items-center justify-center w-12 h-12 bg-gray-300">
