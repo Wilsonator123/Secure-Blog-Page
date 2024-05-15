@@ -35,11 +35,5 @@ jobs:
             - name: NPM Install
               run: npm --prefix ./server/ install
 
-            - name: Run mongo
-              run: docker-compose run mongo -d
-
-            - name: Run DB
-              run: docker-compose run db -d
-
-            - name: Run server
-              run: docker-compose run server
+            - name: Run backend
+              run: docker-compose up --scale mongo=0 --scale db=0 --scale server=1
