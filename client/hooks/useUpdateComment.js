@@ -1,15 +1,15 @@
 'use server'
+
 import axios from 'axios';
 import { cookies } from 'next/headers';
 
-export const getPost = async (postId) => {
+export const updateComment = async (commentId, content) => {
     'use server'
     try {
         const id = cookies().get('id');
         if (!id) return false;
 
-        const response = await axios.post('http://localhost:8000/posts/getPosts', {args: {_id: postId}
-        }, {
+        const response = await axios.post('http://localhost:8000/comments/updateComment', {commentId: commentId, comment: content}, {
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',

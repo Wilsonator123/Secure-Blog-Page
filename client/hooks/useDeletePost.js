@@ -1,15 +1,14 @@
 'use server'
-import axios from 'axios';
-import { cookies } from 'next/headers';
+const axios = require('axios');
+const { cookies } = require('next/headers');
 
-export const getPost = async (postId) => {
+export const useDeletePost = async (postId) => {
     'use server'
     try {
         const id = cookies().get('id');
         if (!id) return false;
 
-        const response = await axios.post('http://localhost:8000/posts/getPosts', {args: {_id: postId}
-        }, {
+        const response = await axios.post('http://localhost:8000/posts/deletePost', {postId: postId}, {
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
