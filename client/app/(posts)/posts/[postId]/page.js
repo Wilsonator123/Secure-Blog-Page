@@ -71,7 +71,7 @@ export default function PostDetails({params} ) {
                   {
                     owner ? (
                       <>
-                      <li className="text-text text-lg cursor-pointer" onClick={toggleModal}>Edit</li>
+                      <li className="text-text text-lg cursor-pointer">Edit</li>
                       <li className="text-red-500 text-lg cursor-pointer" >Delete</li>
                       </>
                     ) : (
@@ -99,9 +99,6 @@ export default function PostDetails({params} ) {
                 <CommentList comments={post[0].comments}/>
             </Card>
         }
-        <Modal isOpen={isModalOpen} onClose={toggleModal}>
-          
-        </Modal>
         </div>
     );
   }
