@@ -1,26 +1,13 @@
-import React, { createContext, useState } from 'react';
+"use client";
 
+import { create } from "zustand";
+import { deleteCookie } from "cookies-next";
 
-export const UserContext = createContext();
-
-
-export const UserContextProvider = ({ children }) => {
-    
-    const [loggedInUser, setLoggedInUser] = useState(null);
-
-    const updateLoggedInUser = (user) => {
-        setLoggedInUser(user);
-    };
-
-    
-    const value = {
-        loggedInUser,
-        updateLoggedInUser,
-    };
-
-    return (
-        <UserContext.Provider value={value}>
-            {children}
-        </UserContext.Provider>
-    );
-};
+export const useUserStore = create((set) => ({
+	user: null,
+	setUser: (user) => set({ user }),
+	logout: () => {
+		set({ user: null });
+		deleteCookie("id");
+	},
+}));

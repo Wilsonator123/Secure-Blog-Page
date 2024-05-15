@@ -14,4 +14,9 @@ function saltNhash(password, salt) {
   return crypto.pbkdf2Sync(meat, salt, 600000, 64, "SHA256").toString("hex");
 }
 
-module.exports = { makeSalt, saltNhash };
+function verifyHash(password, hash, salt) {
+  const hashToVerify = saltNhash(password, salt);
+  return hash === hashToVerify;
+}
+
+module.exports = { makeSalt, saltNhash, verifyHash };
