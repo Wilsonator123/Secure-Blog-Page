@@ -12,15 +12,17 @@ router.get("/", (req, res) => {
 
 router.post(
 	"/getUser",
-	authorize(["account:read"]),
+	authorize([]),
 	body("username").isString().optional(),
-	cookie("id").custom((value, { req }) => {
-		const cookie = req.cookies.id;
-		if (!cookie) {
-			throw new Error("Cookie 'id' not found");
-		}
-		return true;
-	}),
+	cookie("id")
+		.custom((value, { req }) => {
+			const cookie = req.cookies.id;
+			if (!cookie) {
+				throw new Error("Cookie 'id' not found");
+			}
+			return true;
+		})
+		.optional(),
 	async (req, res) => {
 		try {
 			const errors = validationResult(req);

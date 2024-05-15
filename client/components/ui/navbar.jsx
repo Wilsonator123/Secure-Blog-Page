@@ -7,7 +7,7 @@ import ProfileIcon from '@/assets/profile.svg';
 import LoginIcon from '@/assets/login.svg';
 import LogoutIcon from '@/assets/logout.svg';
 import Logo from '@/assets/logo.svg';
-import Modal from '@/components/ui/Modal';
+import Modal from '@/components/ui/modal';
 import SettingsPage from '@/components/ui/settings-page';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/context/UserContext';
@@ -49,6 +49,10 @@ export default function NavBar() {
 
   const handleLogout = async () => {
     await logout();
+    router.push('/login');
+  }
+
+  const handleSignIn = () => {
     router.push('/login');
   }
 
@@ -118,10 +122,10 @@ export default function NavBar() {
                 <>
                   <li className="flex items-center" onClick={handleProfile}><ProfileIcon fill="#ffff" /> Profile</li>
                   <li className="flex items-center" onClick={toggleSettingsModal}><SettingsIcon fill="#ffff" /> Settings</li>
-                  <li className="flex items-center" onClick={logout}><LogoutIcon fill="#F54D28" /> Sign Out</li>
+                  <li className="flex items-center" onClick={handleLogout}><LogoutIcon fill="#F54D28" /> Sign Out</li>
                 </>
               ) : (
-                <li className="dropdown flex items-center" onClick={handleLogout}><LoginIcon fill="#ffff" /> Sign In</li>
+                <li className="dropdown flex items-center" onClick={handleSignIn}><LoginIcon fill="#ffff" /> Sign In</li>
               )}
             </ul>
           </div>

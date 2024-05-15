@@ -25,11 +25,11 @@ import Close from '@/assets/close.svg';
 import Logout from '@/assets/logout.svg';
 import Return from '@/assets/return.svg';
 
-
 export default function SettingsPage({ user, toggle }) {
   const [activeSetting, setActiveSetting] = useState('');
   const router = useRouter();
   const currentUser = useUserStore(state => state.user);
+
 
   const { register, handleSubmit, reset, setError: setFormError, clearErrors, formState: { errors }, getValues } = useForm();
   const [showPassword, setShowPassword] = useState("password");
@@ -76,7 +76,9 @@ export default function SettingsPage({ user, toggle }) {
       });
 
       if (response.status === 200) {
-        alert('Update successful!');
+        await logout();
+        router.push('/login');
+        alert('Your account has been updated. Please log in again.');
       }
 
     } catch (error) {
@@ -154,8 +156,8 @@ export default function SettingsPage({ user, toggle }) {
           </>
         ),
         onSubmit: () => {
-          handleUpdateUser({ fname: getValues('fname')});
-          handleUpdateUser({ lname: getValues('lname')});
+          handleUpdateUser({ fname: getValues('fname') });
+          handleUpdateUser({ lname: getValues('lname') });
         },
       },
       deleteAccount: {

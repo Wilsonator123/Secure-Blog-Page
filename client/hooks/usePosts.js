@@ -5,8 +5,7 @@ import { cookies } from "next/headers";
 export const usePosts = async (args = {}) => {
 	"use server";
 	try {
-		const id = cookies().get("id");
-		if (!id) return false;
+		const id = cookies().get("id") ?? "";
 
 		const response = await axios.post(
 			"http://localhost:8000/posts/getPosts",

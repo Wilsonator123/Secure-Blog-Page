@@ -4,7 +4,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import Account from "@/components/ui/account";
 import SettingsPage from "@/components/ui/settings-page";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/modal";
 import { getUser } from "@/hooks/fetchUser";
 import { useUserStore } from "@/context/UserContext";
 
@@ -14,7 +14,7 @@ export default function UserAccountPage({ params }) {
 	const [activeSetting, setActiveSetting] = useState("");
 	const [user, setUser] = useState({});
 	const [loading, setLoading] = useState(true);
-    const currentUser = useUserStore(state => state.user);
+	const currentUser = useUserStore((state) => state.user);
 
 	const toggleModal = () => {
 		setModalOpen(!isModalOpen);
@@ -40,7 +40,7 @@ export default function UserAccountPage({ params }) {
 				console.error("Failed to fetch user data:", error);
 				setLoading(false);
 			});
-	}, []); 
+	}, []);
 
 	return (
 		<main className="flex min-h-screen flex-col items-center bg-background">

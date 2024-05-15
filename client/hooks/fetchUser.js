@@ -5,8 +5,7 @@ import { cookies } from "next/headers";
 export const getUser = async (username = undefined) => {
 	"use server";
 	try {
-		const id = cookies().get("id");
-		if (!id) return false;
+		const id = cookies().get("id") ?? "";
 
 		const response = await axios.post(
 			"http://localhost:8000/account/getUser",
@@ -24,12 +23,9 @@ export const getUser = async (username = undefined) => {
 		);
 		return response.data.data;
 	} catch (error) {
-		console.error("Failed to fetch user data:", error);
 		return false;
 	}
 };
-
-
 
 export const clearUser = async () => {
 	"use server";

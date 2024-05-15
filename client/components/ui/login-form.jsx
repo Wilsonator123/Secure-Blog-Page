@@ -55,7 +55,7 @@ export default function LoginForm({ toggle }) {
       }
 
     } catch (error) {
-      if (error.status === 401) {
+      if (error.response.status === 401) {
         setError("Incorrect username or password");
         emailBox.current.focus();
       }
@@ -73,7 +73,9 @@ export default function LoginForm({ toggle }) {
   return (
     <Card className="h-3/5 w-1/2 bg-primary border-accent mt-8 rounded-3xl">
       <CardHeader >
+        {error && <Alert className="my-5 text-white text-center "><AlertDescription id="error-result">{error}</AlertDescription></Alert>}
         <CardTitle className="text-3xl m-auto mt-16 text-text">Sign In</CardTitle>
+
       </CardHeader>
       <CardContent className="flex justify-center w-full">
         <form onSubmit={handleSubmit} className="relative flex flex-col justify-center w-full items-center">
@@ -115,7 +117,6 @@ export default function LoginForm({ toggle }) {
             <Button variant='secondary' className="h-12 bg-secondary text-text text-xl w-96 max-w-xs
                hover:border hover:border-accent" type="submit" onSubmit={handleSubmit}>Sign In</Button>
           </div>
-          {error && <Alert className="mt-4 text-white"><AlertDescription id="error-result">{error}</AlertDescription></Alert>}
         </form>
       </CardContent>
       <div className='flex flex-row items-center'>
