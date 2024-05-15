@@ -23,7 +23,7 @@
 	"scripts": {
 		"start": "node index.js",
 		"dev": "nodemon -L index.js",
-		"test": "mocha --timeout 5000"
+		"test": "nyc --reporter=html --reporter=text mocha --timeout 5000"
 	},
 	"name": "server",
 	"version": "1.0.0",
@@ -33,6 +33,7 @@
 	"description": "",
 	"devDependencies": {
 		"mocha": "^10.3.0",
+		"nyc": "^15.1.0",
 		"supertest": "^7.0.0"
 	}
 }
