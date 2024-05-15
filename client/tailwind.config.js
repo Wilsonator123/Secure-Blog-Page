@@ -32,6 +32,7 @@ module.exports = {
         passFair: '#FFCC33',
         passGood: '#2D98F3',
         passStrong: '#76C261',
+        overlay: 'rgba(0, 0, 0, 0.5)',
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",

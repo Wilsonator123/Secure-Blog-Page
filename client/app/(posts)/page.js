@@ -25,7 +25,7 @@ export default function Home() {
                 <FilterSelect />
             </div>
             <Button variant="outline" onClick={handleClick} className="flex flex-row my-4 w-4/6 h-16 justify-start bg-primary
-             hover:bg-secondary border-border border-secondary mx-auto text-3xl text-left text-gray-400 rounded-none"
+             hover:bg-secondary border-border border-secondary mx-auto text-3xl text-left text-gray-400 rounded-2xl"
              ><Feather className="mr-2" width={50} height={40} />Create a post<PlusIcon className="ml-auto" width={40} height={30}/></Button>
             <div className="flex flex-col w-4/5 mx-auto">
                 <PostList />

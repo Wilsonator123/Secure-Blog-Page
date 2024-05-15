@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import Oauth from './oauth';
-
+import { updateUser } from "@/hooks/user"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -38,7 +38,6 @@ export default function LoginForm({ toggle }) {
     event.preventDefault();
 
     try {
-
       const response = await axios.post('http://localhost:8000/login/login', {
         email: email,
         password: password
@@ -51,6 +50,7 @@ export default function LoginForm({ toggle }) {
         })
 
       if (response.status === 200) {
+        await updateUser()
         router.push('/');
       }
 
@@ -64,9 +64,6 @@ export default function LoginForm({ toggle }) {
         emailBox.current.focus();
       }
     }
-
-
-
   }
 
   function forgottenPassword() {
