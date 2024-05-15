@@ -18,6 +18,9 @@ const mapResponse = async (result, userID) => {
 						return comment;
 					})
 				);
+				post.comments.sort(
+					(a, b) => new Date(b.created_at) - new Date(a.created_at)
+				);
 			}
 
 			return post;
