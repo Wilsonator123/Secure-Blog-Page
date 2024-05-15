@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
 const opts = {
-	points: 10, // 100 requests
+	points: 100, // 100 requests
 	duration: 1, // Per second
 	blockDuration: 5 * 60,
 };
