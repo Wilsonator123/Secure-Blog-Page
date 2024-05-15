@@ -97,7 +97,6 @@ export default function PostDetails({params} ) {
                   {
                     owner ? (
                       <>
-                      <li className="text-text text-lg cursor-pointer">Edit</li>
                       <li className="text-red-500 text-lg cursor-pointer" onClick={toggleHidden}>Delete</li>
                       </>
                     ) : (
