@@ -35,7 +35,11 @@ jobs:
             - name: NPM Install
               run: npm --prefix ./server/ install
 
-            - name: Run backend tests
+            - name: Run mongo
               run: docker-compose run mongo -d
+
+            - name: Run DB
               run: docker-compose run db -d
+
+            - name: Run server
               run: docker-compose run server
