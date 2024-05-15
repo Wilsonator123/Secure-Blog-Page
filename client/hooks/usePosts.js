@@ -4,8 +4,6 @@ import { cookies } from "next/headers";
 
 export const usePosts = async (args = {}) => {
 	"use server";
-
-	
 	try {
 		const id = cookies().get("id");
 		if (!id) return false;
