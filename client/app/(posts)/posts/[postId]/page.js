@@ -11,6 +11,10 @@ import CtaButtons from '@/components/ui/cta-buttons';
 import CommentList from '@/components/ui/comment-list';
 import Ellipsis from '@/assets/ellipsis.svg'
 import axios from 'axios';
+import Modal from '@/components/ui/modal';
+
+
+
 
 export default function PostDetails({params} ) {
 
@@ -18,48 +22,69 @@ export default function PostDetails({params} ) {
   const [post, setPost] = useState({});
   const [comment, setComment] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [owner, setOwner] = useState(false);
+  const [error, setError] = useState(null);
+  /*const [isModalOpen, setModalOpen] = useState(false);
+  
+  const toggleModal = () => {
+		setModalOpen(!isModalOpen);
+	};*/
 
   useEffect(() => {
     getPost(params.postId)
         .then((response) => {
             setPost(response);
+            console.log(response);
+            setOwner(response[0].owner);
             setLoading(false);
         });
 }, []);
 
+
   async function handleSubmit(event) {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/posts/updateComment', {args: {title: post[0].title},
-       action: 'add', data : {message: comment}}, {
+      const response = await axios.post('http://localhost:8000/comments/createComment', {postId: post[0]._id, comment: comment}, {
         withCredentials: true,
             headers: {
             'Content-Type': 'application/json',
         }
       });
-      console.log(response);
+      window.location.reload();
+      
     } catch (error) {
-      console.error(error);
+      setError(error.response.data.message);
     }
 
   }
-
- 
         
     return (
         <div className="flex w-4/5 justify-center my-8">
           {loading ? <p className='text-text text-2xl'>Loading...</p> :
-            <Card className="w-5/6 h-min bg-primary rounded-none border-secondary">
+            <Card className="w-5/6 h-min bg-primary rounded-2xl border-secondary">
               <CardHeader className="h-8 text-text text-base flex flex-row">
               <button className="text-white text-2xl font-medium bg-primary border border-secondary
                rounded-full mr-2 -my-2 h-10 w-10 hover:bg-secondary" onClick={router.back}> ←</button>
                 {post[0].created_by} <DotFilledIcon className="" width={18} height={18}/> {dateToString(post[0].created_at)}
-                <Ellipsis className="ml-auto"/>
+                <div className='ml-auto'>
+                  <ul>
+                  {
+                    owner ? (
+                      <>
+                      <li className="text-text text-lg cursor-pointer" onClick={toggleModal}>Edit</li>
+                      <li className="text-red-500 text-lg cursor-pointer" >Delete</li>
+                      </>
+                    ) : (
+                      null
+                    )
+                  }
+                  </ul>
+                </div>
                 </CardHeader>
                 <CardHeader>
                   <p className="text-text text-3xl">{post[0].title}</p>
                 </CardHeader>
-                <CardDescription className="text-gray-300 text-lg mx-6">{post[0].description}</CardDescription>
+                <CardDescription className="text-gray-300 text-lg mx-6">{post[0].content}</CardDescription>
                 <CardFooter className="my-6">
                   <CtaButtons numberOfComments={post[0].comments.length}/>
                 </CardFooter>
@@ -69,10 +94,14 @@ export default function PostDetails({params} ) {
                     focus:outline-none" placeholder="Add a comment..." 
                     value={comment} onChange={(e) => setComment(e.target.value)}/>
                   </form>
+                  {error ? <p className='text-red-500'>{error}</p> : null}
                 </CardFooter>
                 <CommentList comments={post[0].comments}/>
             </Card>
         }
+        <Modal isOpen={isModalOpen} onClose={toggleModal}>
+          
+        </Modal>
         </div>
     );
   }
