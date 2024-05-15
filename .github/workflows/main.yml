@@ -35,5 +35,5 @@ jobs:
             - name: NPM Install
               run: npm --prefix ./server/ install
 
-            - name: Run backend
-              run: docker-compose up --scale mongo=0 --scale db=0 --scale server=1
+            - name: Run backend tests
+              run: docker-compose up
