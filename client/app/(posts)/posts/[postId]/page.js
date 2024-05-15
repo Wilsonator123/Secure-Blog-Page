@@ -27,11 +27,7 @@ export default function PostDetails({params} ) {
   const [owner, setOwner] = useState(false);
   const [error, setError] = useState(null);
   const [hidden, setHidden] = useState(true);
-  /*const [isModalOpen, setModalOpen] = useState(false);
   
-  const toggleModal = () => {
-		setModalOpen(!isModalOpen);
-	};*/
 
   const toggleHidden = () => {
 		setHidden(!hidden);
@@ -41,7 +37,6 @@ export default function PostDetails({params} ) {
     getPost(params.postId)
         .then((response) => {
             setPost(response);
-            console.log(response);
             setOwner(response[0].owner);
             setLoading(false);
         });
