@@ -15,7 +15,7 @@ export default function CreatePostForm() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:8000/posts/createPost',
+            const response = await axios.post('http://127.0.0.1:8000/posts/createPost',
                 {
                     title: data['title'],
                     description: data['description'],

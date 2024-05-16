@@ -8,7 +8,7 @@ export const getUser = async (username = undefined) => {
 		const id = cookies().get("id") ?? "";
 
 		const response = await axios.post(
-			"http://localhost:8000/account/getUser",
+			"http://127.0.0.1:8000/account/getUser",
 			{
 				username: username,
 			},

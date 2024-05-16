@@ -6,9 +6,9 @@ const secret = new Uint8Array(Buffer.from(process.env.JWT_SECRET, "base64"));
 async function createAndSignJWT(userID, permissions = ["read"]) {
 	const alg = "HS256";
 	const jwt = await new jose.SignJWT({
-		iss: "http://localhost:8000",
+		iss: "http://127.0.0.1:8000",
 		sub: userID,
-		aud: "http://localhost:8000",
+		aud: "http://127.0.0.1:8000",
 		scopes: permissions,
 	})
 		.setProtectedHeader({ alg })

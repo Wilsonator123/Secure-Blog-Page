@@ -14,7 +14,7 @@ describe('Test', () => {
 describe('Login Form Test', () => {
 
     it('should fill in the login form, submit it and read the alert response of No response from the server',  async () => {
-        await page.goto('http://localhost:3000/login');
+        await page.goto('http://127.0.0.1:3000/login');
         await page.type('#login-email','bingus@gmail.com');
         await page.type('#login-password','bingbong');
         await page.click('Button[type="submit"]');

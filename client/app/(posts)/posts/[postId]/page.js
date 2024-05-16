@@ -37,7 +37,7 @@ export default function PostDetails({ params }) {
 	const [error, setError] = useState(null);
 	const [edit, setEdit] = useState(false);
 	const [confirmPassword, setConfirmPassword] = useState(false);
-	const URL = "http://localhost:3000/";
+	const URL = "http://127.0.0.1:3000/";
 	useEffect(() => {
 		usePosts({ _id: params.postId }).then((response) => {
 			setPost(response);
@@ -50,7 +50,7 @@ export default function PostDetails({ params }) {
 		event.preventDefault();
 		try {
 			await axios.post(
-				"http://localhost:8000/comments/createComment",
+				"http://127.0.0.1:8000/comments/createComment",
 				{ postId: post[0]._id, comment: comment },
 				{
 					withCredentials: true,

@@ -33,7 +33,7 @@ export default function NavBar() {
   const search = async (event) => {
     event.preventDefault();
     const search = event.target.value;
-    const res = await axios.post('http://localhost:8000/search', { search });
+    const res = await axios.post('http://127.0.0.1:8000/search', { search });
     setSearchResults(res.data);
     setShowResults(true);
   }

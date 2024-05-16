@@ -65,7 +65,7 @@ export default function SettingsPage({ user, toggle }) {
     }
 
     try {
-      const response = await axios.post('http://localhost:8000/account/updateUser', {
+      const response = await axios.post('http://127.0.0.1:8000/account/updateUser', {
         currentPassword: getValues('password'),
         updates
       }, {

@@ -8,7 +8,7 @@ export const usePosts = async (args = {}) => {
 		const id = cookies().get("id") ?? "";
 
 		const response = await axios.post(
-			"http://localhost:8000/posts/getPosts",
+			"http://127.0.0.1:8000/posts/getPosts",
 			{ args: args },
 			{
 				withCredentials: true,

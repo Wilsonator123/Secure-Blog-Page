@@ -7,6 +7,7 @@ import { convertToString } from '@/helper/user';
 import Ellipsis from '@/assets/ellipsis.svg';
 import Modal from './modal';
 import UserPFP from './user-pfp';
+import { useDeleteComment } from '@/hooks/useDeleteComment';
 //import EditComment from './edit-comment';
 
 
@@ -14,6 +15,11 @@ import UserPFP from './user-pfp';
 
 
 export default function CommentList({ comments }) {
+  const [hiddenDelete, setHiddenDelete] = useState(true);
+
+  const toggleHiddenDelete = () => {
+    setHiddenDelete(!hiddenDelete);
+  };
 
   //const [isModalOpen, setModalOpen] = useState(false);
   //const [loading, setLoading] = useState(true);
@@ -21,6 +27,19 @@ export default function CommentList({ comments }) {
   /*const toggleModal = () => {
   setModalOpen(!isModalOpen);
 };*/
+
+  async function handleDelete(commentId) {
+
+    try {
+      const response = await useDeleteComment(commentId)
+      if (response) {
+        window.location.reload();
+      }
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
 
@@ -59,7 +78,18 @@ export default function CommentList({ comments }) {
                     comment.owner ? (
                       <>
                         <li className="text-text text-lg cursor-pointer" >Edit</li>
-                        <li className="text-red-500 text-lg cursor-pointer">Delete</li>
+                        <li className="text-red-500 text-lg cursor-pointer" onClick={() => setHiddenDelete(false)}>Delete</li>
+                          { hiddenDelete ? (
+                              null
+                          ) : (
+                              <div className='ml-auto mt-4'>
+                                <p className='text-text'>Are you sure you want to delete this comment?</p>
+                                <input type="submit" value="Yes" className="bg-red-500 text-white rounded-full py-2 px-4 mr-4 cursor-pointer"
+                                       onClick={() => handleDelete(comment.comment_id)}/>
+                                <input type="submit" value="No" className="bg-green-500 text-white rounded-full py-2 px-4 cursor-pointer"
+                                       onClick={() => setHiddenDelete(true)}/>
+                              </div>
+                          )}
                       </>
                     ) : (
                       null
@@ -76,4 +106,4 @@ export default function CommentList({ comments }) {
       ))}
     </div>
   );
-};
+}

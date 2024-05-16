@@ -8,7 +8,7 @@ export const useDeletePost = async (postId) => {
         const id = cookies().get('id');
         if (!id) return false;
 
-        const response = await axios.post('http://localhost:8000/posts/deletePost', {postId: postId}, {
+        const response = await axios.post('http://127.0.0.1:8000/posts/deletePost', {postId: postId}, {
             withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
