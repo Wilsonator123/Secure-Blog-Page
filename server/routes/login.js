@@ -5,6 +5,7 @@ const accountCreation = require("../accounts/accountCreation");
 const validator = require("email-validator");
 const { body, validationResult } = require("express-validator");
 const { setCookie, validateCookie } = require("../utils/cookie.js");
+const { authorize } = require("../middleware.js");
 
 router.get("/", (req, res) => {
 	res.send({ data: "Login route" });
@@ -12,6 +13,7 @@ router.get("/", (req, res) => {
 
 router.post(
 	"/login",
+	authorize([]),
 	body("email")
 		.notEmpty()
 		.withMessage("Email is required")
@@ -46,20 +48,22 @@ router.post(
 
 			const result = await loginFunction.login(email, password);
 
-			if (result?.success) {
-				await setCookie(res, result.message);
-				res.status(200).json({ data: "Login successful" });
-			} else {
-				res.status(400).json({ errors: "Email or Password incorrect" });
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	}
-);
+        if (result?.success) {
+            await setCookie(res, result.message, "user");
+            res.status(200).json({ data: "Login successful" });
+        }
+        else {
+            res.status(400).json({ errors: "Email or Password incorrect"});
+        }
+    } 
+    catch (error) {
+        console.log(error);
+    }
+})
 
 router.post(
 	"/createUser",
+	authorize([]),
 	body("email")
 		.notEmpty()
 		.withMessage("Email is required")
@@ -120,7 +124,7 @@ router.post(
 			);
 
 			if (result?.success === true) {
-				await setCookie(res, result.message);
+				await setCookie(res, result.message, "user");
 				res.status(200).json({ data: "User created" });
 			} else {
 				res.status(400).json({ errors: result.message });
